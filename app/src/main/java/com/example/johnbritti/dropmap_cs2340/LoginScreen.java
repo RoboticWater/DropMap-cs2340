@@ -11,6 +11,7 @@ import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -49,7 +50,7 @@ public class LoginScreen extends AppCompatActivity implements LoaderCallbacks<Cu
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "@:aaaaa", "b.fergusson@dugen.xorg:world"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -191,12 +192,10 @@ public class LoginScreen extends AppCompatActivity implements LoaderCallbacks<Cu
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -333,6 +332,7 @@ public class LoginScreen extends AppCompatActivity implements LoaderCallbacks<Cu
             showProgress(false);
 
             if (success) {
+                startActivity(new Intent(LoginScreen.this, PostLogin.class));
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
