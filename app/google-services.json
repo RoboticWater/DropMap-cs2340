@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "100979827986",
+    "firebase_url": "https://dropmapdb.firebaseio.com",
+    "project_id": "dropmapdb",
+    "storage_bucket": "dropmapdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100979827986:android:bf1eef500bde3f40",
+        "android_client_info": {
+          "package_name": "com.dropmap_cs2340"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100979827986-aocb7a4g50ihhd2oo5t3r9gu2tr93rke.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dropmap_cs2340",
+            "certificate_hash": "205E36E67697E0D14713CA08CB89C1CFDD9D9CFC"
+          }
+        },
+        {
+          "client_id": "100979827986-9kibeuuiaaue9qhqp0p09airhu8umq5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBScOYiWpwp-4D7gMYnvAlS0JccFEFNomg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100979827986-9kibeuuiaaue9qhqp0p09airhu8umq5p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
