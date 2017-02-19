@@ -91,6 +91,14 @@ public class LoginScreen extends AppCompatActivity implements LoaderCallbacks<Cu
             }
         });
 
+        Button registerButton = (Button) findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginScreen.this, Registration.class));
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -137,7 +145,6 @@ public class LoginScreen extends AppCompatActivity implements LoaderCallbacks<Cu
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -321,9 +328,7 @@ public class LoginScreen extends AppCompatActivity implements LoaderCallbacks<Cu
                     return pieces[1].equals(mPassword);
                 }
             }
-
-            // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
