@@ -88,16 +88,6 @@ public class Registration extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (!TextUtils.isEmpty(name)) {
-            mUserView.setError(getString(R.string.error_field_required));
-            focusView = mUserView;
-            cancel = true;
-        } else if (!isUsernameValid(name)) {
-            mUserView.setError(getString(R.string.error_invalid_username));
-            focusView = mUserView;
-            cancel = true;
-        }
-
         if (!TextUtils.isEmpty(password)) {
             if (!isPasswordValid(password)) {
                 mPasswordView.setError(getString(R.string.error_invalid_password));
@@ -117,6 +107,16 @@ public class Registration extends AppCompatActivity {
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(name)) {
+            mUserView.setError(getString(R.string.error_field_required));
+            focusView = mUserView;
+            cancel = true;
+        } else if (!isUsernameValid(name)) {
+            mUserView.setError(getString(R.string.error_invalid_username));
+            focusView = mUserView;
             cancel = true;
         }
         if (cancel) {
