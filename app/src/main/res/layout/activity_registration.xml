@@ -31,6 +31,18 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/user_input"
+                android:hint="@string/prompt_user" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/email_input"
@@ -58,7 +70,7 @@
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/confirm_password_input"
-                android:hint="@string/hint_confirm_password" />
+                android:hint="@string/prompt_confirm_password" />
 
             <Space
                 android:layout_width="match_parent"
@@ -70,6 +82,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/auth_level_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
 
             <Spinner
                 android:layout_width="match_parent"
