@@ -30,9 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +62,6 @@ public class LoginScreen extends AppCompatActivity implements LoaderCallbacks<Cu
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +98,6 @@ public class LoginScreen extends AppCompatActivity implements LoaderCallbacks<Cu
                 startActivity(new Intent(LoginScreen.this, Registration.class));
             }
         });
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);

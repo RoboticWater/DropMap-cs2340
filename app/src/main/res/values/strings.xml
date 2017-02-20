@@ -2,6 +2,8 @@
     <string name="app_name">DropMap</string>
 
     <!-- Strings related to login -->
+
+    <string name="loading">Loading</string>
     <string name="button_sign_in">Sign In</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_register">Register</string>

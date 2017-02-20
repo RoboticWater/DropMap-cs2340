@@ -12,102 +12,85 @@
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        android:id="@+id/progress_bar_register" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registration_progress"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:id="@+id/email_registration_form">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/registration_form">
-
-        <LinearLayout
+        <TextView
+            android:text="Enter Username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/email_registration_form">
+            android:id="@+id/view_username" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/user_input"
-                android:hint="@string/prompt_user" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/user_input"
+            android:hint="@string/prompt_user" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
+        <TextView
+            android:text="Enter Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/email_view" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:ems="10"
-                android:id="@+id/email_input"
-                android:hint="@string/prompt_email" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/email_input"
+            android:hint="@string/prompt_email" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
+        <TextView
+            android:text="Enter Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/password_view" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:ems="10"
-                android:id="@+id/password_input"
-                android:hint="@string/prompt_password" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/password_input"
+            android:hint="@string/prompt_password" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
+        <TextView
+            android:text="@string/text_auth_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/auth_level_label"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:ems="10"
-                android:id="@+id/confirm_password_input"
-                android:hint="@string/prompt_confirm_password" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/auth_level_spinner" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
+        <Button
+            android:text="@string/button_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/register_button" />
 
-            <TextView
-                android:text="@string/text_auth_level"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/auth_level_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <Button
+            android:text="@string/button_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel_button" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
+    </LinearLayout>
 
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/auth_level_spinner" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
-
-            <Button
-                android:text="@string/button_register"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/register_button" />
-
-            <Button
-                android:text="@string/button_cancel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/cancel_button" />
-
-        </LinearLayout>
-    </ScrollView>
 </RelativeLayout>

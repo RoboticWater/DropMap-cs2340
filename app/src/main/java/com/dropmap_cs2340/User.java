@@ -9,9 +9,8 @@ import android.os.Parcelable;
  */
 
 public class User implements Parcelable {
-    private static int NEXT_ID = 0;
 
-    private int id;
+    private String id;
     private String email;
     private String username;
     private String password;
@@ -19,8 +18,8 @@ public class User implements Parcelable {
     public User() {
 
     }
-    public User(String _email, String _username, String _password, AuthLevel _authLevel) {
-        id = NEXT_ID++;
+    public User(String _id, String _email, String _username, String _password, AuthLevel _authLevel) {
+        id = _id;
         email = _email;
         username = _username;
         password = _password;
@@ -28,7 +27,7 @@ public class User implements Parcelable {
     }
 
     private User(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         email = in.readString();
         username = in.readString();
         password = in.readString();
@@ -42,7 +41,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeString(email);
         dest.writeString(username);
         dest.writeString(password);
@@ -60,11 +59,11 @@ public class User implements Parcelable {
         }
     };
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
