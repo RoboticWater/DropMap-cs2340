@@ -27,7 +27,7 @@
         android:id="@+id/email_registration_form">
 
         <TextView
-            android:text="Enter Username"
+            android:text="@string/text_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/view_username" />
@@ -41,7 +41,7 @@
             android:hint="@string/prompt_user" />
 
         <TextView
-            android:text="Enter Email"
+            android:text="@string/text_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/email_view" />
@@ -55,7 +55,7 @@
             android:hint="@string/prompt_email" />
 
         <TextView
-            android:text="Enter Password"
+            android:text="@string/text_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/password_view" />

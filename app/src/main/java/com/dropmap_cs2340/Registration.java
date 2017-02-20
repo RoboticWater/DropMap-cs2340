@@ -111,7 +111,7 @@ public class Registration extends AppCompatActivity {
                             Toast.makeText(Registration.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            onAuthenticationSucess(task.getResult().getUser());
+                            onAuthenticationSuccess(task.getResult().getUser());
                         }
 
 
@@ -120,7 +120,7 @@ public class Registration extends AppCompatActivity {
 
     }
 
-    private void onAuthenticationSucess(FirebaseUser mUser) {
+    private void onAuthenticationSuccess(FirebaseUser mUser) {
         // Write new user
         saveNewUser(mUser.getUid(), user.getUsername(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) mAuthLevelSpinner.getSelectedItem()));
         signOut();

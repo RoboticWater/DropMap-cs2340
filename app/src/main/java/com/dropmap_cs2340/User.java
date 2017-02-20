@@ -8,17 +8,17 @@ import android.os.Parcelable;
  * Holds user data
  */
 
-public class User implements Parcelable {
+class User implements Parcelable {
 
     private String id;
     private String email;
     private String username;
     private String password;
     private AuthLevel authLevel;
-    public User() {
+    User() {
 
     }
-    public User(String _id, String _email, String _username, String _password, AuthLevel _authLevel) {
+    User(String _id, String _email, String _username, String _password, AuthLevel _authLevel) {
         id = _id;
         email = _email;
         username = _username;
@@ -67,27 +67,27 @@ public class User implements Parcelable {
         this.id = id;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
-    public String getUsername() {
+    String getUsername() {
         return username;
     }
 
-    public void setUsername(String password) {
+    void setUsername(String password) {
         this.password = password;
     }
 
-    public String getPassword() {
+    String getPassword() {
         return username;
     }
 
-    public void setPassword(String password) {
+    void setPassword(String password) {
         this.password = password;
     }
 
