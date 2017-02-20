@@ -66,7 +66,7 @@ public class Registration extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Registration.this, LoginScreen.class));
+                startActivity(new Intent(Registration.this, Login.class));
             }
         });
     }
@@ -125,7 +125,8 @@ public class Registration extends AppCompatActivity {
         saveNewUser(mUser.getUid(), user.getUsername(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) mAuthLevelSpinner.getSelectedItem()));
         signOut();
         // Go to LoginActivity
-        startActivity(new Intent(Registration.this, LoginScreen.class));
+        //TODO send user into app with user set, don't go to login
+        startActivity(new Intent(Registration.this, Login.class));
         finish();
     }
 
