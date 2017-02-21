@@ -14,21 +14,22 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class Registration extends AppCompatActivity {
 
-    private static final String TAG = "DropMap";
+    private static final String TAG = "Firebase";
 
     //Firebase bits
-    private Firebase mRef = new Firebase("https://dropmapdb.firebaseio.com/");
     private FirebaseAuth mAuth;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     //Android interface references
     private EditText mUserView;
@@ -44,23 +45,18 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        mAuth = FirebaseAuth.getInstance();
 
-        mUserView = (EditText) findViewById(R.id.user_input);
-        mEmailView = (EditText) findViewById(R.id.email_input);
-        mPasswordView = (EditText) findViewById(R.id.password_input);
-        mAuthLevelSpinner = (Spinner) findViewById(R.id.auth_level_spinner);
+
+        mUserView = (EditText) findViewById(R.id.input_user);
+        mEmailView = (EditText) findViewById(R.id.input_email);
+        mPasswordView = (EditText) findViewById(R.id.input_password);
+        mAuthLevelSpinner = (Spinner) findViewById(R.id.spinner_auth_level);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAuthLevelSpinner.setAdapter(adapter);
 
-        Button registerButton = (Button) findViewById(R.id.register_button);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSignUpClicked();
-            }
-        });
+        mAuth = FirebaseAuth.getInstance();
 
         Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -71,68 +67,58 @@ public class Registration extends AppCompatActivity {
         });
     }
 
+    public void onStop() {
+        super.onStop();
+    }
+
     protected void setUpUser() {
         user = new User();
-        user.setUsername(mUserView.getText().toString());
+        user.setName(mUserView.getText().toString());
         user.setEmail(mEmailView.getText().toString());
         user.setAuthLevel((String) mAuthLevelSpinner.getSelectedItem());
         user.setPassword(mPasswordView.getText().toString());
     }
 
-    public void onSignUpClicked() {
+    public void onSignUpClicked(View view) {
         createNewAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
         showProgressDialog();
     }
 
     private void createNewAccount(String email, String password) {
-        Log.d(TAG, "createNewAccount:" + email);
         if (!validateForm()) {
             return;
         }
-        //This method sets up a new User by fetching the user entered details.
         setUpUser();
-        //This method  method  takes in an email address and password, validates them and then creates a new user
-        // with the createUserWithEmailAndPassword method.
-        // If the new account was created, the user is also signed in, and the AuthStateListener runs the onAuthStateChanged callback.
-        // In the callback, you can use the getCurrentUser method to get the user's account data.
-
+        Log.d(TAG, "createNewAccount:" + email);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Toast.makeText(Registration.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             onAuthenticationSuccess(task.getResult().getUser());
                         }
-
-
                     }
                 });
 
     }
 
     private void onAuthenticationSuccess(FirebaseUser mUser) {
-        // Write new user
-        saveNewUser(mUser.getUid(), user.getUsername(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) mAuthLevelSpinner.getSelectedItem()));
+        saveNewUser(mUser.getUid(), user.getName(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) mAuthLevelSpinner.getSelectedItem()));
         signOut();
-        // Go to LoginActivity
         //TODO send user into app with user set, don't go to login
         startActivity(new Intent(Registration.this, Login.class));
         finish();
     }
 
-    private void saveNewUser(String userId, String username, String email, String password, AuthLevel authLevel) {
-        User user = new User(userId, email, username, password, authLevel);
-        mRef.child("users").child(userId).setValue(user);
+    private void saveNewUser(String userId, String name, String email, String password, AuthLevel authLevel) {
+        User user = new User(userId, email, name, password, authLevel);
+        DatabaseReference mRef = database.getReference("users");
+        mRef.child(userId).setValue(user);
     }
 
     private void signOut() {

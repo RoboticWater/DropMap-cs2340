@@ -24,7 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/email_registration_form">
+        android:id="@+id/email_registration_form"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:text="@string/text_user"
@@ -35,9 +37,9 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/user_input"
+            android:id="@+id/input_user"
             android:hint="@string/prompt_user" />
 
         <TextView
@@ -51,7 +53,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/email_input"
+            android:id="@+id/input_email"
             android:hint="@string/prompt_email" />
 
         <TextView
@@ -65,7 +67,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/password_input"
+            android:id="@+id/input_password"
             android:hint="@string/prompt_password" />
 
         <TextView
@@ -77,13 +79,14 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/auth_level_spinner" />
+            android:id="@+id/spinner_auth_level" />
 
         <Button
             android:text="@string/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/register_button" />
+            android:id="@+id/button_register"
+            android:onClick="onSignUpClicked" />
 
         <Button
             android:text="@string/button_cancel"

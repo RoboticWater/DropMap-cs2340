@@ -12,16 +12,16 @@ class User implements Parcelable {
 
     private String id;
     private String email;
-    private String username;
+    private String name;
     private String password;
     private AuthLevel authLevel;
     User() {
 
     }
-    User(String _id, String _email, String _username, String _password, AuthLevel _authLevel) {
+    User(String _id, String _email, String _name, String _password, AuthLevel _authLevel) {
         id = _id;
         email = _email;
-        username = _username;
+        name = _name;
         password = _password;
         authLevel = _authLevel;
     }
@@ -29,7 +29,7 @@ class User implements Parcelable {
     private User(Parcel in) {
         id = in.readString();
         email = in.readString();
-        username = in.readString();
+        name = in.readString();
         password = in.readString();
         authLevel = (AuthLevel) in.readSerializable();
     }
@@ -43,7 +43,7 @@ class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(email);
-        dest.writeString(username);
+        dest.writeString(name);
         dest.writeString(password);
         dest.writeSerializable(authLevel);
     }
@@ -75,16 +75,16 @@ class User implements Parcelable {
         this.email = email;
     }
 
-    String getUsername() {
-        return username;
+    String getName() {
+        return name;
     }
 
-    void setUsername(String password) {
-        this.password = password;
+    void setName(String name) {
+        this.name = name;
     }
 
     String getPassword() {
-        return username;
+        return password;
     }
 
     void setPassword(String password) {
@@ -99,7 +99,7 @@ class User implements Parcelable {
         }
     }
 
-    public void setAuthLevel(String _authLevel) {
+    void setAuthLevel(String _authLevel) {
         // Get enum from string
         if (_authLevel == null) {
             authLevel = null;
