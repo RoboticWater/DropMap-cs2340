@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+//TODO add offline registration
 
 public class Registration extends AppCompatActivity {
 
@@ -85,9 +86,7 @@ public class Registration extends AppCompatActivity {
     }
 
     private void createNewAccount(String email, String password) {
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
         setUpUser();
         Log.d(TAG, "createNewAccount:" + email);
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -110,8 +109,29 @@ public class Registration extends AppCompatActivity {
     private void onAuthenticationSuccess(FirebaseUser mUser) {
         saveNewUser(mUser.getUid(), user.getName(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) mAuthLevelSpinner.getSelectedItem()));
         signOut();
-        //TODO send user into app with user set, don't go to login
-        startActivity(new Intent(Registration.this, Login.class));
+        //TODO make sure this works
+        showProgressDialog();
+        mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithEmail", task.getException());
+                            Toast.makeText(Registration.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            String uid = mAuth.getCurrentUser().getUid();
+                            intent.putExtra("user_id", uid);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        hideProgressDialog();
+                    }
+                });
+        startActivity(new Intent(Registration.this, MainActivity.class));
         finish();
     }
 

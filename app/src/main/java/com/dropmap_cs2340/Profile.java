@@ -1,5 +1,6 @@
 package com.dropmap_cs2340;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +24,9 @@ public class Profile extends AppCompatActivity {
     private TextView mEmailText;
     private TextView mAuthText;
 
+    //Firebase stuff
+    private FirebaseAuth mAuth;
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
@@ -31,6 +36,7 @@ public class Profile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mAuth = FirebaseAuth.getInstance();
 
         mUserText = (TextView) findViewById(R.id.text_username);
         mEmailText = (TextView) findViewById(R.id.text_email);
@@ -40,8 +46,7 @@ public class Profile extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(Profile.this, EditProfile.class));
             }
         });
     }
@@ -49,7 +54,7 @@ public class Profile extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String uid = getIntent().getExtras().getString("user_id");
+        String uid = mAuth.getCurrentUser().getUid();
         DatabaseReference mRef = database.getReference("users").child(uid);
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override

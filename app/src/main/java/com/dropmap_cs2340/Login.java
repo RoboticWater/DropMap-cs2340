@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+//TODO add offline authentication
 
 /**
  * A login screen that offers login via email/password.
@@ -70,7 +71,10 @@ public class Login extends AppCompatActivity {
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Login.this, Registration.class));
+                Intent intent = new Intent(Login.this, Registration.class);
+                String uid = mAuth.getCurrentUser().getUid();
+                intent.putExtra("user_id", uid);
+                startActivity(intent);
             }
         });
     }
@@ -130,7 +134,6 @@ public class Login extends AppCompatActivity {
                         hideProgressDialog();
                     }
                 });
-        //
     }
 
     private boolean validateForm() {
