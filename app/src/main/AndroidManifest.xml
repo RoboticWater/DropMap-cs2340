@@ -36,6 +36,10 @@
         <activity
             android:name=".EditProfile"
             android:label="@string/title_activity_edit_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ReportSubmit"
+            android:label="@string/title_activity_report_submit"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
