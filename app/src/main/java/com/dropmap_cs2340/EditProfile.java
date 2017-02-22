@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -18,16 +17,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -84,10 +79,6 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveChanges();
-                //TODO switch to activity?
-                startActivity(new Intent(EditProfile.this, Profile.class));
-                //TODO check what finish does and add it to necessary activities if it does what I think it does
-                finish();
             }
         });
     }
@@ -148,7 +139,12 @@ public class EditProfile extends AppCompatActivity {
 
         final String email = mEmailEdit.getText().toString();
         final String password = mNewPassEdit.getText().toString();
-        if (password == null || password.length() == 0) return;
+        if (password == null || password.length() == 0) {
+            //TODO switch to activity?
+            startActivity(new Intent(EditProfile.this, Profile.class));
+            //TODO check what finish does and add it to necessary activities if it does what I think it does
+            finish();
+        }
         showProgressDialog();
         final FirebaseUser user = mAuth.getCurrentUser();
         Log.d(TAG, email + " " + password);
@@ -160,6 +156,12 @@ public class EditProfile extends AppCompatActivity {
                 user.updatePassword(password);
                 mRef.child("email").setValue(email);
                 mRef.child("password").setValue(password);
+                hideProgressDialog();
+
+                //TODO switch to activity?
+                startActivity(new Intent(EditProfile.this, Profile.class));
+                //TODO check what finish does and add it to necessary activities if it does what I think it does
+                finish();
             }
         });
     }
