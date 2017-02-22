@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.dropmap_cs2340.EditProfile">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/action_save"
         android:orderInCategory="100"
         android:title="@string/action_save"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_check_24dp" />
+    <item
+        android:id="@+id/action_discard"
+        android:orderInCategory="100"
+        android:title="@string/action_discard"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_clear_24dp" />
 </menu>

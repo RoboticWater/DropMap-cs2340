@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -62,7 +64,6 @@ public class EditProfile extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -81,14 +82,26 @@ public class EditProfile extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         authLevelSpinner.setAdapter(adapter);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
                 saveChanges();
-            }
-        });
+                return true;
+            case R.id.action_discard:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -154,19 +167,26 @@ public class EditProfile extends AppCompatActivity {
             showProgressDialog();
             final FirebaseUser user = auth.getCurrentUser();
             Log.d(TAG, email + " " + password);
-            user.reauthenticate(EmailAuthProvider.getCredential(email, password))
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            user.updateEmail(email);
-                            user.updatePassword(password);
-                            mRef.child("email").setValue(email);
-                            mRef.child("password").setValue(password);
-                            hideProgressDialog();
-                            //TODO check what finish does and add it to necessary activities if it does what I think it does
-                            finish();
-                        }
-                    });
+            user.updateEmail(email);
+            user.updatePassword(password);
+            mRef.child("email").setValue(email);
+            mRef.child("password").setValue(password);
+            hideProgressDialog();
+            //TODO check what finish does and add it to necessary activities if it does what I think it does
+            finish();
+//            user.reauthenticate(EmailAuthProvider.getCredential(email, password))
+//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            user.updateEmail(email);
+//                            user.updatePassword(password);
+//                            mRef.child("email").setValue(email);
+//                            mRef.child("password").setValue(password);
+//                            hideProgressDialog();
+//                            //TODO check what finish does and add it to necessary activities if it does what I think it does
+//                            finish();
+//                        }
+//                    });
         }
     }
 

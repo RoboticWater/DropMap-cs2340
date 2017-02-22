@@ -20,7 +20,7 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
         <TextView
-            android:text="Generic Salutations [User]!"
+            android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/text_welcome"
