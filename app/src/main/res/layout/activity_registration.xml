@@ -79,7 +79,7 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner_auth_level" />
+            android:id="@+id/auth_level_spinner" />
 
         <Button
             android:text="@string/button_register"

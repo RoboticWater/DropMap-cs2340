@@ -51,7 +51,7 @@ public class Registration extends AppCompatActivity {
         mUserView = (EditText) findViewById(R.id.input_user);
         mEmailView = (EditText) findViewById(R.id.input_email);
         mPasswordView = (EditText) findViewById(R.id.input_password);
-        mAuthLevelSpinner = (Spinner) findViewById(R.id.spinner_auth_level);
+        mAuthLevelSpinner = (Spinner) findViewById(R.id.auth_level_spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

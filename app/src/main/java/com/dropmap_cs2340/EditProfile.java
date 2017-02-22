@@ -1,7 +1,6 @@
 package com.dropmap_cs2340;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -26,22 +25,33 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * The form for editing profiles
+ */
 public class EditProfile extends AppCompatActivity {
-
+    /**
+     * Tag for Firebase logging
+     */
     private static final String TAG = "Firebase";
 
-    //Firebase bits
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    /**
+     * Firebase Hooks
+     * Communicates with Firebase authentication and database services
+     */
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseDatabase database;
 
-    //UI hooks
-    private EditText mUserEdit;
-    private EditText mEmailEdit;
-    private EditText mCurrentPassEdit;
-    private EditText mNewPassEdit;
-    private Spinner mAuthLevelSpinner;
-    private ProgressDialog mProgressDialog;
+    /**
+     * UI Hooks
+     * Links code to volatile UI elements
+     */
+    private EditText userEdit;
+    private EditText emailEdit;
+    private EditText curPassEdit;
+    private EditText newPassEdit;
+    private Spinner authLevelSpinner;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,29 +60,27 @@ public class EditProfile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
+                if (user != null) Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                else Log.d(TAG, "onAuthStateChanged:signed_out");
             }
         };
 
-        mUserEdit = (EditText) findViewById(R.id.edit_user);
-        mEmailEdit = (EditText) findViewById(R.id.edit_email);
-        mCurrentPassEdit = (EditText) findViewById(R.id.edit_current_password);
-        mNewPassEdit = (EditText) findViewById(R.id.edit_password);
-        mAuthLevelSpinner = (Spinner) findViewById(R.id.spinner_auth_level);
+        userEdit = (EditText) findViewById(R.id.user_edit);
+        emailEdit = (EditText) findViewById(R.id.email_edit);
+        curPassEdit = (EditText) findViewById(R.id.cur_pass_edit);
+        newPassEdit = (EditText) findViewById(R.id.pass_edit);
+        authLevelSpinner = (Spinner) findViewById(R.id.auth_level_spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mAuthLevelSpinner.setAdapter(adapter);
+        authLevelSpinner.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,15 +94,15 @@ public class EditProfile extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-        String uid = mAuth.getCurrentUser().getUid();
+        auth.addAuthStateListener(authListener);
+        String uid = auth.getCurrentUser().getUid();
         DatabaseReference mRef = database.getReference("users").child(uid);
         //TODO make this shit happen only once, probably...
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String data = dataSnapshot.getValue(String.class);
-                mUserEdit.setText(data);
+                userEdit.setText(data);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -105,7 +113,7 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String data = dataSnapshot.getValue(String.class);
-                mEmailEdit.setText(data);
+                emailEdit.setText(data);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -116,7 +124,7 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String data = dataSnapshot.getValue(String.class);
-                mAuthLevelSpinner.setSelection(AuthLevel.valueOf(data).ordinal());
+                authLevelSpinner.setSelection(AuthLevel.valueOf(data).ordinal());
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -132,86 +140,82 @@ public class EditProfile extends AppCompatActivity {
 
     private void saveChanges() {
         if (!validateForm()) return;
-        String uid = mAuth.getCurrentUser().getUid();
+        String uid = auth.getCurrentUser().getUid();
         final DatabaseReference mRef = database.getReference("users").child(uid);
-        mRef.child("name").setValue(mUserEdit.getText().toString());
-        mRef.child("authLevel").setValue(mAuthLevelSpinner.getSelectedItem());
+        mRef.child("name").setValue(userEdit.getText().toString());
+        mRef.child("authLevel").setValue(authLevelSpinner.getSelectedItem());
 
-        final String email = mEmailEdit.getText().toString();
-        final String password = mNewPassEdit.getText().toString();
-        if (password == null || password.length() == 0) {
-            //TODO switch to activity?
-            startActivity(new Intent(EditProfile.this, Profile.class));
+        final String email = emailEdit.getText().toString();
+        final String password = newPassEdit.getText().toString();
+        if (TextUtils.isEmpty(password)) {
             //TODO check what finish does and add it to necessary activities if it does what I think it does
             finish();
+        } else {
+            showProgressDialog();
+            final FirebaseUser user = auth.getCurrentUser();
+            Log.d(TAG, email + " " + password);
+            user.reauthenticate(EmailAuthProvider.getCredential(email, password))
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            user.updateEmail(email);
+                            user.updatePassword(password);
+                            mRef.child("email").setValue(email);
+                            mRef.child("password").setValue(password);
+                            hideProgressDialog();
+                            //TODO check what finish does and add it to necessary activities if it does what I think it does
+                            finish();
+                        }
+                    });
         }
-        showProgressDialog();
-        final FirebaseUser user = mAuth.getCurrentUser();
-        Log.d(TAG, email + " " + password);
-        user.reauthenticate(EmailAuthProvider.getCredential(email, password))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                user.updateEmail(email);
-                user.updatePassword(password);
-                mRef.child("email").setValue(email);
-                mRef.child("password").setValue(password);
-                hideProgressDialog();
-
-                //TODO switch to activity?
-                startActivity(new Intent(EditProfile.this, Profile.class));
-                //TODO check what finish does and add it to necessary activities if it does what I think it does
-                finish();
-            }
-        });
     }
 
     private boolean validateForm() {
         //TODO ensure correct validation criteria
         boolean valid = true;
 
-        String name = mUserEdit.getText().toString();
-        String email = mEmailEdit.getText().toString();
-        String curpass = mCurrentPassEdit.getText().toString();
-        String newpass = mNewPassEdit.getText().toString();
+        String name = userEdit.getText().toString();
+        String email = emailEdit.getText().toString();
+        String curpass = curPassEdit.getText().toString();
+        String newpass = newPassEdit.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
-            mUserEdit.setError(getString(R.string.error_field_required));
+            userEdit.setError(getString(R.string.error_field_required));
             valid = false;
         } else {
-            mUserEdit.setError(null);
+            userEdit.setError(null);
         }
 
         if (TextUtils.isEmpty(email)) {
-            mEmailEdit.setError(getString(R.string.error_field_required));
+            emailEdit.setError(getString(R.string.error_field_required));
             valid = false;
         } else {
-            mEmailEdit.setError(null);
+            emailEdit.setError(null);
         }
 
         if (TextUtils.isEmpty(curpass) && !TextUtils.isEmpty(newpass)) {
-            mCurrentPassEdit.setError(getString(R.string.error_field_required));
+            curPassEdit.setError(getString(R.string.error_field_required));
             valid = false;
         } else {
-            mCurrentPassEdit.setError(null);
+            curPassEdit.setError(null);
         }
 
         return valid;
     }
 
     public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setIndeterminate(true);
         }
 
-        mProgressDialog.show();
+        progressDialog.show();
     }
 
     public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
         }
     }
 }
