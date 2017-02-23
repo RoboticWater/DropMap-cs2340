@@ -1,23 +1,43 @@
 <resources>
     <!--General-->
     <string name="app_name">DropMap</string>
+
+    <!--Prompts-->
+    <string name="prompt_user">Username</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_current_password">Current Password</string>
+
+    <!--Progress-->
     <string name="loading">Loading</string>
+    <string name="saving">Saving</string>
+    <string name="registering">Registering</string>
+
+    <!--Actions-->
+    <string name="action_save">Save</string>
+    <string name="action_discard">Discard</string>
+
     <!--Main-->
+    <string name="title_activity_main">Main</string>
     <string name="button_log_out">Log Out</string>
     <string name="button_profile">Profile</string>
+
+    <!--Profile-->
+    <string name="title_activity_profile">Profile</string>
+
+    <!--Edit Profile-->
+    <string name="title_activity_edit_profile">Edit Profile</string>
+
     <!--Registration-->
     <string name="button_register">Register</string>
     <string name="button_cancel">Cancel</string>
-    <string name="prompt_user">Username</string>
     <string name="text_auth_level">Authorization Level</string>
     <string name="text_user">Enter Username</string>
     <string name="text_email">Enter Email</string>
     <string name="text_pass">Enter Password</string>
+
     <!--Log in-->
     <string name="button_sign_in">Sign In</string>
-    <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <!--Profile-->
     <string name="title_user">Username</string>
     <string name="title_email">Email</string>
     <string name="title_auth_level">Authorization Level</string>
@@ -28,13 +48,5 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-
-    <string name="title_activity_profile">Profile</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_edit_profile">EditProfile</string>
-    <string name="action_save">Save</string>
-    <string name="action_edit">Edit</string>
-    <string name="action_discard">Discard</string>
-    <string name="saving">Saving</string>
+    <string name="prompt_new_password">New Password</string>
 </resources>

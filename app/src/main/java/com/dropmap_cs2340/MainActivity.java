@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "Firebase";
+    private static final String TAG = "Main";
 
     /**
      * Firebase Hooks
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        auth = FirebaseAuth.getInstance();
+        auth     = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 else Log.d(TAG, "onAuthStateChanged:signed_out");
             }
         };
+
+        welcomeText = (TextView) findViewById(R.id.text_welcome);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
-        welcomeText = (TextView) findViewById(R.id.text_welcome);
 
         String uid = auth.getCurrentUser().getUid();
         DatabaseReference mRef = database.getReference("users").child(uid);
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
+        if (authListener != null) auth.removeAuthStateListener(authListener);
     }
 
     /**

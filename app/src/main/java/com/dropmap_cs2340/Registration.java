@@ -26,18 +26,22 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Registration extends AppCompatActivity {
 
-    private static final String TAG = "Firebase";
+    private static final String TAG = "Registration";
 
-    //Firebase bits
+    /**
+     * Firebase Hooks
+     */
     private FirebaseAuth mAuth;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FirebaseDatabase database;
 
-    //Android interface references
-    private EditText mUserView;
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private Spinner mAuthLevelSpinner;
-    private ProgressDialog mProgressDialog;
+    /**
+     * UI Hooks
+     */
+    private EditText userEdit;
+    private EditText emailEdit;
+    private EditText passEdit;
+    private Spinner  authSpinner;
+    private ProgressDialog progressDialog;
 
     private User user;
 
@@ -46,49 +50,46 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        mAuth    = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
-
-        mUserView = (EditText) findViewById(R.id.input_user);
-        mEmailView = (EditText) findViewById(R.id.input_email);
-        mPasswordView = (EditText) findViewById(R.id.input_password);
-        mAuthLevelSpinner = (Spinner) findViewById(R.id.auth_level_spinner);
+        userEdit    = (EditText) findViewById(R.id.user_edit);
+        emailEdit   = (EditText) findViewById(R.id.input_email);
+        passEdit    = (EditText) findViewById(R.id.input_password);
+        authSpinner = (Spinner)  findViewById(R.id.auth_spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mAuthLevelSpinner.setAdapter(adapter);
+        authSpinner.setAdapter(adapter);
 
-        mAuth = FirebaseAuth.getInstance();
 
         Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Registration.this, Login.class));
+                finish();
             }
         });
-    }
-
-    public void onStop() {
-        super.onStop();
     }
 
     /**
      * Creates User object with data from the input fields
      */
-    protected void setUpUser() {
+    private void setUpUser() {
         user = new User();
-        user.setName(mUserView.getText().toString());
-        user.setEmail(mEmailView.getText().toString());
-        user.setAuthLevel((String) mAuthLevelSpinner.getSelectedItem());
-        user.setPassword(mPasswordView.getText().toString());
+        user.setName(userEdit.getText().toString());
+        user.setEmail(emailEdit.getText().toString());
+        user.setPassword(passEdit.getText().toString());
+        user.setAuthLevel((String) authSpinner.getSelectedItem());
     }
 
     /**
      * Creates a new account when "sign up" is pressed
-     * @param view
+     * @param view current view
      */
     public void onSignUpClicked(View view) {
-        createNewAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        createNewAccount(emailEdit.getText().toString(), passEdit.getText().toString());
         showProgressDialog();
     }
 
@@ -124,32 +125,25 @@ public class Registration extends AppCompatActivity {
      * @param mUser The user that was just created
      */
     private void onAuthenticationSuccess(FirebaseUser mUser) {
-        saveNewUser(mUser.getUid(), user.getName(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) mAuthLevelSpinner.getSelectedItem()));
+        saveNewUser(mUser.getUid(), user.getName(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) authSpinner.getSelectedItem()));
         signOut();
-        //TODO make sure this works
         showProgressDialog();
         mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        hideProgressDialog();
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail", task.getException());
                             Toast.makeText(Registration.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            String uid = mAuth.getCurrentUser().getUid();
-                            intent.putExtra("user_id", uid);
-                            startActivity(intent);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }
-
-                        hideProgressDialog();
                     }
                 });
-        startActivity(new Intent(Registration.this, MainActivity.class));
-        finish();
     }
 
     /**
@@ -176,44 +170,44 @@ public class Registration extends AppCompatActivity {
     private boolean validateForm() {
         boolean valid = true;
 
-        String userEmail = mEmailView.getText().toString();
+        String userEmail = emailEdit.getText().toString();
         if (TextUtils.isEmpty(userEmail)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            emailEdit.setError(getString(R.string.error_field_required));
             valid = false;
         } else {
-            mEmailView.setError(null);
+            emailEdit.setError(null);
         }
 
-        String userPassword = mPasswordView.getText().toString();
+        String userPassword = passEdit.getText().toString();
         if (TextUtils.isEmpty(userPassword)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
+            passEdit.setError(getString(R.string.error_field_required));
             valid = false;
         } else {
-            mPasswordView.setError(null);
+            passEdit.setError(null);
         }
 
         return valid;
     }
 
     /**
-     * Shows saving popup
+     * Shows registering popup
      */
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.registering));
+            progressDialog.setIndeterminate(true);
         }
 
-        mProgressDialog.show();
+        progressDialog.show();
     }
 
     /**
-     * Hides saving popup
+     * Hides registering popup
      */
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+    private void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
         }
     }
 }

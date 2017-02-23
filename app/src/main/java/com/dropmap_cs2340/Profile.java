@@ -2,13 +2,10 @@ package com.dropmap_cs2340;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,15 +18,18 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Profile extends AppCompatActivity {
 
-    //UI hooks
-    private TextView mUserText;
-    private TextView mEmailText;
-    private TextView mAuthText;
+    /**
+     * Firebase Hooks
+     */
+    private FirebaseAuth     auth;
+    private FirebaseDatabase database;
 
-    //Firebase stuff
-    private FirebaseAuth mAuth;
-
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    /**
+     * UI Hooks
+     */
+    private TextView userText;
+    private TextView emailText;
+    private TextView authText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +38,55 @@ public class Profile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mAuth = FirebaseAuth.getInstance();
+        auth     = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
-        mUserText = (TextView) findViewById(R.id.text_username);
-        mEmailText = (TextView) findViewById(R.id.text_email);
-        mAuthText = (TextView) findViewById(R.id.text_auth_level);
+        userText  = (TextView) findViewById(R.id.user_text);
+        emailText = (TextView) findViewById(R.id.email_text);
+        authText  = (TextView) findViewById(R.id.auth_level_text);
+    }
+
+    /**
+     * Retrieves relevant data from Firebase and sets relevant views
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String uid = auth.getCurrentUser().getUid();
+        DatabaseReference mRef = database.getReference("users").child(uid);
+        mRef.child("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String data = dataSnapshot.getValue(String.class);
+                userText.setText(data);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        mRef.child("email").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String data = dataSnapshot.getValue(String.class);
+                emailText.setText(data);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        mRef.child("authLevel").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String data = dataSnapshot.getValue(String.class);
+                authText.setText(data);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -65,53 +109,5 @@ public class Profile extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * Retrieves relevant data from Firebase and sets relevant views
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        String uid = mAuth.getCurrentUser().getUid();
-        DatabaseReference mRef = database.getReference("users").child(uid);
-        mRef.child("name").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                mUserText.setText(data);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-        mRef.child("email").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                mEmailText.setText(data);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-        mRef.child("authLevel").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                mAuthText.setText(data);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 }

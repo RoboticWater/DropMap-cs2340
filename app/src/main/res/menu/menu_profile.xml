@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.dropmap_cs2340.Profile">
     <item
+        android:title="@string/title_activity_profile"
         android:id="@+id/action_edit"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"

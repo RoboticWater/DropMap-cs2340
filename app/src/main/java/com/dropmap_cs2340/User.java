@@ -19,18 +19,18 @@ class User implements Parcelable {
 
     }
     User(String _id, String _email, String _name, String _password, AuthLevel _authLevel) {
-        id = _id;
-        email = _email;
-        name = _name;
-        password = _password;
+        id        = _id;
+        email     = _email;
+        name      = _name;
+        password  = _password;
         authLevel = _authLevel;
     }
 
     private User(Parcel in) {
-        id = in.readString();
-        email = in.readString();
-        name = in.readString();
-        password = in.readString();
+        id        = in.readString();
+        email     = in.readString();
+        name      = in.readString();
+        password  = in.readString();
         authLevel = (AuthLevel) in.readSerializable();
     }
 

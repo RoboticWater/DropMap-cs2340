@@ -26,7 +26,8 @@
         android:orientation="vertical"
         android:id="@+id/email_registration_form"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
 
         <TextView
             android:text="@string/text_user"
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/input_user"
+            android:id="@+id/user_edit"
             android:hint="@string/prompt_user" />
 
         <TextView
@@ -79,7 +80,7 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/auth_level_spinner" />
+            android:id="@+id/auth_spinner" />
 
         <Button
             android:text="@string/button_register"

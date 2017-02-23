@@ -35,7 +35,7 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/user_edit"
-                android:hint="Username" />
+                android:hint="@string/prompt_user" />
 
         </LinearLayout>
         <LinearLayout
@@ -56,7 +56,7 @@
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/email_edit"
-                android:hint="Email" />
+                android:hint="@string/prompt_email" />
 
         </LinearLayout>
         <LinearLayout
@@ -74,7 +74,7 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/auth_level_spinner" />
+                android:id="@+id/auth_spinner" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -94,10 +94,10 @@
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/cur_pass_edit"
-                android:hint="Current Password" />
+                android:hint="@string/prompt_current_password" />
 
             <TextView
-                android:text="New Password"
+                android:text="@string/prompt_new_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/title_password" />
@@ -108,7 +108,7 @@
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/pass_edit"
-                android:hint="New Password" />
+                android:hint="@string/prompt_new_password" />
 
         </LinearLayout>
 

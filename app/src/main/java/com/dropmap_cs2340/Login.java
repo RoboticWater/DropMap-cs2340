@@ -1,7 +1,6 @@
 package com.dropmap_cs2340;
 
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
@@ -11,8 +10,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,70 +26,50 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class Login extends AppCompatActivity {
 
-    private static final String TAG = "Firebase";
+    private static final String TAG = "Login";
 
-    private  User user;
+    /**
+     * Firebase Hooks
+     */
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authListener;
 
-    //Firebase bits
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-    // UI references.
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private ProgressDialog mProgressDialog;
-
-    //Storage
-    SharedPreferences settings;
+    /**
+     * UI Hooks
+     */
+    private EditText emailEdit;
+    private EditText passEdit;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
 
-        mAuth = FirebaseAuth.getInstance();
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        auth = FirebaseAuth.getInstance();
+        authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
+                if (user != null) Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                else Log.d(TAG, "onAuthStateChanged:signed_out");
             }
         };
 
-        Button registerButton = (Button) findViewById(R.id.button_register_login);
-        registerButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Login.this, Registration.class);
-//                String uid = mAuth.getCurrentUser().getUid();
-//                intent.putExtra("user_id", uid);
-                startActivity(intent);
-            }
-        });
+        emailEdit = (EditText) findViewById(R.id.email_edit);
+        passEdit  = (EditText) findViewById(R.id.pass_edit);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mEmailView = (EditText) findViewById(R.id.input_email_login);
-        mPasswordView = (EditText) findViewById(R.id.input_password_login);
-        mAuth.addAuthStateListener(mAuthListener);
+        auth.addAuthStateListener(authListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+        if (authListener != null) auth.removeAuthStateListener(authListener);
     }
 
     /**
@@ -100,40 +77,41 @@ public class Login extends AppCompatActivity {
      * @param view current view
      */
     public void onLoginClicked(View view) {
-        signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        signIn(emailEdit.getText().toString(), passEdit.getText().toString());
+    }
+
+    /**
+     * Switches to registration screen
+     * @param view current view
+     */
+    public void onRegisterClicked(View view) {
+        startActivity(new Intent(Login.this, Registration.class));
+        finish();
     }
 
     /**
      * If the input is valid, sign the user in with Firebase and send them to the main screen
-     * @param email
-     * @param password
+     * @param email     user's email
+     * @param password  user's password
      */
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
-        if (!validateForm()) {
-            return;
-        }
-
+        if (!validateForm()) return;
         showProgressDialog();
-
-        mAuth.signInWithEmailAndPassword(email, password)
+        auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        hideProgressDialog();
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail", task.getException());
                             Toast.makeText(Login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            String uid = mAuth.getCurrentUser().getUid();
-                            intent.putExtra("user_id", uid);
-                            startActivity(intent);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }
-
-                        hideProgressDialog();
                     }
                 });
     }
@@ -142,23 +120,24 @@ public class Login extends AppCompatActivity {
      * Ensures the input data is valid
      * @return whether all the input data is valid
      */
+    //TODO add all validation criteria
     private boolean validateForm() {
         boolean valid = true;
 
-        String userEmail = mEmailView.getText().toString();
+        String userEmail = emailEdit.getText().toString();
         if (TextUtils.isEmpty(userEmail)) {
-            mEmailView.setError("Required.");
+            emailEdit.setError(getString(R.string.error_field_required));
             valid = false;
         } else {
-            mEmailView.setError(null);
+            emailEdit.setError(null);
         }
 
-        String userPassword = mPasswordView.getText().toString();
+        String userPassword = passEdit.getText().toString();
         if (TextUtils.isEmpty(userPassword)) {
-            mPasswordView.setError("Required.");
+            passEdit.setError(getString(R.string.error_field_required));
             valid = false;
         } else {
-            mPasswordView.setError(null);
+            passEdit.setError(null);
         }
 
         return valid;
@@ -167,22 +146,22 @@ public class Login extends AppCompatActivity {
     /**
      * Shows loading popup
      */
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setIndeterminate(true);
         }
 
-        mProgressDialog.show();
+        progressDialog.show();
     }
 
     /**
      * hides loading popup
      */
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+    private void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
         }
     }
 }

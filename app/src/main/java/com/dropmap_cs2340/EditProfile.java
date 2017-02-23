@@ -3,22 +3,17 @@ package com.dropmap_cs2340;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +29,7 @@ public class EditProfile extends AppCompatActivity {
     /**
      * Tag for Firebase logging
      */
-    private static final String TAG = "Firebase";
+    private static final String TAG = "EditProfile";
 
     /**
      * Firebase Hooks
@@ -52,7 +47,7 @@ public class EditProfile extends AppCompatActivity {
     private EditText emailEdit;
     private EditText curPassEdit;
     private EditText newPassEdit;
-    private Spinner authLevelSpinner;
+    private Spinner  authLevelSpinner;
     private ProgressDialog progressDialog;
 
     @Override
@@ -62,7 +57,7 @@ public class EditProfile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        auth = FirebaseAuth.getInstance();
+        auth     = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -73,11 +68,11 @@ public class EditProfile extends AppCompatActivity {
             }
         };
 
-        userEdit = (EditText) findViewById(R.id.user_edit);
-        emailEdit = (EditText) findViewById(R.id.email_edit);
+        userEdit    = (EditText) findViewById(R.id.user_edit);
+        emailEdit   = (EditText) findViewById(R.id.email_edit);
         curPassEdit = (EditText) findViewById(R.id.cur_pass_edit);
         newPassEdit = (EditText) findViewById(R.id.pass_edit);
-        authLevelSpinner = (Spinner) findViewById(R.id.auth_level_spinner);
+        authLevelSpinner = (Spinner) findViewById(R.id.auth_spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -157,6 +152,7 @@ public class EditProfile extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
+        if (authListener != null) auth.removeAuthStateListener(authListener);
     }
 
     /**
@@ -241,7 +237,7 @@ public class EditProfile extends AppCompatActivity {
     /**
      * Shows saving popup
      */
-    public void showProgressDialog() {
+    private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage(getString(R.string.saving));
@@ -254,7 +250,7 @@ public class EditProfile extends AppCompatActivity {
     /**
      * Hides saving popup
      */
-    public void hideProgressDialog() {
+    private void hideProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
