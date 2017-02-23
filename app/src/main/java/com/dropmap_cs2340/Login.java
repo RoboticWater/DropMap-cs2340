@@ -72,8 +72,8 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, Registration.class);
-                String uid = mAuth.getCurrentUser().getUid();
-                intent.putExtra("user_id", uid);
+//                String uid = mAuth.getCurrentUser().getUid();
+//                intent.putExtra("user_id", uid);
                 startActivity(intent);
             }
         });
