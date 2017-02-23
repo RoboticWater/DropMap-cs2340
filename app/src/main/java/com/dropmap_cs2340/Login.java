@@ -95,17 +95,19 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    protected void setUpUser() {
-        user = new User();
-        user.setEmail(mEmailView.getText().toString());
-        user.setPassword(mPasswordView.getText().toString());
-    }
-
+    /**
+     * Logs user in with input data
+     * @param view current view
+     */
     public void onLoginClicked(View view) {
-        setUpUser();
         signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
     }
 
+    /**
+     * If the input is valid, sign the user in with Firebase and send them to the main screen
+     * @param email
+     * @param password
+     */
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
@@ -136,6 +138,10 @@ public class Login extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Ensures the input data is valid
+     * @return whether all the input data is valid
+     */
     private boolean validateForm() {
         boolean valid = true;
 
@@ -158,6 +164,9 @@ public class Login extends AppCompatActivity {
         return valid;
     }
 
+    /**
+     * Shows loading popup
+     */
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -168,6 +177,9 @@ public class Login extends AppCompatActivity {
         mProgressDialog.show();
     }
 
+    /**
+     * hides loading popup
+     */
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();

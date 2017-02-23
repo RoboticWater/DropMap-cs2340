@@ -51,6 +51,11 @@ public class Profile extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Set up toolbar menu
+     * @param item the MenuItem
+     * @return No idea
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -62,6 +67,9 @@ public class Profile extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retrieves relevant data from Firebase and sets relevant views
+     */
     @Override
     protected void onStart() {
         super.onStart();

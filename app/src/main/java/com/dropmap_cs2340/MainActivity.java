@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseDatabase database;
 
-    //UI hooks
+    /**
+     * UI Hooks
+     * Connects to layout items
+     */
     private TextView welcomeText;
 
     @Override
@@ -90,14 +93,21 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    /**
+     * Switches to Profile page on press
+     * @param view the current view
+     */
     public void onProfileClicked(View view) {
-        Log.d(TAG, "1");
         Intent intent = new Intent(MainActivity.this, Profile.class);
         String uid = auth.getCurrentUser().getUid();
         intent.putExtra("user_id", uid);
         startActivity(intent);
     }
 
+    /**
+     * Logs out on press
+     * @param view the current view
+     */
     public void onLogOutClicked(View view) {
         auth.signOut();
         startActivity(new Intent(MainActivity.this, Login.class));

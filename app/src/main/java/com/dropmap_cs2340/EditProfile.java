@@ -90,6 +90,11 @@ public class EditProfile extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Set up toolbar menu
+     * @param item the MenuItem
+     * @return No idea
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -104,6 +109,9 @@ public class EditProfile extends AppCompatActivity {
         }
     }
 
+    /**
+     * Retrieves relevant data from Firebase and sets relevant views
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -151,6 +159,9 @@ public class EditProfile extends AppCompatActivity {
         super.onStop();
     }
 
+    /**
+     * If the input data is valid, updates Firebase data and Auth data (email/password)
+     */
     private void saveChanges() {
         if (!validateForm()) return;
         String uid = auth.getCurrentUser().getUid();
@@ -190,6 +201,10 @@ public class EditProfile extends AppCompatActivity {
         }
     }
 
+    /**
+     * Ensures all input data is valid otherwise flashes an error and stops update
+     * @return whether or not any input is invalid
+     */
     private boolean validateForm() {
         //TODO ensure correct validation criteria
         boolean valid = true;
@@ -223,16 +238,22 @@ public class EditProfile extends AppCompatActivity {
         return valid;
     }
 
+    /**
+     * Shows saving popup
+     */
     public void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setMessage(getString(R.string.saving));
             progressDialog.setIndeterminate(true);
         }
 
         progressDialog.show();
     }
 
+    /**
+     * Hides saving popup
+     */
     public void hideProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();

@@ -72,6 +72,9 @@ public class Registration extends AppCompatActivity {
         super.onStop();
     }
 
+    /**
+     * Creates User object with data from the input fields
+     */
     protected void setUpUser() {
         user = new User();
         user.setName(mUserView.getText().toString());
@@ -80,11 +83,20 @@ public class Registration extends AppCompatActivity {
         user.setPassword(mPasswordView.getText().toString());
     }
 
+    /**
+     * Creates a new account when "sign up" is pressed
+     * @param view
+     */
     public void onSignUpClicked(View view) {
         createNewAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
         showProgressDialog();
     }
 
+    /**
+     * Creates a new account with Firebase
+     * @param email     user's email
+     * @param password  user's password
+     */
     private void createNewAccount(String email, String password) {
         if (!validateForm()) return;
         setUpUser();
@@ -106,6 +118,11 @@ public class Registration extends AppCompatActivity {
 
     }
 
+    /**
+     * Signs out any signed in user and signs in user in once
+     * they've been created, then plops them onto the main screen
+     * @param mUser The user that was just created
+     */
     private void onAuthenticationSuccess(FirebaseUser mUser) {
         saveNewUser(mUser.getUid(), user.getName(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) mAuthLevelSpinner.getSelectedItem()));
         signOut();
@@ -135,12 +152,23 @@ public class Registration extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Creates new User object and passes it to Firebase's database
+     * @param userId    user's id
+     * @param name      user's username
+     * @param email     user's email
+     * @param password  user's password
+     * @param authLevel user's authentication level
+     */
     private void saveNewUser(String userId, String name, String email, String password, AuthLevel authLevel) {
         User user = new User(userId, email, name, password, authLevel);
         DatabaseReference mRef = database.getReference("users");
         mRef.child(userId).setValue(user);
     }
 
+    /**
+     * Signs out with Firebase
+     */
     private void signOut() {
         mAuth.signOut();
     }
@@ -167,6 +195,9 @@ public class Registration extends AppCompatActivity {
         return valid;
     }
 
+    /**
+     * Shows saving popup
+     */
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -177,6 +208,9 @@ public class Registration extends AppCompatActivity {
         mProgressDialog.show();
     }
 
+    /**
+     * Hides saving popup
+     */
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
