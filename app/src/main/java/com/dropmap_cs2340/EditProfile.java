@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -111,9 +114,8 @@ public class EditProfile extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
-        String uid = auth.getCurrentUser().getUid();
+        String uid = getIntent().getExtras().getString("uid");
         DatabaseReference mRef = database.getReference("users").child(uid);
-        //TODO make this shit happen only once, probably...
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -168,32 +170,33 @@ public class EditProfile extends AppCompatActivity {
         final String email = emailEdit.getText().toString();
         final String password = newPassEdit.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            //TODO check what finish does and add it to necessary activities if it does what I think it does
             finish();
         } else {
             showProgressDialog();
-            final FirebaseUser user = auth.getCurrentUser();
-            Log.d(TAG, email + " " + password);
-            user.updateEmail(email);
-            user.updatePassword(password);
-            mRef.child("email").setValue(email);
-            mRef.child("password").setValue(password);
-            hideProgressDialog();
-            //TODO check what finish does and add it to necessary activities if it does what I think it does
-            finish();
-//            user.reauthenticate(EmailAuthProvider.getCredential(email, password))
-//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            user.updateEmail(email);
-//                            user.updatePassword(password);
-//                            mRef.child("email").setValue(email);
-//                            mRef.child("password").setValue(password);
-//                            hideProgressDialog();
-//                            //TODO check what finish does and add it to necessary activities if it does what I think it does
-//                            finish();
-//                        }
-//                    });
+            FirebaseUser user = auth.getCurrentUser();
+            if (user != null) {
+                Log.d(TAG, email + " " + password);
+                user.updateEmail(email);
+                user.updatePassword(password);
+                mRef.child("email").setValue(email);
+                mRef.child("password").setValue(password);
+                hideProgressDialog();
+                finish();
+            } else {
+            user.reauthenticate(EmailAuthProvider.getCredential(email, password))
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            user.updateEmail(email);
+                            user.updatePassword(password);
+                            mRef.child("email").setValue(email);
+                            mRef.child("password").setValue(password);
+                            hideProgressDialog();
+                            finish();
+                        }
+                    });
+            }
         }
     }
 

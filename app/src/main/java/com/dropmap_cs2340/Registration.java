@@ -31,7 +31,7 @@ public class Registration extends AppCompatActivity {
     /**
      * Firebase Hooks
      */
-    private FirebaseAuth mAuth;
+    private FirebaseAuth auth;
     private FirebaseDatabase database;
 
     /**
@@ -50,7 +50,7 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        mAuth    = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
         userEdit    = (EditText) findViewById(R.id.user_edit);
@@ -102,7 +102,7 @@ public class Registration extends AppCompatActivity {
         if (!validateForm()) return;
         setUpUser();
         Log.d(TAG, "createNewAccount:" + email);
-        mAuth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -128,7 +128,7 @@ public class Registration extends AppCompatActivity {
         saveNewUser(mUser.getUid(), user.getName(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) authSpinner.getSelectedItem()));
         signOut();
         showProgressDialog();
-        mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
+        auth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -139,7 +139,9 @@ public class Registration extends AppCompatActivity {
                             Toast.makeText(Registration.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            i.putExtra("uid", auth.getCurrentUser().getUid());
+                            startActivity(i);
                             finish();
                         }
                     }
@@ -164,7 +166,7 @@ public class Registration extends AppCompatActivity {
      * Signs out with Firebase
      */
     private void signOut() {
-        mAuth.signOut();
+        auth.signOut();
     }
 
     private boolean validateForm() {

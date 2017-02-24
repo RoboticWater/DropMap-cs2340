@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseDatabase database;
+    private FirebaseUser user;
 
     /**
      * UI Hooks
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         auth     = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        user     = auth.getCurrentUser();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -74,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         auth.addAuthStateListener(authListener);
 
-        String uid = auth.getCurrentUser().getUid();
+        String uid = user.getUid();
+//        getIntent().getExtras().getString("uid");
         DatabaseReference mRef = database.getReference("users").child(uid);
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
@@ -100,10 +103,9 @@ public class MainActivity extends AppCompatActivity {
      * @param view the current view
      */
     public void onProfileClicked(View view) {
-        Intent intent = new Intent(MainActivity.this, Profile.class);
-        String uid = auth.getCurrentUser().getUid();
-        intent.putExtra("user_id", uid);
-        startActivity(intent);
+        Intent i = new Intent(getApplicationContext(), Profile.class);
+        i.putExtra("uid", user.getUid());
+        startActivity(i);
     }
 
     /**
@@ -113,5 +115,16 @@ public class MainActivity extends AppCompatActivity {
     public void onLogOutClicked(View view) {
         auth.signOut();
         startActivity(new Intent(MainActivity.this, Login.class));
+    }
+
+    /**
+     * Logs out on press
+     * @param view the current view
+     */
+    public void onMapClicked(View view) {
+        auth.signOut();
+        Intent i = new Intent(getApplicationContext(), Map.class);
+        i.putExtra("uid", user.getUid());
+        startActivity(i);
     }
 }

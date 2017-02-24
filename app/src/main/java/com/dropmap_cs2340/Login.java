@@ -51,7 +51,13 @@ public class Login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.putExtra("uid", auth.getCurrentUser().getUid());
+                    startActivity(i);
+                    finish();
+                }
                 else Log.d(TAG, "onAuthStateChanged:signed_out");
             }
         };
@@ -109,7 +115,9 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(Login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            i.putExtra("uid", auth.getCurrentUser().getUid());
+                            startActivity(i);
                             finish();
                         }
                     }

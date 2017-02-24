@@ -52,7 +52,7 @@ public class Profile extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String uid = auth.getCurrentUser().getUid();
+        String uid = getIntent().getExtras().getString("uid");
         DatabaseReference mRef = database.getReference("users").child(uid);
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
@@ -104,7 +104,9 @@ public class Profile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
-                startActivity(new Intent(Profile.this, EditProfile.class));
+                Intent i = new Intent(getApplicationContext(), EditProfile.class);
+                i.putExtra("uid", auth.getCurrentUser().getUid());
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
