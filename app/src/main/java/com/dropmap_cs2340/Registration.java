@@ -139,9 +139,7 @@ public class Registration extends AppCompatActivity {
                             Toast.makeText(Registration.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            i.putExtra("uid", auth.getCurrentUser().getUid());
-                            startActivity(i);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }
                     }

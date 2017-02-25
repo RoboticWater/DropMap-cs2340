@@ -1,6 +1,7 @@
 package com.dropmap_cs2340;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -38,9 +39,10 @@ public class EditProfile extends AppCompatActivity {
      * Firebase Hooks
      * Communicates with Firebase authentication and database services
      */
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseAuth     auth;
     private FirebaseDatabase database;
+    private FirebaseUser     user;
+    private FirebaseAuth.AuthStateListener authListener;
 
     /**
      * UI Hooks
@@ -52,6 +54,7 @@ public class EditProfile extends AppCompatActivity {
     private EditText newPassEdit;
     private Spinner  authLevelSpinner;
     private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +68,14 @@ public class EditProfile extends AppCompatActivity {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                else Log.d(TAG, "onAuthStateChanged:signed_out");
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    startActivity(new Intent(getApplicationContext(), Login.class));
+                    finish();
+                }
             }
         };
 
@@ -82,31 +90,6 @@ public class EditProfile extends AppCompatActivity {
         authLevelSpinner.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    /**
-     * Set up toolbar menu
-     * @param item the MenuItem
-     * @return No idea
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                saveChanges();
-                return true;
-            case R.id.action_discard:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     /**
      * Retrieves relevant data from Firebase and sets relevant views
      */
@@ -114,8 +97,8 @@ public class EditProfile extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
-        String uid = getIntent().getExtras().getString("uid");
-        DatabaseReference mRef = database.getReference("users").child(uid);
+        user = auth.getCurrentUser();
+        DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -154,7 +137,32 @@ public class EditProfile extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (authListener != null) auth.removeAuthStateListener(authListener);
+        auth.removeAuthStateListener(authListener);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    /**
+     * Set up toolbar menu
+     * @param item the MenuItem
+     * @return No idea
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                saveChanges();
+                return true;
+            case R.id.action_discard:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -173,7 +181,6 @@ public class EditProfile extends AppCompatActivity {
             finish();
         } else {
             showProgressDialog();
-            FirebaseUser user = auth.getCurrentUser();
             if (user != null) {
                 Log.d(TAG, email + " " + password);
                 user.updateEmail(email);
@@ -187,7 +194,6 @@ public class EditProfile extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            FirebaseUser user = auth.getCurrentUser();
                             user.updateEmail(email);
                             user.updatePassword(password);
                             mRef.child("email").setValue(email);

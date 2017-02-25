@@ -1,7 +1,10 @@
 package com.dropmap_cs2340;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -9,9 +12,27 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Map extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "Map";
+
+    /**
+     * Firebase Hooks
+     * Communicates with Firebase authentication and database services
+     */
+    private FirebaseAuth auth;
+    private FirebaseDatabase database;
+    private FirebaseUser user;
+    private FirebaseAuth.AuthStateListener authListener;
+
+
+    /**
+     * UI Hooks
+     */
     private GoogleMap map;
 
     @Override
@@ -23,15 +44,34 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        auth     = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        authListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onMapClick(LatLng loc) {
-                map.addMarker(new MarkerOptions().position(loc).title("Oh shit boi whuddup"));
-                map.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    startActivity(new Intent(getApplicationContext(), Login.class));
+                    finish();
+                }
             }
-        });
+        };
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        auth.removeAuthStateListener(authListener);
+    }
 
     /**
      * Manipulates the map once available.
@@ -50,5 +90,13 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         LatLng sydney = new LatLng(-34, 151);
         map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng loc) {
+                map.addMarker(new MarkerOptions().position(loc).title("Oh shit boi whuddup"));
+                map.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            }
+        });
     }
 }

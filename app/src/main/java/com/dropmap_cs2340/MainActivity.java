@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
      * Firebase Hooks
      * Communicates with Firebase authentication and database services
      */
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseAuth     auth;
     private FirebaseDatabase database;
-    private FirebaseUser user;
+    private FirebaseUser     user;
+    private FirebaseAuth.AuthStateListener authListener;
 
     /**
      * UI Hooks
@@ -49,13 +49,17 @@ public class MainActivity extends AppCompatActivity {
 
         auth     = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        user     = auth.getCurrentUser();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                else Log.d(TAG, "onAuthStateChanged:signed_out");
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    startActivity(new Intent(getApplicationContext(), Login.class));
+                    finish();
+                }
             }
         };
 
@@ -75,10 +79,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
-
-        String uid = user.getUid();
-//        getIntent().getExtras().getString("uid");
-        DatabaseReference mRef = database.getReference("users").child(uid);
+        user = auth.getCurrentUser();
+        DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (authListener != null) auth.removeAuthStateListener(authListener);
+        auth.removeAuthStateListener(authListener);
     }
 
     /**
@@ -103,9 +105,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view the current view
      */
     public void onProfileClicked(View view) {
-        Intent i = new Intent(getApplicationContext(), Profile.class);
-        i.putExtra("uid", user.getUid());
-        startActivity(i);
+        startActivity(new Intent(getApplicationContext(), Profile.class));
     }
 
     /**
@@ -122,9 +122,6 @@ public class MainActivity extends AppCompatActivity {
      * @param view the current view
      */
     public void onMapClicked(View view) {
-        auth.signOut();
-        Intent i = new Intent(getApplicationContext(), Map.class);
-        i.putExtra("uid", user.getUid());
-        startActivity(i);
+        startActivity(new Intent(getApplicationContext(), Map.class));
     }
 }
