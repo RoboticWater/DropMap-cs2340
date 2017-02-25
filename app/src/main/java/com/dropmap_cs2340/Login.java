@@ -18,6 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
+import java.util.Random;
 
 //TODO add offline authentication
 
@@ -33,6 +38,8 @@ public class Login extends AppCompatActivity {
      */
     private FirebaseAuth auth;
     private FirebaseUser user;
+    //TODO shouldn't need database ref in final build
+    private FirebaseDatabase database;
     private FirebaseAuth.AuthStateListener authListener;
 
     /**
@@ -48,6 +55,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login_screen);
 
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {

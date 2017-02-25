@@ -14,7 +14,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Map extends FragmentActivity implements OnMapReadyCallback {
 
@@ -85,12 +88,6 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng loc) {
@@ -98,5 +95,20 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                 map.moveCamera(CameraUpdateFactory.newLatLng(loc));
             }
         });
+
+        database.getReference().child("waterReports")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            TempWaterReport wr = snapshot.getValue(TempWaterReport.class);
+                            map.addMarker(new MarkerOptions().position(wr.getLoc()).title("Oh shit boi whuddup"));
+                            map.moveCamera(CameraUpdateFactory.newLatLng(wr.getLoc()));
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 }

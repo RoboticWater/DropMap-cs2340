@@ -20,6 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Random;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,6 +76,20 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        //TODO get rid of this
+//        DatabaseReference mRef2 = database.getReference("waterReports");
+//        mRef2.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                TempWaterReport.MARKER_ID = (int)dataSnapshot.getChildrenCount();
+//                Log.d(TAG, "Marker ID: " + TempWaterReport.MARKER_ID);
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
 
     @Override
@@ -80,6 +97,14 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         auth.addAuthStateListener(authListener);
         user = auth.getCurrentUser();
+
+        //TODO get rid of this
+//        Calendar c = Calendar.getInstance();
+//        Random rand = new Random();
+//        DatabaseReference mRef2 = database.getReference("waterReports");
+//        TempWaterReport wr = new TempWaterReport(c.getTime(), user.getDisplayName(), user.getUid(), (double)rand.nextInt(10) + 10, (double)rand.nextInt(10) + 10, "Water", "Water");
+//        mRef2.child(Integer.toString(wr.getId())).setValue(wr);
+
         DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override

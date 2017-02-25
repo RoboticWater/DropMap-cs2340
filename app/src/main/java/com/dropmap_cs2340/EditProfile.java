@@ -88,15 +88,7 @@ public class EditProfile extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         authLevelSpinner.setAdapter(adapter);
-    }
 
-    /**
-     * Retrieves relevant data from Firebase and sets relevant views
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
         user = auth.getCurrentUser();
         DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").addValueEventListener(new ValueEventListener() {
@@ -132,6 +124,15 @@ public class EditProfile extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    /**
+     * Retrieves relevant data from Firebase and sets relevant views
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authListener);
     }
 
     @Override
@@ -170,8 +171,7 @@ public class EditProfile extends AppCompatActivity {
      */
     private void saveChanges() {
         if (!validateForm()) return;
-        String uid = auth.getCurrentUser().getUid();
-        final DatabaseReference mRef = database.getReference("users").child(uid);
+        final DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").setValue(userEdit.getText().toString());
         mRef.child("authLevel").setValue(authLevelSpinner.getSelectedItem());
 
