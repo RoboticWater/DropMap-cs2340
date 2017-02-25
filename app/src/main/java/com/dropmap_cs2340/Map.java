@@ -5,19 +5,26 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
+import java.util.Random;
 
 public class Map extends FragmentActivity implements OnMapReadyCallback {
 
@@ -88,11 +95,40 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng loc) {
+//                //TODO put this in linked EDIT MAP MARKER activity
+//                Calendar c = Calendar.getInstance();
+//                Random rand = new Random();
+//                DatabaseReference mRef2 = database.getReference("waterReports");
+//                TempWaterReport wr = new TempWaterReport(c.getTime(), user.getDisplayName(), user.getUid(), (double)rand.nextInt(10) + 10, (double)rand.nextInt(10) + 10, "Water", "Pretty Good");
+//                mRef2.child(Integer.toString(wr.getId())).setValue(wr);
+//                map.addMarker(new MarkerOptions().position(loc).title("Oh shit boi whuddup"));
+//                map.moveCamera(CameraUpdateFactory.newLatLng(loc));
+//            }
+//        });
+
+        map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
-            public void onMapClick(LatLng loc) {
-                map.addMarker(new MarkerOptions().position(loc).title("Oh shit boi whuddup"));
-                map.moveCamera(CameraUpdateFactory.newLatLng(loc));
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View v = getLayoutInflater().inflate(R.layout.map_marker, null);
+                String[] contents = marker.getSnippet().split(",");
+                TextView name = (TextView) v.findViewById(R.id.text_user);
+                TextView date = (TextView) v.findViewById(R.id.text_date);
+                TextView type = (TextView) v.findViewById(R.id.text_type);
+                TextView condition = (TextView) v.findViewById(R.id.text_condition);
+
+                date.setText(contents[0]);
+                name.setText(contents[1]);
+                type.setText(contents[2]);
+                condition.setText(contents[3]);
+                return v;
             }
         });
 
@@ -102,7 +138,9 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             TempWaterReport wr = snapshot.getValue(TempWaterReport.class);
-                            map.addMarker(new MarkerOptions().position(wr.getLoc()).title("Oh shit boi whuddup"));
+                            map.addMarker(new MarkerOptions().position(wr.getLoc())
+                                    .title("Oh shit boi whuddup")
+                                    .snippet(wr.toString()));
                             map.moveCamera(CameraUpdateFactory.newLatLng(wr.getLoc()));
                         }
                     }

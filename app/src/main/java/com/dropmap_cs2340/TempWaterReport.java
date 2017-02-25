@@ -98,4 +98,9 @@ public class TempWaterReport {
     public LatLng getLoc() {
         return new LatLng(x, y);
     }
+
+    @Override
+    public String toString() {
+        return date.toString() + "," + username + "," + type + "," + condition;
+    }
 }
