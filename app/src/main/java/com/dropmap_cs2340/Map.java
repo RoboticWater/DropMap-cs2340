@@ -142,7 +142,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            TempWaterReport wr = snapshot.getValue(TempWaterReport.class);
+                            WaterReport wr = snapshot.getValue(WaterReport.class);
                             map.addMarker(new MarkerOptions().position(wr.loc())
                                     .title("Oh shit boi whuddup")
                                     .snippet(wr.toString()));

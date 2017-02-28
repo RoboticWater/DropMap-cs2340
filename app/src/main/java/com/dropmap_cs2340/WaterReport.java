@@ -1,20 +1,25 @@
 package com.dropmap_cs2340;
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by arsenelakpa on 2/23/17.
+ * Class containing water data
  */
 
 public class WaterReport {
     private String reportName;
     private String id;
-    private Location source;
+    private Double x;
+    private Double y;
     private WaterType type;
     private WaterCondition condition;
 
-    public WaterReport(String _reportName, Location _source, WaterType _type, WaterCondition _condition) {
+    public WaterReport(String _reportName, double lat, double lon, WaterType _type, WaterCondition _condition) {
         reportName = _reportName;
-        source = _source;
+        x = lat;
+        y = lon;
         type = _type;
         condition = _condition;
     }
@@ -35,12 +40,24 @@ public class WaterReport {
         this.id = id;
     }
 
-    public Location getSource() {
-        return source;
+    public Double getX() {
+        return x;
     }
 
-    public void setSource(Location source) {
-        this.source = source;
+    public void setX(Double x) {
+        this.x = x;
+    }
+
+    public Double getY() {
+        return y;
+    }
+
+    public void setY(Double y) {
+        this.y = y;
+    }
+
+    public LatLng loc() {
+        return new LatLng(x, y);
     }
 
     public String getType() {

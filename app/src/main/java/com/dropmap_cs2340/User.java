@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * Holds user data
  */
 
-class User implements Parcelable {
+public class User implements Parcelable {
 
     private String id;
     private String email;
