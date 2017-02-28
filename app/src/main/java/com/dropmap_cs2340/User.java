@@ -100,7 +100,6 @@ class User implements Parcelable {
     }
 
     void setAuthLevel(String _authLevel) {
-        // Get enum from string
         if (_authLevel == null) {
             authLevel = null;
         } else {
