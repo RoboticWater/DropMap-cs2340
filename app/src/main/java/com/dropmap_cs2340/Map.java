@@ -24,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
-import java.util.Random;
 
 public class Map extends FragmentActivity implements OnMapReadyCallback {
 
@@ -38,6 +37,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     private FirebaseDatabase database;
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener authListener;
+
+    private Calendar calendar;
 
 
     /**
@@ -69,6 +70,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                 }
             }
         };
+
+        calendar = Calendar.getInstance();
     }
 
     @Override
@@ -99,11 +102,10 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
 //            @Override
 //            public void onMapClick(LatLng loc) {
 //                //TODO put this in linked EDIT MAP MARKER activity
-//                Calendar c = Calendar.getInstance();
-//                Random rand = new Random();
-//                DatabaseReference mRef2 = database.getReference("waterReports");
-//                TempWaterReport wr = new TempWaterReport(c.getTime(), user.getDisplayName(), user.getUid(), (double)rand.nextInt(10) + 10, (double)rand.nextInt(10) + 10, "Water", "Pretty Good");
-//                mRef2.child(Integer.toString(wr.getId())).setValue(wr);
+//                DatabaseReference reports = database.getReference("waterReports");
+//                DatabaseReference childRef = reports.push();
+//                TempWaterReport wr = new TempWaterReport(childRef.getKey(), calendar.getTime(), user.getDisplayName(), user.getUid(), loc.latitude, loc.longitude, "Water", "Pretty Good");
+//                childRef.setValue(wr);
 //                map.addMarker(new MarkerOptions().position(loc).title("Oh shit boi whuddup"));
 //                map.moveCamera(CameraUpdateFactory.newLatLng(loc));
 //            }
@@ -119,10 +121,13 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
             public View getInfoContents(Marker marker) {
                 View v = getLayoutInflater().inflate(R.layout.map_marker, null);
                 String[] contents = marker.getSnippet().split(",");
+                TextView title = (TextView) v.findViewById(R.id.title);
                 TextView name = (TextView) v.findViewById(R.id.text_user);
                 TextView date = (TextView) v.findViewById(R.id.text_date);
                 TextView type = (TextView) v.findViewById(R.id.text_type);
                 TextView condition = (TextView) v.findViewById(R.id.text_condition);
+
+                title.setText(marker.getTitle());
 
                 date.setText(contents[0]);
                 name.setText(contents[1]);
@@ -138,10 +143,10 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             TempWaterReport wr = snapshot.getValue(TempWaterReport.class);
-                            map.addMarker(new MarkerOptions().position(wr.getLoc())
+                            map.addMarker(new MarkerOptions().position(wr.loc())
                                     .title("Oh shit boi whuddup")
                                     .snippet(wr.toString()));
-                            map.moveCamera(CameraUpdateFactory.newLatLng(wr.getLoc()));
+                            map.moveCamera(CameraUpdateFactory.newLatLng(wr.loc()));
                         }
                     }
                     @Override

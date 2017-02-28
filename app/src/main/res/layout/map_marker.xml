@@ -13,6 +13,14 @@
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/title"
+        tools:text="Title"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/text_user"
         tools:text="Username" />
 

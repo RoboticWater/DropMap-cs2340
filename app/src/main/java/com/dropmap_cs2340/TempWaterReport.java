@@ -5,12 +5,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by johnbritti on 2/24/2017.
+ * Temporary water report
  */
 
 public class TempWaterReport {
-    public static int MARKER_ID = 0;
     private Date date;
-    private int id;
+    private String id;
     private String username;
     private String uid;
     private Double x;
@@ -20,8 +20,8 @@ public class TempWaterReport {
 
     public TempWaterReport() {}
 
-    public TempWaterReport(Date date, String username, String uid, Double x, Double y, String type, String condition) {
-        id = MARKER_ID;
+    public TempWaterReport(String id, Date date, String username, String uid, Double x, Double y, String type, String condition) {
+        this.id = id;
         this.date = date;
         this.username = username;
         this.uid = uid;
@@ -47,11 +47,11 @@ public class TempWaterReport {
         this.date = date;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -95,7 +95,7 @@ public class TempWaterReport {
         this.y = y;
     }
 
-    public LatLng getLoc() {
+    public LatLng loc() {
         return new LatLng(x, y);
     }
 

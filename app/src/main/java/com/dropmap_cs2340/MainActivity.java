@@ -76,20 +76,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        //TODO get rid of this
-        DatabaseReference mRef2 = database.getReference("waterReports");
-        mRef2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                TempWaterReport.MARKER_ID = (int)dataSnapshot.getChildrenCount();
-                Log.d(TAG, "Marker ID: " + TempWaterReport.MARKER_ID);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     @Override
