@@ -93,7 +93,9 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
      * @param view the button
      */
     public void onViewPressed(View view) {
-        startActivity(new Intent(getApplicationContext(), ViewWaterReport.class, reportSpinner.getSelectedItem())));
+        Intent i = new Intent(getApplicationContext(), ViewWaterReport.class);
+        i.putExtra("report_id", (String) reportSpinner.getSelectedItem());
+        startActivity(i);
     }
 
 
@@ -108,7 +110,7 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             WaterReport wr = snapshot.getValue(WaterReport.class);
-                            out.add(wr.getReportID());
+                            out.add(wr.getId());
                         }
                     }
                     @Override
@@ -120,7 +122,7 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        rid = parent.getItemAtPosition(position).getId();
+        rid = (String) parent.getItemAtPosition(position);
     }
 
     @Override
