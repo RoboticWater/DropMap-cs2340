@@ -8,6 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,21 +106,36 @@ public class MainActivity extends AppCompatActivity {
         auth.removeAuthStateListener(authListener);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    /**
+     * Set up toolbar menu
+     * @param item the MenuItem
+     * @return No idea
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                auth.signOut();
+                startActivity(new Intent(MainActivity.this, Login.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     /**
      * Switches to Profile page on press
      * @param view the current view
      */
     public void onProfileClicked(View view) {
         startActivity(new Intent(getApplicationContext(), Profile.class));
-    }
-
-    /**
-     * Logs out on press
-     * @param view the current view
-     */
-    public void onLogOutClicked(View view) {
-        auth.signOut();
-        startActivity(new Intent(MainActivity.this, Login.class));
     }
 
     /**
