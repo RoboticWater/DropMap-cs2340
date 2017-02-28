@@ -1,6 +1,7 @@
 package com.dropmap_cs2340;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,9 +39,10 @@ public class EditProfile extends AppCompatActivity {
      * Firebase Hooks
      * Communicates with Firebase authentication and database services
      */
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseAuth     auth;
     private FirebaseDatabase database;
+    private FirebaseUser     user;
+    private FirebaseAuth.AuthStateListener authListener;
 
     /**
      * UI Hooks
@@ -49,6 +54,7 @@ public class EditProfile extends AppCompatActivity {
     private EditText newPassEdit;
     private Spinner  authLevelSpinner;
     private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +68,14 @@ public class EditProfile extends AppCompatActivity {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                else Log.d(TAG, "onAuthStateChanged:signed_out");
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    startActivity(new Intent(getApplicationContext(), Login.class));
+                    finish();
+                }
             }
         };
 
@@ -77,43 +88,9 @@ public class EditProfile extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         authLevelSpinner.setAdapter(adapter);
-    }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    /**
-     * Set up toolbar menu
-     * @param item the MenuItem
-     * @return No idea
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                saveChanges();
-                return true;
-            case R.id.action_discard:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * Retrieves relevant data from Firebase and sets relevant views
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
-        String uid = auth.getCurrentUser().getUid();
-        DatabaseReference mRef = database.getReference("users").child(uid);
-        //TODO make this shit happen only once, probably...
+        user = auth.getCurrentUser();
+        DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -149,10 +126,44 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
+    /**
+     * Retrieves relevant data from Firebase and sets relevant views
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authListener);
+    }
+
     @Override
     public void onStop() {
         super.onStop();
-        if (authListener != null) auth.removeAuthStateListener(authListener);
+        auth.removeAuthStateListener(authListener);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    /**
+     * Set up toolbar menu
+     * @param item the MenuItem
+     * @return No idea
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                saveChanges();
+                return true;
+            case R.id.action_discard:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -160,40 +171,38 @@ public class EditProfile extends AppCompatActivity {
      */
     private void saveChanges() {
         if (!validateForm()) return;
-        String uid = auth.getCurrentUser().getUid();
-        final DatabaseReference mRef = database.getReference("users").child(uid);
+        final DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").setValue(userEdit.getText().toString());
         mRef.child("authLevel").setValue(authLevelSpinner.getSelectedItem());
 
         final String email = emailEdit.getText().toString();
         final String password = newPassEdit.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            //TODO check what finish does and add it to necessary activities if it does what I think it does
             finish();
         } else {
             showProgressDialog();
-            final FirebaseUser user = auth.getCurrentUser();
-            Log.d(TAG, email + " " + password);
-            user.updateEmail(email);
-            user.updatePassword(password);
-            mRef.child("email").setValue(email);
-            mRef.child("password").setValue(password);
-            hideProgressDialog();
-            //TODO check what finish does and add it to necessary activities if it does what I think it does
-            finish();
-//            user.reauthenticate(EmailAuthProvider.getCredential(email, password))
-//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            user.updateEmail(email);
-//                            user.updatePassword(password);
-//                            mRef.child("email").setValue(email);
-//                            mRef.child("password").setValue(password);
-//                            hideProgressDialog();
-//                            //TODO check what finish does and add it to necessary activities if it does what I think it does
-//                            finish();
-//                        }
-//                    });
+            if (user != null) {
+                Log.d(TAG, email + " " + password);
+                user.updateEmail(email);
+                user.updatePassword(password);
+                mRef.child("email").setValue(email);
+                mRef.child("password").setValue(password);
+                hideProgressDialog();
+                finish();
+            } else {
+            user.reauthenticate(EmailAuthProvider.getCredential(email, password))
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            user.updateEmail(email);
+                            user.updatePassword(password);
+                            mRef.child("email").setValue(email);
+                            mRef.child("password").setValue(password);
+                            hideProgressDialog();
+                            finish();
+                        }
+                    });
+            }
         }
     }
 

@@ -39,10 +39,10 @@
             android:onClick="onProfileClicked"/>
 
         <Button
-            android:text="@string/button_log_out"
+            android:text="Map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button_log_out"
-            android:onClick="onLogOutClicked"/>
+            android:id="@+id/button_map"
+            android:onClick="onMapClicked"/>
     </LinearLayout>
 </RelativeLayout>

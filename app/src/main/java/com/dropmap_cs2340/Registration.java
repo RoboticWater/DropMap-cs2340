@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,7 +32,7 @@ public class Registration extends AppCompatActivity {
     /**
      * Firebase Hooks
      */
-    private FirebaseAuth mAuth;
+    private FirebaseAuth auth;
     private FirebaseDatabase database;
 
     /**
@@ -43,14 +44,14 @@ public class Registration extends AppCompatActivity {
     private Spinner  authSpinner;
     private ProgressDialog progressDialog;
 
-    private User user;
+    private User localUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        mAuth    = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
         userEdit    = (EditText) findViewById(R.id.user_edit);
@@ -77,11 +78,11 @@ public class Registration extends AppCompatActivity {
      * Creates User object with data from the input fields
      */
     private void setUpUser() {
-        user = new User();
-        user.setName(userEdit.getText().toString());
-        user.setEmail(emailEdit.getText().toString());
-        user.setPassword(passEdit.getText().toString());
-        user.setAuthLevel((String) authSpinner.getSelectedItem());
+        localUser = new User();
+        localUser.setName(userEdit.getText().toString());
+        localUser.setEmail(emailEdit.getText().toString());
+        localUser.setPassword(passEdit.getText().toString());
+        localUser.setAuthLevel((String) authSpinner.getSelectedItem());
     }
 
     /**
@@ -95,14 +96,14 @@ public class Registration extends AppCompatActivity {
 
     /**
      * Creates a new account with Firebase
-     * @param email     user's email
-     * @param password  user's password
+     * @param email     localUser's email
+     * @param password  localUser's password
      */
     private void createNewAccount(String email, String password) {
         if (!validateForm()) return;
         setUpUser();
         Log.d(TAG, "createNewAccount:" + email);
-        mAuth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -120,15 +121,15 @@ public class Registration extends AppCompatActivity {
     }
 
     /**
-     * Signs out any signed in user and signs in user in once
+     * Signs out any signed in localUser and signs in localUser in once
      * they've been created, then plops them onto the main screen
-     * @param mUser The user that was just created
+     * @param mUser The localUser that was just created
      */
-    private void onAuthenticationSuccess(FirebaseUser mUser) {
-        saveNewUser(mUser.getUid(), user.getName(), user.getEmail(), user.getPassword(), AuthLevel.valueOf((String) authSpinner.getSelectedItem()));
+    private void onAuthenticationSuccess(final FirebaseUser mUser) {
+        saveNewUser(mUser.getUid(), localUser.getName(), localUser.getEmail(), localUser.getPassword(), AuthLevel.valueOf((String) authSpinner.getSelectedItem()));
         signOut();
         showProgressDialog();
-        mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
+        auth.signInWithEmailAndPassword(localUser.getEmail(), localUser.getPassword())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -139,6 +140,9 @@ public class Registration extends AppCompatActivity {
                             Toast.makeText(Registration.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(localUser.getName()).build();
+                            mUser.updateProfile(profileUpdates);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }
@@ -148,11 +152,11 @@ public class Registration extends AppCompatActivity {
 
     /**
      * Creates new User object and passes it to Firebase's database
-     * @param userId    user's id
-     * @param name      user's username
-     * @param email     user's email
-     * @param password  user's password
-     * @param authLevel user's authentication level
+     * @param userId    localUser's id
+     * @param name      localUser's username
+     * @param email     localUser's email
+     * @param password  localUser's password
+     * @param authLevel localUser's authentication level
      */
     private void saveNewUser(String userId, String name, String email, String password, AuthLevel authLevel) {
         User user = new User(userId, email, name, password, authLevel);
@@ -164,7 +168,7 @@ public class Registration extends AppCompatActivity {
      * Signs out with Firebase
      */
     private void signOut() {
-        mAuth.signOut();
+        auth.signOut();
     }
 
     private boolean validateForm() {

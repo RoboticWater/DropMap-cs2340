@@ -8,6 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Random;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
      * Firebase Hooks
      * Communicates with Firebase authentication and database services
      */
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseAuth     auth;
     private FirebaseDatabase database;
+    private FirebaseUser     user;
+    private FirebaseAuth.AuthStateListener authListener;
 
     /**
      * UI Hooks
@@ -51,9 +57,14 @@ public class MainActivity extends AppCompatActivity {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                else Log.d(TAG, "onAuthStateChanged:signed_out");
+                user = auth.getCurrentUser();
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    startActivity(new Intent(getApplicationContext(), Login.class));
+                    finish();
+                }
             }
         };
 
@@ -73,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
+        user = auth.getCurrentUser();
 
-        String uid = auth.getCurrentUser().getUid();
-        DatabaseReference mRef = database.getReference("users").child(uid);
+        DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -92,7 +103,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (authListener != null) auth.removeAuthStateListener(authListener);
+        auth.removeAuthStateListener(authListener);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    /**
+     * Set up toolbar menu
+     * @param item the MenuItem
+     * @return No idea
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                auth.signOut();
+                startActivity(new Intent(MainActivity.this, Login.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -100,18 +135,14 @@ public class MainActivity extends AppCompatActivity {
      * @param view the current view
      */
     public void onProfileClicked(View view) {
-        Intent intent = new Intent(MainActivity.this, Profile.class);
-        String uid = auth.getCurrentUser().getUid();
-        intent.putExtra("user_id", uid);
-        startActivity(intent);
+        startActivity(new Intent(getApplicationContext(), Profile.class));
     }
 
     /**
      * Logs out on press
      * @param view the current view
      */
-    public void onLogOutClicked(View view) {
-        auth.signOut();
-        startActivity(new Intent(MainActivity.this, Login.class));
+    public void onMapClicked(View view) {
+        startActivity(new Intent(getApplicationContext(), Map.class));
     }
 }
