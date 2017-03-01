@@ -32,13 +32,30 @@
         <activity
             android:name=".Profile"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".EditProfile"
             android:label="@string/title_activity_edit_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EditWaterReport" />
-        <activity android:name=".ViewWaterReport"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".EditWaterReport"
+            android:label="@string/title_activity_edit_profile"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ViewWaterReport"
+            android:label="@string/title_activity_water_report"/>
+        <activity
+            android:name=".Map"
+            android:label="@string/title_activity_map"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ViewReportListActivity"
+            android:label="@string/title_activity_water_report_list"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCx0ex5uadWC6wr29HoZjGaWCAkfZneU_Q"/>
     </application>
 
 </manifest>

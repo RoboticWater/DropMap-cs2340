@@ -147,11 +147,6 @@ public class EditProfile extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    /**
-     * Set up toolbar menu
-     * @param item the MenuItem
-     * @return No idea
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

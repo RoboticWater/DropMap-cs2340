@@ -122,17 +122,13 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                 View v = getLayoutInflater().inflate(R.layout.map_marker, null);
                 String[] contents = marker.getSnippet().split(",");
                 TextView title = (TextView) v.findViewById(R.id.title);
-                TextView name = (TextView) v.findViewById(R.id.text_user);
-                TextView date = (TextView) v.findViewById(R.id.text_date);
-                TextView type = (TextView) v.findViewById(R.id.text_type);
+                TextView type  = (TextView) v.findViewById(R.id.text_type);
                 TextView condition = (TextView) v.findViewById(R.id.text_condition);
 
                 title.setText(marker.getTitle());
 
-                date.setText(contents[0]);
-                name.setText(contents[1]);
-                type.setText(contents[2]);
-                condition.setText(contents[3]);
+                type.setText(contents[0]);
+                condition.setText(contents[1]);
                 return v;
             }
         });

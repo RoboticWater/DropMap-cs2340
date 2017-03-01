@@ -16,12 +16,24 @@ public class WaterReport {
     private WaterType type;
     private WaterCondition condition;
 
-    public WaterReport(String _reportName, double lat, double lon, WaterType _type, WaterCondition _condition) {
+    public WaterReport() {}
+
+    public WaterReport(String _id, String _reportName, double lat, double lon, WaterType _type, WaterCondition _condition) {
+        id = _id;
         reportName = _reportName;
         x = lat;
         y = lon;
         type = _type;
         condition = _condition;
+    }
+
+    public WaterReport(String _id, String _reportName, double lat, double lon, String _type, String _condition) {
+        this(_id, _reportName, lat, lon, WaterType.valueOf(_type), WaterCondition.valueOf(_condition));
+    }
+
+    @Override
+    public String toString() {
+        return type.toString() + "," + condition.toString();
     }
 
     public String getReportName() {

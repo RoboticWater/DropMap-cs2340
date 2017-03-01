@@ -45,24 +45,9 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report_list);
 
-        Button viewReportButton = (Button) findViewById(R.id.viewReportButton);
-        viewReportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ViewWaterReport.class);
-                intent.putExtra("report_id", rid);
-                startActivity(intent);
-            }
-        });
-
-        reportSpinner = (Spinner) findViewById(R.id.reports);
-
-        ArrayAdapter<String> reportAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, reportList());
-        reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        reportSpinner.setAdapter(reportAdapter);
-
         auth     = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        Log.d("ViewReport", database.toString());
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -76,16 +61,39 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
                 }
             }
         };
+
+        reportSpinner = (Spinner) findViewById(R.id.reports);
+        database.getReference().child("waterReports")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final List<String> ids = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            WaterReport wr = snapshot.getValue(WaterReport.class);
+                            ids.add(wr.getId());
+                        }
+
+                        ArrayAdapter<String> reportAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ids);
+                        reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        reportSpinner.setAdapter(reportAdapter);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 
     @Override
     protected void onStart(){
         super.onStart();
+        auth.addAuthStateListener(authListener);
+        user = auth.getCurrentUser();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        auth.removeAuthStateListener(authListener);
     }
 
     /**
@@ -94,34 +102,14 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
      */
     public void onViewPressed(View view) {
         Intent i = new Intent(getApplicationContext(), ViewWaterReport.class);
+        Log.d(TAG, "Sending: " + reportSpinner.getSelectedItem());
         i.putExtra("report_id", (String) reportSpinner.getSelectedItem());
         startActivity(i);
     }
 
-
-    /**
-     * Create a List of report names
-     */
-    public List<String> reportList(){
-        final ArrayList<String> out = new ArrayList<String>();
-        database.getReference().child("waterReports")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            WaterReport wr = snapshot.getValue(WaterReport.class);
-                            out.add(wr.getId());
-                        }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-        return out;
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "Selected: " + parent.getItemAtPosition(position));
         rid = (String) parent.getItemAtPosition(position);
     }
 
