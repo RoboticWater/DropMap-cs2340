@@ -49,17 +49,15 @@ public class ViewWaterReport extends AppCompatActivity {
     private void databaseStuff() {
         String rid = getIntent().getStringExtra("report_id");
         Log.d("ReportView", rid);
-        database.getReference().child("waterReports")
+        database.getReference().child("waterReports").child(rid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            WaterReport wr = snapshot.getValue(WaterReport.class);
-                            idText.setText(wr.getId());
-                            typeText.setText(wr.getType());
-                            conditionText.setText(wr.getCondition());
-                            sourceText.setText(wr.getX() + ", " + wr.getY());
-                        }
+                        WaterReport wr = dataSnapshot.getValue(WaterReport.class);
+                        idText.setText(wr.getId());
+                        typeText.setText(wr.getType());
+                        conditionText.setText(wr.getCondition());
+                        sourceText.setText(wr.getX() + ", " + wr.getY());
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {

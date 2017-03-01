@@ -90,38 +90,19 @@ public class EditProfile extends AppCompatActivity {
         authLevelSpinner.setAdapter(adapter);
 
         user = auth.getCurrentUser();
-        DatabaseReference mRef = database.getReference("users").child(user.getUid());
-        mRef.child("name").addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = database.getReference("users").child(user.getUid());
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                userEdit.setText(data);
+                User u = dataSnapshot.getValue(User.class);
+                userEdit.setText(u.getName());
+                emailEdit.setText(u.getEmail());
+                authLevelSpinner.setSelection(AuthLevel.valueOf(u.getAuthLevel()).ordinal());
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-        mRef.child("email").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                emailEdit.setText(data);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-        mRef.child("authLevel").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                authLevelSpinner.setSelection(AuthLevel.valueOf(data).ordinal());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         });
     }

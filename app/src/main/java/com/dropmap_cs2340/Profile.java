@@ -66,38 +66,19 @@ public class Profile extends AppCompatActivity {
         authText  = (TextView) findViewById(R.id.auth_level_text);
 
         user = auth.getCurrentUser();
-        DatabaseReference mRef = database.getReference("users").child(user.getUid());
-        mRef.child("name").addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = database.getReference("users").child(user.getUid());
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                userText.setText(data);
+                User u = dataSnapshot.getValue(User.class);
+                userText.setText(u.getName());
+                emailText.setText(u.getEmail());
+                authText.setText(u.getAuthLevel());
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-        mRef.child("email").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                emailText.setText(data);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-        mRef.child("authLevel").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String data = dataSnapshot.getValue(String.class);
-                authText.setText(data);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         });
     }

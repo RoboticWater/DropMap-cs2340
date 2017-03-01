@@ -93,50 +93,20 @@ public class EditWaterReport extends AppCompatActivity {
         if (rid != null) {
             saveFab.setVisibility(View.GONE);
             DatabaseReference ref = database.getReference("waterReports").child(rid);
-            ref.child("x").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String data = dataSnapshot.getValue(String.class);
-                    xEdit.setText(data);
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-            ref.child("y").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String data = dataSnapshot.getValue(String.class);
-                    yEdit.setText(data);
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-            ref.child("type").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String data = dataSnapshot.getValue(String.class);
-                    typeSpinner.setSelection(WaterType.valueOf(data).ordinal());
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-            ref.child("condition").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String data = dataSnapshot.getValue(String.class);
-                    conditionSpinner.setSelection(WaterCondition.valueOf(data).ordinal());
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
+            database.getReference().child("waterReports").child(rid)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            WaterReport wr = dataSnapshot.getValue(WaterReport.class);
+                            xEdit.setText(wr.getX().toString());
+                            yEdit.setText(wr.getY().toString());
+                            typeSpinner.setSelection(WaterType.valueOf(wr.getType()).ordinal());
+                            conditionSpinner.setSelection(WaterCondition.valueOf(wr.getCondition()).ordinal());
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
         }
     }
 
