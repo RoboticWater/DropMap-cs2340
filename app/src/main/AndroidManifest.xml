@@ -40,8 +40,7 @@
         <activity
             android:name=".EditWaterReport"
             android:label="@string/title_activity_edit_profile"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ViewWaterReport"
             android:label="@string/title_activity_water_report"/>

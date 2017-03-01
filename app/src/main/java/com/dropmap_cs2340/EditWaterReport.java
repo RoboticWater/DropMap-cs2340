@@ -89,7 +89,7 @@ public class EditWaterReport extends AppCompatActivity {
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         conditionSpinner.setAdapter(adapter2);
 
-        rid = getIntent().getStringExtra("report_Id");
+        rid = getIntent().getStringExtra("report_id");
         if (rid != null) {
             saveFab.setVisibility(View.GONE);
             DatabaseReference ref = database.getReference("waterReports").child(rid);
@@ -98,8 +98,8 @@ public class EditWaterReport extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             WaterReport wr = dataSnapshot.getValue(WaterReport.class);
-                            xEdit.setText(wr.getX().toString());
-                            yEdit.setText(wr.getY().toString());
+                            xEdit.setText(Double.toString(wr.getX()));
+                            yEdit.setText(Double.toString(wr.getY()));
                             typeSpinner.setSelection(WaterType.valueOf(wr.getType()).ordinal());
                             conditionSpinner.setSelection(WaterCondition.valueOf(wr.getCondition()).ordinal());
                         }
@@ -124,7 +124,7 @@ public class EditWaterReport extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        rid = getIntent().getStringExtra("report_Id");
+        rid = getIntent().getStringExtra("report_id");
         if (rid != null) getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
         return super.onPrepareOptionsMenu(menu);
     }
