@@ -7,7 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,21 +29,26 @@ import java.util.List;
  */
 
 public class ViewReportListActivity extends AppCompatActivity {
-
-    private FirebaseAuth auth;
-    private FirebaseUser user;
-    private FirebaseAuth.AuthStateListener authListener;
     private final String TAG = "ReportList";
 
     /**
-     * Widgets for info
+     * Firebase Hooks
+     * Communicates with Firebase authentication and database services
      */
-    private Spinner reportSpinner;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+    private FirebaseAuth.AuthStateListener authListener;
+
+    /**
+     * UI Hooks
+     */
+    private LinearLayout mainView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report_list);
+        mainView = (LinearLayout) findViewById(R.id.main_layout);
 
         auth     = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -55,31 +64,30 @@ public class ViewReportListActivity extends AppCompatActivity {
                 }
             }
         };
-
-        reportSpinner = (Spinner) findViewById(R.id.reports);
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference().child("waterReports")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        final List<String> ids = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            WaterReport wr = snapshot.getValue(WaterReport.class);
-                            ids.add(wr.getId());
+                            final WaterReport wr = snapshot.getValue(WaterReport.class);
+                            Button t = new Button(getApplicationContext());
+                            t.setText(wr.getId());
+//                            t.setTextAppearance(getApplicationContext(), android.R.style.TextAppearance_Material_Medium_Inverse);
+                            t.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    openReport(wr.getId());
+                                }
+                            });
+                            mainView.addView(t);
                         }
-
-                        ArrayAdapter<String> reportAdapter =
-                                new ArrayAdapter<>(getApplicationContext(),
-                                        android.R.layout.simple_spinner_item, ids);
-                        reportAdapter.setDropDownViewResource(android.R.
-                                layout.simple_spinner_dropdown_item);
-                        reportSpinner.setAdapter(reportAdapter);
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+
     }
 
     @Override
@@ -96,13 +104,13 @@ public class ViewReportListActivity extends AppCompatActivity {
     }
 
     /**
-     * Event handler for when view button is pressed
-     * @param view the button
+     * Opens view water report screen with specified water report
+     * @param rid  id of water report to fetch from database
      */
-    public void onViewPressed(View view) {
+    private void openReport(String rid) {
         Intent i = new Intent(getApplicationContext(), ViewWaterReport.class);
-        Log.d(TAG, "Sending: " + reportSpinner.getSelectedItem());
-        i.putExtra("report_id", (String) reportSpinner.getSelectedItem());
+        i.putExtra("report_id", rid);
         startActivity(i);
+//        finish();
     }
 }

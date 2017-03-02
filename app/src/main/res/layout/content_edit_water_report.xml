@@ -18,16 +18,16 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
+        <TextView
+            android:text="Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4" />
+
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:text="X position"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView4" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -36,20 +36,8 @@
                 android:ems="10"
                 android:id="@+id/latEdit"
                 tools:text="X position"
-                android:hint="Latitude" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="Y position"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView3" />
+                android:hint="Latitude"
+                android:layout_weight="1" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -58,45 +46,34 @@
                 android:ems="10"
                 android:id="@+id/longEdit"
                 tools:text="Y position"
-                android:hint="Longitude" />
+                android:hint="Longitude"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:text="Type"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:id="@+id/type"
+            android:layout_weight="1" />
 
-            <TextView
-                android:text="Type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/type" />
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/typeSpinner" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
+        <Spinner
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:id="@+id/typeSpinner"
+            android:layout_weight="1" />
 
-            <TextView
-                android:text="Condition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView2" />
+        <TextView
+            android:text="Condition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2" />
 
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/conditionSpinner" />
-
-        </LinearLayout>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/conditionSpinner" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
