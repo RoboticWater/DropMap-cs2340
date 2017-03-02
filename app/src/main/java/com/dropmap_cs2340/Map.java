@@ -21,6 +21,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * View and add water reports from a map screen
+ */
+@SuppressWarnings("ChainedMethodCall")
 public class Map extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "Map";
@@ -87,6 +91,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @SuppressWarnings("FeatureEnvy")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
@@ -120,7 +125,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             WaterReport wr = snapshot.getValue(WaterReport.class);
                             map.addMarker(new MarkerOptions().position(wr.loc())
-                                    .title("Oh shit boi whuddup")
+                                    .title(wr.getReportName())
                                     .snippet(wr.toString()));
                             map.moveCamera(CameraUpdateFactory.newLatLng(wr.loc()));
                         }

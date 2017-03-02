@@ -22,6 +22,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+/**
+ * Central screen for app. Holds buttons to everywhere
+ */
+@SuppressWarnings("ChainedMethodCall")
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Main";

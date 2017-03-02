@@ -6,12 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,14 +16,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Austin on 2/23/2017.
  * View all water availability reports as a list and show details
  */
 
+@SuppressWarnings("ChainedMethodCall")
 public class ViewReportListActivity extends AppCompatActivity {
     private final String TAG = "ReportList";
 
@@ -73,7 +67,6 @@ public class ViewReportListActivity extends AppCompatActivity {
                             final WaterReport wr = snapshot.getValue(WaterReport.class);
                             Button t = new Button(getApplicationContext());
                             t.setText(wr.getId());
-//                            t.setTextAppearance(getApplicationContext(), android.R.style.TextAppearance_Material_Medium_Inverse);
                             t.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

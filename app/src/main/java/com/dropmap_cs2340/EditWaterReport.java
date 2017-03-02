@@ -22,15 +22,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Locale;
+
 /**
  * Screen for creating and editing water report forms
  */
+@SuppressWarnings("ChainedMethodCall")
 public class EditWaterReport extends AppCompatActivity {
     private static final String TAG = "EditWaterReport";
 
     /**
      * Hooks to UI objects
      */
+    private EditText nameEdit;
     private EditText xEdit;
     private EditText yEdit;
     private Spinner  typeSpinner;
@@ -48,6 +52,7 @@ public class EditWaterReport extends AppCompatActivity {
 
     private String rid;
 
+    @SuppressWarnings("FeatureEnvy")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +74,10 @@ public class EditWaterReport extends AppCompatActivity {
         };
         setContentView(R.layout.activity_edit_water_report);
 
-        xEdit = (EditText) findViewById(R.id.latEdit);
-        yEdit = (EditText) findViewById(R.id.longEdit);
-        typeSpinner =      (Spinner) findViewById(R.id.typeSpinner);
+        nameEdit = (EditText) findViewById(R.id.input_name);
+        xEdit    = (EditText) findViewById(R.id.latEdit);
+        yEdit    = (EditText) findViewById(R.id.longEdit);
+        typeSpinner      = (Spinner) findViewById(R.id.typeSpinner);
         conditionSpinner = (Spinner) findViewById(R.id.conditionSpinner);
 
         FloatingActionButton saveFab = (FloatingActionButton) findViewById(R.id.save_fab);
@@ -100,8 +106,8 @@ public class EditWaterReport extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             WaterReport wr = dataSnapshot.getValue(WaterReport.class);
-                            xEdit.setText(Double.toString(wr.getX()));
-                            yEdit.setText(Double.toString(wr.getY()));
+                            xEdit.setText(String.format(Locale.getDefault(), "%f", wr.getX()));
+                            yEdit.setText(String.format(Locale.getDefault(), "%f", wr.getY()));
                             typeSpinner.setSelection(WaterType.valueOf(wr.getType()).ordinal());
                             conditionSpinner.setSelection(WaterCondition.valueOf(wr.getCondition())
                                     .ordinal());
@@ -153,13 +159,15 @@ public class EditWaterReport extends AppCompatActivity {
      * (latitude, longitude, condition)
      */
     private void saveChanges() {
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            return;
+        }
         DatabaseReference ref;
         DatabaseReference reports = database.getReference("waterReports");
         if (rid == null) {
             ref = reports.push();
             WaterReport wr = new WaterReport(ref.getKey(),
-                    "name",
+                    nameEdit.getText().toString(),
                     Double.parseDouble(xEdit.getText().toString()),
                     Double.parseDouble(yEdit.getText().toString()),
                     (String) typeSpinner.getSelectedItem(),
@@ -180,7 +188,6 @@ public class EditWaterReport extends AppCompatActivity {
      * @return whether or not any input is invalid
      */
     private boolean validateForm() {
-        //TODO ensure correct validation criteria
         boolean valid = true;
 
         String lat = xEdit.getText().toString();

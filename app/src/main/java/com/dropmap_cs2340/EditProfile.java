@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * The form for editing profiles
  */
+@SuppressWarnings("ChainedMethodCall")
 public class EditProfile extends AppCompatActivity {
     /**
      * Tag for Firebase logging
@@ -55,6 +56,7 @@ public class EditProfile extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
 
+    @SuppressWarnings("FeatureEnvy")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,7 +191,6 @@ public class EditProfile extends AppCompatActivity {
      * @return whether or not any input is invalid
      */
     private boolean validateForm() {
-        //TODO ensure correct validation criteria
         boolean valid = true;
 
         String name = userEdit.getText().toString();

@@ -18,6 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    return void
 }
 
 dependencies {
@@ -30,6 +31,7 @@ dependencies {
     compile 'com.google.firebase:firebase-core:9.8.0'
     compile 'com.google.firebase:firebase-auth:9.8.0'
     compile 'com.google.firebase:firebase-database:9.8.0'
+    //noinspection GradleDependency,GradleDependency
     compile 'com.google.android.gms:play-services:9.8.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:support-v4:25.2.0'

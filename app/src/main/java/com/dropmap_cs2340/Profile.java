@@ -18,6 +18,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Profile viewing screen
+ */
+@SuppressWarnings("ChainedMethodCall")
 public class Profile extends AppCompatActivity {
 
     private final String TAG = "Profile";
@@ -36,6 +40,7 @@ public class Profile extends AppCompatActivity {
     private TextView emailText;
     private TextView authText;
 
+    @SuppressWarnings("FeatureEnvy")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

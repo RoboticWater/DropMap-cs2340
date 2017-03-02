@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * A login screen that offers login via email/password.
  */
+@SuppressWarnings("ChainedMethodCall")
 public class Login extends AppCompatActivity {
 
     private static final String TAG = "Login";
@@ -127,7 +128,6 @@ public class Login extends AppCompatActivity {
      * Ensures the input data is valid
      * @return whether all the input data is valid
      */
-    //TODO add all validation criteria
     private boolean validateForm() {
         boolean valid = true;
 

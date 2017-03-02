@@ -16,6 +16,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Water report viewing screen
+ */
+@SuppressWarnings("ChainedMethodCall")
 public class ViewWaterReport extends AppCompatActivity {
 
     private final String TAG = "ViewWaterReport";
@@ -99,6 +103,7 @@ public class ViewWaterReport extends AppCompatActivity {
     }
 
 
+    @SuppressWarnings("FeatureEnvy")
     private void databaseStuff() {
         Log.d("ReportView", rid);
         database.getReference().child("waterReports").child(rid)

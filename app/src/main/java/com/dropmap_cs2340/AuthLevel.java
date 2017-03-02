@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Enum of the different kinds of users that can interact with the app
  */
 
-public enum AuthLevel implements Serializable {
+enum AuthLevel implements Serializable {
     User,
     Worker,
     Manager,

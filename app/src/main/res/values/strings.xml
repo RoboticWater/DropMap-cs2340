@@ -52,4 +52,10 @@
     <string name="title_activity_map">Map</string>
     <string name="title_activity_water_report">Water Report</string>
     <string name="title_activity_water_report_list">Water Reports</string>
+    <string name="title_type">Type</string>
+    <string name="title_condition">Condition</string>
+    <string name="title_name">Name</string>
+    <string name="title_location">Location</string>
+    <string name="prompt_latitude">Latitude</string>
+    <string name="prompt_longitude">Longitude</string>
 </resources>

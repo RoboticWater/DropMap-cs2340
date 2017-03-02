@@ -9,7 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
  * Class containing water data
  */
 
-public class WaterReport {
+@SuppressWarnings("ConstructorWithTooManyParameters")
+class WaterReport {
     private String reportName;
     private String id;
     private Double x;
@@ -19,10 +20,23 @@ public class WaterReport {
     @Nullable
     private WaterCondition condition;
 
+    /**
+     * Creates empty water report for Firebase
+     */
     public WaterReport() {}
 
-    public WaterReport(String _id, String _reportName, double lat, double lon, WaterType _type,
-                       WaterCondition _condition) {
+    /**
+     * Creates water report
+     * @param _id           unique id of report
+     * @param _reportName   name of report
+     * @param lat           latitude location
+     * @param lon           longitude location
+     * @param _type         kind of water source this is
+     * @param _condition    condition of water
+     */
+    WaterReport(String _id, String _reportName, double lat, double lon,
+                       @Nullable WaterType _type,
+                       @Nullable WaterCondition _condition) {
         id = _id;
         reportName = _reportName;
         x = lat;
@@ -31,7 +45,16 @@ public class WaterReport {
         condition = _condition;
     }
 
-    public WaterReport(String _id, String _reportName, double lat, double lon, String _type,
+    /**
+     * Creates water report
+     * @param _id           unique id of report
+     * @param _reportName   name of report
+     * @param lat           latitude location
+     * @param lon           longitude location
+     * @param _type         kind of water source this is in string form
+     * @param _condition    condition of water in string form
+     */
+    WaterReport(String _id, String _reportName, double lat, double lon, String _type,
                        String _condition) {
         this(_id, _reportName, lat, lon, WaterType.valueOf(_type),
                 WaterCondition.valueOf(_condition));
@@ -39,46 +62,47 @@ public class WaterReport {
 
     @Override
     public String toString() {
-        return type.toString() + "," + condition.toString();
+        return (type == null ? "" : type.toString()) + "," +
+                (condition == null ? "" : condition.toString());
     }
 
-    public String getReportName() {
+    String getReportName() {
         return reportName;
     }
 
-    public void setReportName(String reportName) {
+    void setReportName(String reportName) {
         this.reportName = reportName;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
 
-    public Double getX() {
+    Double getX() {
         return x;
     }
 
-    public void setX(Double x) {
+    void setX(Double x) {
         this.x = x;
     }
 
-    public Double getY() {
+    Double getY() {
         return y;
     }
 
-    public void setY(Double y) {
+    void setY(Double y) {
         this.y = y;
     }
 
-    public LatLng loc() {
+    LatLng loc() {
         return new LatLng(x, y);
     }
 
-    public String getType() {
+    String getType() {
         if (type == null) {
             return null;
         } else {
@@ -86,7 +110,7 @@ public class WaterReport {
         }
     }
 
-    public void setType(String _type) {
+    void setType(@Nullable String _type) {
         if (_type == null) {
             type = null;
         } else {
@@ -94,7 +118,7 @@ public class WaterReport {
         }
     }
 
-    public String getCondition() {
+    String getCondition() {
         if (condition == null) {
             return null;
         } else {
@@ -102,7 +126,7 @@ public class WaterReport {
         }
     }
 
-    public void setCondition(String _condition) {
+    void setCondition(@Nullable String _condition) {
         if (_condition == null) {
             condition = null;
         } else {

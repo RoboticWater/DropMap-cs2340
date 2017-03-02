@@ -7,9 +7,13 @@ import java.io.Serializable;
  * Describes the forms that water sources can take
  */
 
-public enum WaterType implements Serializable {
+enum WaterType implements Serializable {
     Bottled, Well, Stream, Lake, Spring, Other;
 
+    /**
+     * Returns array of enum items
+     * @return array of enum names as strings
+     */
     public static String[] names() {
         WaterType[] states = values();
         String[] names = new String[states.length];

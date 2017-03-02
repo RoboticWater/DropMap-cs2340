@@ -20,7 +20,8 @@ public class User implements Parcelable {
     User() {
 
     }
-    User(String _id, String _email, String _name, String _password, AuthLevel _authLevel) {
+    User(String _id, String _email, String _name, String _password,
+         @Nullable AuthLevel _authLevel) {
         id        = _id;
         email     = _email;
         name      = _name;
@@ -63,11 +64,11 @@ public class User implements Parcelable {
         }
     };
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
 
@@ -95,7 +96,7 @@ public class User implements Parcelable {
         this.password = password;
     }
 
-    public String getAuthLevel() {
+    String getAuthLevel() {
         if (authLevel == null) {
             return null;
         } else {
@@ -103,7 +104,7 @@ public class User implements Parcelable {
         }
     }
 
-    void setAuthLevel(String _authLevel) {
+    void setAuthLevel(@Nullable String _authLevel) {
         if (_authLevel == null) {
             authLevel = null;
         } else {

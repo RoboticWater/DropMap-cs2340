@@ -62,7 +62,7 @@
         android:paddingBottom="@dimen/item_spacing">
 
         <TextView
-            android:text="Type"
+            android:text="@string/title_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/title_type" />
@@ -83,7 +83,7 @@
         android:paddingBottom="@dimen/item_spacing">
 
         <TextView
-            android:text="Condition"
+            android:text="@string/title_condition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/title_condition" />
