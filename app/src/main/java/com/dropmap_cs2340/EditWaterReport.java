@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Screen for creating and editing water report forms
+ */
 public class EditWaterReport extends AppCompatActivity {
     private static final String TAG = "EditWaterReport";
 
@@ -33,7 +35,6 @@ public class EditWaterReport extends AppCompatActivity {
     private EditText yEdit;
     private Spinner  typeSpinner;
     private Spinner  conditionSpinner;
-    private FloatingActionButton saveFab;
 
     /**
      * Firebase Hooks
@@ -72,8 +73,8 @@ public class EditWaterReport extends AppCompatActivity {
         yEdit = (EditText) findViewById(R.id.longEdit);
         typeSpinner =      (Spinner) findViewById(R.id.typeSpinner);
         conditionSpinner = (Spinner) findViewById(R.id.conditionSpinner);
-        saveFab = (FloatingActionButton) findViewById(R.id.save_fab);
 
+        FloatingActionButton saveFab = (FloatingActionButton) findViewById(R.id.save_fab);
         saveFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,18 +82,19 @@ public class EditWaterReport extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, WaterType.names());
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, WaterType.names());
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter1);
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, WaterCondition.names());
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, WaterCondition.names());
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         conditionSpinner.setAdapter(adapter2);
 
         rid = getIntent().getStringExtra("report_id");
         if (rid != null) {
             saveFab.setVisibility(View.GONE);
-            DatabaseReference ref = database.getReference("waterReports").child(rid);
             database.getReference().child("waterReports").child(rid)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -101,7 +103,8 @@ public class EditWaterReport extends AppCompatActivity {
                             xEdit.setText(Double.toString(wr.getX()));
                             yEdit.setText(Double.toString(wr.getY()));
                             typeSpinner.setSelection(WaterType.valueOf(wr.getType()).ordinal());
-                            conditionSpinner.setSelection(WaterCondition.valueOf(wr.getCondition()).ordinal());
+                            conditionSpinner.setSelection(WaterCondition.valueOf(wr.getCondition())
+                                    .ordinal());
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -125,7 +128,9 @@ public class EditWaterReport extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         rid = getIntent().getStringExtra("report_id");
-        if (rid != null) getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
+        if (rid != null) {
+            getMenuInflater().inflate(R.menu.menu_edit_report, menu);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -144,7 +149,8 @@ public class EditWaterReport extends AppCompatActivity {
     }
 
     /**
-     * If the input data is valid, updates Firebase data and Auth data (latitude, longitude, condition)
+     * If the input data is valid, updates Firebase data and Auth data
+     * (latitude, longitude, condition)
      */
     private void saveChanges() {
         if (!validateForm()) return;

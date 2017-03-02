@@ -2,6 +2,7 @@ package com.dropmap_cs2340;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 /**
  * Created by johnbritti on 2/9/17.
@@ -14,6 +15,7 @@ public class User implements Parcelable {
     private String email;
     private String name;
     private String password;
+    @Nullable
     private AuthLevel authLevel;
     User() {
 
@@ -50,10 +52,12 @@ public class User implements Parcelable {
 
     public static final Parcelable.Creator<User> CREATOR
             = new Parcelable.Creator<User>() {
+        @Override
         public User createFromParcel(Parcel in) {
             return new User(in);
         }
 
+        @Override
         public User[] newArray(int size) {
             return new User[size];
         }

@@ -13,6 +13,10 @@ public enum AuthLevel implements Serializable {
     Manager,
     Administrator;
 
+    /**
+     * Gets list of enum fields
+     * @return string array of enum fields
+     */
     public static String[] names() {
         AuthLevel[] states = values();
         String[] names = new String[states.length];

@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +26,6 @@ public class Profile extends AppCompatActivity {
      * Firebase Hooks
      */
     private FirebaseAuth     auth;
-    private FirebaseDatabase database;
     private FirebaseUser     user;
     private FirebaseAuth.AuthStateListener authListener;
 
@@ -46,7 +44,6 @@ public class Profile extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         auth     = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -66,6 +63,9 @@ public class Profile extends AppCompatActivity {
         authText  = (TextView) findViewById(R.id.auth_level_text);
 
         user = auth.getCurrentUser();
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users").child(user.getUid());
         ref.addValueEventListener(new ValueEventListener() {
             @Override

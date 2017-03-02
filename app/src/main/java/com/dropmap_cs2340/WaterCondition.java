@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by arsenelakpa on 2/23/17.
+ * Describes the conditions of water sources
  */
 
 public enum WaterCondition implements Serializable {

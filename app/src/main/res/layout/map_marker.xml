@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
-        android:text="TextView"
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/title"
@@ -18,27 +18,28 @@
         android:textAppearance="@style/TextAppearance.AppCompat" />
 
     <TextView
-        android:text="TextView"
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/text_user"
         tools:text="Username" />
 
     <TextView
-        android:text="TextView"
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/text_date"
         tools:text="Date" />
 
     <TextView
-        android:text="Condition"
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/text_condition" />
+        android:id="@+id/text_condition"
+        tools:text="Condition" />
 
     <TextView
-        android:text="TextView"
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/text_type"

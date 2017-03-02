@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -85,7 +84,8 @@ public class EditProfile extends AppCompatActivity {
         newPassEdit = (EditText) findViewById(R.id.pass_edit);
         authLevelSpinner = (Spinner) findViewById(R.id.auth_spinner);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,
+                AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         authLevelSpinner.setAdapter(adapter);
 
@@ -146,7 +146,9 @@ public class EditProfile extends AppCompatActivity {
      * If the input data is valid, updates Firebase data and Auth data (email/password)
      */
     private void saveChanges() {
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            return;
+        }
         final DatabaseReference mRef = database.getReference("users").child(user.getUid());
         mRef.child("name").setValue(userEdit.getText().toString());
         mRef.child("authLevel").setValue(authLevelSpinner.getSelectedItem());
@@ -236,7 +238,7 @@ public class EditProfile extends AppCompatActivity {
      * Hides saving popup
      */
     private void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
+        if ((progressDialog != null) && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }

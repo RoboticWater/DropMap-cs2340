@@ -18,10 +18,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-//TODO add offline authentication
 
 /**
  * A login screen that offers login via email/password.
@@ -35,8 +31,6 @@ public class Login extends AppCompatActivity {
      */
     private FirebaseAuth auth;
     private FirebaseUser user;
-    //TODO shouldn't need database ref in final build
-    private FirebaseDatabase database;
     private FirebaseAuth.AuthStateListener authListener;
 
     /**
@@ -52,8 +46,6 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login_screen);
 
         auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-//        database.setPersistenceEnabled(true);
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -63,7 +55,9 @@ public class Login extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 }
-                else Log.d(TAG, "onAuthStateChanged:signed_out");
+                else {
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
             }
         };
 
@@ -107,7 +101,9 @@ public class Login extends AppCompatActivity {
      */
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            return;
+        }
         showProgressDialog();
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -171,7 +167,7 @@ public class Login extends AppCompatActivity {
      * hides loading popup
      */
     private void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
+        if ((progressDialog != null) && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }

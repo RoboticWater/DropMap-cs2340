@@ -6,9 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,14 +24,12 @@ import java.util.List;
  * View all water availability reports as a list and show details
  */
 
-public class ViewReportListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ViewReportListActivity extends AppCompatActivity {
 
-    private String rid;
     private FirebaseAuth auth;
-    private FirebaseDatabase database;
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener authListener;
-    private static String TAG = "ReportList";
+    private final String TAG = "ReportList";
 
     /**
      * Widgets for info
@@ -46,8 +42,6 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
         setContentView(R.layout.activity_view_report_list);
 
         auth     = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        Log.d("ViewReport", database.toString());
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -63,6 +57,8 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
         };
 
         reportSpinner = (Spinner) findViewById(R.id.reports);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference().child("waterReports")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -73,8 +69,11 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
                             ids.add(wr.getId());
                         }
 
-                        ArrayAdapter<String> reportAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ids);
-                        reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        ArrayAdapter<String> reportAdapter =
+                                new ArrayAdapter<>(getApplicationContext(),
+                                        android.R.layout.simple_spinner_item, ids);
+                        reportAdapter.setDropDownViewResource(android.R.
+                                layout.simple_spinner_dropdown_item);
                         reportSpinner.setAdapter(reportAdapter);
                     }
                     @Override
@@ -105,16 +104,5 @@ public class ViewReportListActivity extends AppCompatActivity implements Adapter
         Log.d(TAG, "Sending: " + reportSpinner.getSelectedItem());
         i.putExtra("report_id", (String) reportSpinner.getSelectedItem());
         startActivity(i);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "Selected: " + parent.getItemAtPosition(position));
-        rid = (String) parent.getItemAtPosition(position);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        rid = "No Report";
     }
 }

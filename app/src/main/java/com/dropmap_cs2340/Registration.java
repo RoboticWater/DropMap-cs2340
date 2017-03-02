@@ -59,7 +59,8 @@ public class Registration extends AppCompatActivity {
         passEdit    = (EditText) findViewById(R.id.input_password);
         authSpinner = (Spinner)  findViewById(R.id.auth_spinner);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AuthLevel.names());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,
+                AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         authSpinner.setAdapter(adapter);
 
@@ -100,7 +101,9 @@ public class Registration extends AppCompatActivity {
      * @param password  localUser's password
      */
     private void createNewAccount(String email, String password) {
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            return;
+        }
         setUpUser();
         Log.d(TAG, "createNewAccount:" + email);
         auth.createUserWithEmailAndPassword(email, password)
@@ -126,7 +129,8 @@ public class Registration extends AppCompatActivity {
      * @param mUser The localUser that was just created
      */
     private void onAuthenticationSuccess(final FirebaseUser mUser) {
-        saveNewUser(mUser.getUid(), localUser.getName(), localUser.getEmail(), localUser.getPassword(), AuthLevel.valueOf((String) authSpinner.getSelectedItem()));
+        saveNewUser(mUser.getUid(), localUser.getName(), localUser.getEmail(),
+                localUser.getPassword(), AuthLevel.valueOf((String) authSpinner.getSelectedItem()));
         signOut();
         showProgressDialog();
         auth.signInWithEmailAndPassword(localUser.getEmail(), localUser.getPassword())
@@ -140,8 +144,10 @@ public class Registration extends AppCompatActivity {
                             Toast.makeText(Registration.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(localUser.getName()).build();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest
+                                    .Builder()
+                                    .setDisplayName(localUser.getName())
+                                    .build();
                             mUser.updateProfile(profileUpdates);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
@@ -158,7 +164,8 @@ public class Registration extends AppCompatActivity {
      * @param password  localUser's password
      * @param authLevel localUser's authentication level
      */
-    private void saveNewUser(String userId, String name, String email, String password, AuthLevel authLevel) {
+    private void saveNewUser(String userId, String name, String email, String password,
+                             AuthLevel authLevel) {
         User user = new User(userId, email, name, password, authLevel);
         DatabaseReference mRef = database.getReference("users");
         mRef.child(userId).setValue(user);
@@ -210,7 +217,7 @@ public class Registration extends AppCompatActivity {
      * Hides registering popup
      */
     private void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
+        if ((progressDialog != null) && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }

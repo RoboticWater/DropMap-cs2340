@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by arsenelakpa on 2/23/17.
+ * Describes the forms that water sources can take
  */
 
 public enum WaterType implements Serializable {

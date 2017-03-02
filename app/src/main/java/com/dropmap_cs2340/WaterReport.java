@@ -1,5 +1,6 @@
 package com.dropmap_cs2340;
-import android.location.Location;
+
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -13,12 +14,15 @@ public class WaterReport {
     private String id;
     private Double x;
     private Double y;
+    @Nullable
     private WaterType type;
+    @Nullable
     private WaterCondition condition;
 
     public WaterReport() {}
 
-    public WaterReport(String _id, String _reportName, double lat, double lon, WaterType _type, WaterCondition _condition) {
+    public WaterReport(String _id, String _reportName, double lat, double lon, WaterType _type,
+                       WaterCondition _condition) {
         id = _id;
         reportName = _reportName;
         x = lat;
@@ -27,8 +31,10 @@ public class WaterReport {
         condition = _condition;
     }
 
-    public WaterReport(String _id, String _reportName, double lat, double lon, String _type, String _condition) {
-        this(_id, _reportName, lat, lon, WaterType.valueOf(_type), WaterCondition.valueOf(_condition));
+    public WaterReport(String _id, String _reportName, double lat, double lon, String _type,
+                       String _condition) {
+        this(_id, _reportName, lat, lon, WaterType.valueOf(_type),
+                WaterCondition.valueOf(_condition));
     }
 
     @Override
