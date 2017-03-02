@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.LatLng;
 @SuppressWarnings("ConstructorWithTooManyParameters")
 class WaterReport {
     private String reportName;
+    private String user;
     private String id;
     private Double x;
     private Double y;
@@ -34,11 +35,12 @@ class WaterReport {
      * @param _type         kind of water source this is
      * @param _condition    condition of water
      */
-    WaterReport(String _id, String _reportName, double lat, double lon,
+    WaterReport(String _id, String _reportName, String _user, double lat, double lon,
                        @Nullable WaterType _type,
                        @Nullable WaterCondition _condition) {
         id = _id;
         reportName = _reportName;
+        user = _user;
         x = lat;
         y = lon;
         type = _type;
@@ -54,9 +56,9 @@ class WaterReport {
      * @param _type         kind of water source this is in string form
      * @param _condition    condition of water in string form
      */
-    WaterReport(String _id, String _reportName, double lat, double lon, String _type,
+    WaterReport(String _id, String _reportName, String _user, double lat, double lon, String _type,
                        String _condition) {
-        this(_id, _reportName, lat, lon, WaterType.valueOf(_type),
+        this(_id, _reportName, _user, lat, lon, WaterType.valueOf(_type),
                 WaterCondition.valueOf(_condition));
     }
 
