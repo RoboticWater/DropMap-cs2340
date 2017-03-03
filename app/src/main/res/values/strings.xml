@@ -58,4 +58,7 @@
     <string name="title_location">Location</string>
     <string name="prompt_latitude">Latitude</string>
     <string name="prompt_longitude">Longitude</string>
+    <string name="title_id">ID</string>
+    <string name="title_source">Source</string>
+    <string name="button_view_reports">View Reports</string>
 </resources>

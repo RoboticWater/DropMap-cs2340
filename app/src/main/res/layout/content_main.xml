@@ -34,14 +34,14 @@
         android:onClick="onProfileClicked"/>
 
     <Button
-        android:text="Map"
+        android:id="@+id/button_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button_map"
-        android:onClick="onMapClicked"/>
+        android:onClick="onMapClicked"
+        android:text="Map" />
 
     <Button
-        android:text="View Reports"
+        android:text="@string/button_view_reports"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_view_reports"

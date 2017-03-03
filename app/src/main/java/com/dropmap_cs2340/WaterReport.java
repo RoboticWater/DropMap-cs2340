@@ -76,6 +76,14 @@ class WaterReport {
         this.reportName = reportName;
     }
 
+    String getUser() {
+        return user;
+    }
+
+    void setUser(String user) {
+        this.user = user;
+    }
+
     String getId() {
         return id;
     }

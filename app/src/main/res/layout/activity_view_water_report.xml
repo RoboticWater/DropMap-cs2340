@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/title_id"
-            android:text="ID" />
+            android:text="@string/title_id" />
 
         <TextView
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
         android:paddingBottom="@dimen/item_spacing">
 
         <TextView
-            android:text="Source"
+            android:text="@string/title_source"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/title_source" />

@@ -193,10 +193,10 @@ public class EditProfile extends AppCompatActivity {
     private boolean validateForm() {
         boolean valid = true;
 
-        String name = userEdit.getText().toString();
-        String email = emailEdit.getText().toString();
-        String curpass = curPassEdit.getText().toString();
-        String newpass = newPassEdit.getText().toString();
+        String name        = userEdit.getText().toString();
+        String email       = emailEdit.getText().toString();
+        String currentPass = curPassEdit.getText().toString();
+        String newPass     = newPassEdit.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
             userEdit.setError(getString(R.string.error_field_required));
@@ -212,7 +212,7 @@ public class EditProfile extends AppCompatActivity {
             emailEdit.setError(null);
         }
 
-        if (TextUtils.isEmpty(curpass) && !TextUtils.isEmpty(newpass)) {
+        if (TextUtils.isEmpty(currentPass) && !TextUtils.isEmpty(newPass)) {
             curPassEdit.setError(getString(R.string.error_field_required));
             valid = false;
         } else {

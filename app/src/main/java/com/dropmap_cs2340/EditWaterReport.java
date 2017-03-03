@@ -168,6 +168,7 @@ public class EditWaterReport extends AppCompatActivity {
             ref = reports.push();
             WaterReport wr = new WaterReport(ref.getKey(),
                     nameEdit.getText().toString(),
+                    user.getUid(),
                     Double.parseDouble(xEdit.getText().toString()),
                     Double.parseDouble(yEdit.getText().toString()),
                     (String) typeSpinner.getSelectedItem(),
