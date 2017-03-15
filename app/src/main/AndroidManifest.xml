@@ -45,6 +45,9 @@
             android:name=".ViewWaterReport"
             android:label="@string/title_activity_water_report"/>
         <activity
+            android:name=".UpdateWaterReport"
+            android:label="UpdateWaterReport"/>
+        <activity
             android:name=".Map"
             android:label="@string/title_activity_map"
             android:theme="@style/AppTheme.NoActionBar"/>

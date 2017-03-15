@@ -9,8 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dropmap_cs2340.ViewWaterReport">
-
+    tools:context="com.dropmap_cs2340.UpdateWaterReport"
+    tools:showIn="@layout/activity_update_water_report">
 
     <LinearLayout
         android:orientation="vertical"
@@ -95,11 +95,25 @@
             tools:text="Condition"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     </LinearLayout>
-
-    <Button
-        android:text="Update Water Report"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/update_water_report" />
+        android:paddingBottom="@dimen/item_spacing">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Purity" />
+
+        <EditText
+            android:id="@+id/purityValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Purity Value" />
+    </LinearLayout>
 
 </LinearLayout>

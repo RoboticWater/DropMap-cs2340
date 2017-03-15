@@ -2,13 +2,16 @@ package com.dropmap_cs2340;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,13 +23,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Locale;
+
 /**
  * Water report viewing screen
  */
 @SuppressWarnings("ChainedMethodCall")
-public class ViewWaterReport extends AppCompatActivity {
+public class UpdateWaterReport extends AppCompatActivity {
 
-    private final String TAG = "ViewWaterReport";
+    private final String TAG = "UpdateWaterReport";
 
     /**
      * Firebase Hooks
@@ -43,6 +48,7 @@ public class ViewWaterReport extends AppCompatActivity {
     private TextView sourceText;
     private TextView typeText;
     private TextView conditionText;
+    private EditText purityValue;
 
     private String rid;
     private String authLevel;
@@ -50,7 +56,7 @@ public class ViewWaterReport extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_water_report);
+        setContentView(R.layout.activity_update_water_report);
 
         rid = getIntent().getStringExtra("report_id");
 
@@ -74,38 +80,20 @@ public class ViewWaterReport extends AppCompatActivity {
         sourceText = (TextView) findViewById(R.id.source_text);
         typeText  = (TextView) findViewById(R.id.type_text);
         conditionText = (TextView) findViewById(R.id.condition_text);
-        databaseStuff();
+        purityValue = (EditText) findViewById(R.id.purityValue);
 
-        user = auth.getCurrentUser();
-        DatabaseReference ref = database.getReference("users").child(user.getUid());
-        ref.addValueEventListener(new ValueEventListener() {
+        if (rid != null) {
+            databaseStuff();
+        }
+
+
+        FloatingActionButton saveFab = (FloatingActionButton) findViewById(R.id.save_fab);
+        saveFab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User u = dataSnapshot.getValue(User.class);
-                authLevel = u.getAuthLevel();
-                Button updateReport = (Button) findViewById(R.id.update_water_report);
-                updateReport.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (authLevel.equals("Worker") || authLevel.equals("Manager")) {
-                            Intent i = new Intent(getApplicationContext(), UpdateWaterReport.class);
-                            i.putExtra("report_id", rid);
-                            startActivity(i);
-                        } else {
-                            Toast.makeText(ViewWaterReport.this, "You are not authorized to edit this report.",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onClick(View v) {
+                saveChanges();
             }
         });
-
 
     }
 
@@ -143,6 +131,7 @@ public class ViewWaterReport extends AppCompatActivity {
 
     @SuppressWarnings("FeatureEnvy")
     private void databaseStuff() {
+
         Log.d("ReportView", rid);
         database.getReference().child("waterReports").child(rid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -159,5 +148,44 @@ public class ViewWaterReport extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+    }
+
+    /**
+     * If the input data is valid, updates Firebase data and Auth data
+     * (latitude, longitude, condition)
+     */
+    private void saveChanges() {
+        if (!validateForm()) {
+            return;
+        }
+        DatabaseReference ref;
+        DatabaseReference reports = database.getReference("waterReports");
+        if (rid == null) {
+            ref = reports.push();
+        } else {
+            ref = reports.child(rid);
+            ref.child("purity").setValue(purityValue.getText().toString());
+        }
+        finish();
+    }
+
+    /**
+     * Checks input for valid entries
+     * @return whether or not any input is invalid
+     */
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String purity = purityValue.getText().toString();
+        Log.d("EditProfile", purity);
+
+        if (TextUtils.isEmpty(purity)) {
+            purityValue.setError("This field is required");
+            valid = false;
+        } else {
+            purityValue.setError(null);
+        }
+
+        return valid;
     }
 }
