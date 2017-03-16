@@ -71,4 +71,5 @@
     <string name="title_id">ID</string>
     <string name="title_source">Source</string>
     <string name="button_view_reports">View Reports</string>
+    <string name="button_update_water_report">Update Water Report</string>
 </resources>

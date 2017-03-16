@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Describes the forms that water sources can take
  */
 
-enum WaterType implements Serializable {
+public enum WaterType implements Serializable {
     Bottled, Well, Stream, Lake, Spring, Other;
 
     /**

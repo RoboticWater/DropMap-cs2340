@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Austin on 2/23/2017.
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 @SuppressWarnings("ChainedMethodCall")
 public class ViewReportListActivity extends AppCompatActivity {
     private final String TAG = "ReportList";
-    private ArrayList<WaterReport> waterReports;
+    private List<WaterReport> waterReports;
 
     /**
      * Firebase Hooks
@@ -46,6 +47,8 @@ public class ViewReportListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report_list);
         mainView = (LinearLayout) findViewById(R.id.main_layout);
+
+        waterReports = new ArrayList<>();
 
         auth     = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {

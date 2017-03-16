@@ -102,17 +102,17 @@
         android:paddingBottom="@dimen/item_spacing">
 
         <TextView
-            android:text="@string/title_condition"
+            android:text="@string/title_virus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/title_virus" />
 
         <TextView
+            android:id="@+id/virus_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/virus_text"
-            tools:text="Condition"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:text="Vir PPM" />
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -121,21 +121,21 @@
         android:paddingBottom="@dimen/item_spacing">
 
         <TextView
-            android:text="@string/title_condition"
+            android:text="@string/title_contaminant"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/title_contaminant" />
 
         <TextView
+            android:id="@+id/contaminant_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/contaminant_text"
-            tools:text="Condition"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:text="Cont PPM" />
     </LinearLayout>
 
     <Button
-        android:text="Update Water Report"
+        android:text="@string/button_update_water_report"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/update_water_report" />

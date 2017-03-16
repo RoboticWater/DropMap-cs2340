@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by arsenelakpa on 2/23/17.
  * Describes the conditions of water sources
  */
-enum WaterCondition implements Serializable {
+public enum WaterCondition implements Serializable {
     Waste, TreatableClear, TreatableMuddy, Potable;
 
     /**

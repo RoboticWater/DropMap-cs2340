@@ -10,18 +10,18 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 @SuppressWarnings("ConstructorWithTooManyParameters")
-class WaterReport {
+public class WaterReport {
     private String reportName;
     private String user;
     private String id;
-    private Double x;
-    private Double y;
+    private double x;
+    private double y;
     @Nullable
     private WaterType type;
     @Nullable
     private WaterCondition condition;
-    private int virusPPM;
-    private int contaminantPPM;
+    private double virusPPM;
+    private double contaminantPPM;
 
     /**
      * Creates empty water report for Firebase
@@ -30,16 +30,18 @@ class WaterReport {
 
     /**
      * Creates water report
-     * @param _id           unique id of report
-     * @param _reportName   name of report
-     * @param lat           latitude location
-     * @param lon           longitude location
-     * @param _type         kind of water source this is
-     * @param _condition    condition of water
+     * @param _id             unique id of report
+     * @param _reportName     name of report
+     * @param lat             latitude location
+     * @param lon             longitude location
+     * @param _type           kind of water source this is
+     * @param _condition      condition of water
+     * @param _virusPPM       parts per millions of virus
+     * @param _contaminantPPM parts per millions of contaminant
      */
     WaterReport(String _id, String _reportName, String _user, double lat, double lon,
-                       @Nullable WaterType _type,
-                       @Nullable WaterCondition _condition) {
+                @Nullable WaterType _type, @Nullable WaterCondition _condition,
+                double _virusPPM, double _contaminantPPM) {
         id = _id;
         reportName = _reportName;
         user = _user;
@@ -47,8 +49,8 @@ class WaterReport {
         y = lon;
         type = _type;
         condition = _condition;
-        virusPPM = -1;
-        contaminantPPM = -1;
+        virusPPM = _virusPPM;
+        contaminantPPM = _contaminantPPM;
     }
 
     /**
@@ -59,11 +61,28 @@ class WaterReport {
      * @param lon           longitude location
      * @param _type         kind of water source this is in string form
      * @param _condition    condition of water in string form
+     * @param _virusPPM       parts per millions of virus
+     * @param _contaminantPPM parts per millions of contaminant
      */
     WaterReport(String _id, String _reportName, String _user, double lat, double lon, String _type,
-                       String _condition) {
+                       String _condition, double _virusPPM, double _contaminantPPM) {
         this(_id, _reportName, _user, lat, lon, WaterType.valueOf(_type),
-                WaterCondition.valueOf(_condition));
+                WaterCondition.valueOf(_condition), _virusPPM, _contaminantPPM);
+    }
+
+    /**
+     * Creates simple water report
+     * @param _id           unique id of report
+     * @param _reportName   name of report
+     * @param lat           latitude location
+     * @param lon           longitude location
+     * @param _type         kind of water source this is in string form
+     * @param _condition    condition of water in string form
+     */
+    WaterReport(String _id, String _reportName, String _user, double lat, double lon, String _type,
+                String _condition) {
+        this(_id, _reportName, _user, lat, lon, WaterType.valueOf(_type),
+                WaterCondition.valueOf(_condition),-1, -1);
     }
 
     @Override
@@ -148,19 +167,19 @@ class WaterReport {
         }
     }
 
-    public int getVirusPPM() {
+    public double getVirusPPM() {
         return virusPPM;
     }
 
-    public void setVirusPPM(int _virusPPM) {
+    public void setVirusPPM(double _virusPPM) {
         virusPPM = _virusPPM;
     }
 
-    public int getContaminantPPM() {
+    public double getContaminantPPM() {
         return contaminantPPM;
     }
 
-    public void setContaminantPPM(int _contaminantPPM) {
+    public void setContaminantPPM(double _contaminantPPM) {
         contaminantPPM = _contaminantPPM;
     }
 

@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Locale;
+
 /**
  * Water report viewing screen
  */
@@ -158,8 +160,18 @@ public class ViewWaterReport extends AppCompatActivity {
                         typeText.setText(wr.getType());
                         conditionText.setText(wr.getCondition());
                         sourceText.setText(wr.getX() + ", " + wr.getY());
-                        virusText.setText(wr.getVirusPPM());
-                        contaminantText.setText(wr.getContaminantPPM());
+                        if (wr.getVirusPPM() != -1) {
+                            virusText.setText(String.format(Locale.getDefault(), "%f",
+                                    wr.getVirusPPM()));
+                        } else {
+                            virusText.setVisibility(View.GONE);
+                        }
+                        if (wr.getContaminantPPM() != -1) {
+                            contaminantText.setText(String.format(Locale.getDefault(), "%f",
+                                    wr.getContaminantPPM()));
+                        } else {
+                            virusText.setVisibility(View.GONE);
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
