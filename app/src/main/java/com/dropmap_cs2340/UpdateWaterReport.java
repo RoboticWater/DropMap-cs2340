@@ -48,7 +48,8 @@ public class UpdateWaterReport extends AppCompatActivity {
     private TextView sourceText;
     private TextView typeText;
     private TextView conditionText;
-    private EditText purityValue;
+    private EditText virusValue;
+    private EditText contaminantValue;
 
     private String rid;
     private String authLevel;
@@ -80,7 +81,8 @@ public class UpdateWaterReport extends AppCompatActivity {
         sourceText = (TextView) findViewById(R.id.source_text);
         typeText  = (TextView) findViewById(R.id.type_text);
         conditionText = (TextView) findViewById(R.id.condition_text);
-        purityValue = (EditText) findViewById(R.id.purityValue);
+        virusValue = (EditText) findViewById(R.id.virusValue);
+        contaminantValue = (EditText) findViewById(R.id.contaminantValue);
 
         if (rid != null) {
             databaseStuff();
@@ -164,7 +166,8 @@ public class UpdateWaterReport extends AppCompatActivity {
             ref = reports.push();
         } else {
             ref = reports.child(rid);
-            ref.child("purity").setValue(purityValue.getText().toString());
+            ref.child("virusPPM").setValue(Integer.parseInt(virusValue.getText().toString()));
+            ref.child("contaminantPPM").setValue(Integer.parseInt(contaminantValue.getText().toString()));
         }
         finish();
     }
@@ -176,14 +179,22 @@ public class UpdateWaterReport extends AppCompatActivity {
     private boolean validateForm() {
         boolean valid = true;
 
-        String purity = purityValue.getText().toString();
-        Log.d("EditProfile", purity);
+        String virus = virusValue.getText().toString();
+        String contaminant = contaminantValue.getText().toString();
+        Log.d("EditProfile", virus + ", " + contaminant);
 
-        if (TextUtils.isEmpty(purity)) {
-            purityValue.setError("This field is required");
+        if (TextUtils.isEmpty(virus)) {
+            virusValue.setError("This field is required");
             valid = false;
         } else {
-            purityValue.setError(null);
+            virusValue.setError(null);
+        }
+
+        if (TextUtils.isEmpty(contaminant)) {
+            contaminantValue.setError("This field is required");
+            valid = false;
+        } else {
+            contaminantValue.setError(null);
         }
 
         return valid;

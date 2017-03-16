@@ -43,6 +43,8 @@ public class ViewWaterReport extends AppCompatActivity {
     private TextView sourceText;
     private TextView typeText;
     private TextView conditionText;
+    private TextView virusText;
+    private TextView contaminantText;
 
     private String rid;
     private String authLevel;
@@ -74,6 +76,8 @@ public class ViewWaterReport extends AppCompatActivity {
         sourceText = (TextView) findViewById(R.id.source_text);
         typeText  = (TextView) findViewById(R.id.type_text);
         conditionText = (TextView) findViewById(R.id.condition_text);
+        virusText = (TextView) findViewById(R.id.virus_text);
+        contaminantText = (TextView) findViewById(R.id.contaminant_text);
         databaseStuff();
 
         user = auth.getCurrentUser();
@@ -154,6 +158,8 @@ public class ViewWaterReport extends AppCompatActivity {
                         typeText.setText(wr.getType());
                         conditionText.setText(wr.getCondition());
                         sourceText.setText(wr.getX() + ", " + wr.getY());
+                        virusText.setText(wr.getVirusPPM());
+                        contaminantText.setText(wr.getContaminantPPM());
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {

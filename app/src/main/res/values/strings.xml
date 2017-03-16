@@ -43,6 +43,16 @@
     <string name="title_auth_level">Authorization Level</string>
     <string name="title_current_password">Current Password</string>
 
+    <!--Update Report-->
+    <string name="title_virus">Virus PPM</string>
+    <string name="title_contaminant">Contaminant PPM</string>
+
+    <!--View Report List-->
+    <string name="title_filter">Filter Water Reports</string>
+    <string name="button_all">All</string>
+    <string name="button_source">Source</string>
+    <string name="button_purity">Purity</string>
+
     <!--Errors-->
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

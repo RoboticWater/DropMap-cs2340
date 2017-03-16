@@ -20,6 +20,8 @@ class WaterReport {
     private WaterType type;
     @Nullable
     private WaterCondition condition;
+    private int virusPPM;
+    private int contaminantPPM;
 
     /**
      * Creates empty water report for Firebase
@@ -45,6 +47,8 @@ class WaterReport {
         y = lon;
         type = _type;
         condition = _condition;
+        virusPPM = -1;
+        contaminantPPM = -1;
     }
 
     /**
@@ -141,6 +145,30 @@ class WaterReport {
             condition = null;
         } else {
             condition = WaterCondition.valueOf(_condition);
+        }
+    }
+
+    public int getVirusPPM() {
+        return virusPPM;
+    }
+
+    public void setVirusPPM(int _virusPPM) {
+        virusPPM = _virusPPM;
+    }
+
+    public int getContaminantPPM() {
+        return contaminantPPM;
+    }
+
+    public void setContaminantPPM(int _contaminantPPM) {
+        contaminantPPM = _contaminantPPM;
+    }
+
+    public int getFormat() {
+        if ((virusPPM == -1) && (contaminantPPM == -1)) {
+            return 1;
+        } else {
+            return 2;
         }
     }
 }

@@ -105,15 +105,35 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Purity" />
+            android:text="@string/title_virus" />
 
         <EditText
-            android:id="@+id/purityValue"
+            android:id="@+id/virusValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Purity Value" />
+            android:text="@string/title_virus" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/item_spacing">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_contaminant" />
+
+        <EditText
+            android:id="@+id/contaminantValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/title_contaminant" />
     </LinearLayout>
 
 </LinearLayout>

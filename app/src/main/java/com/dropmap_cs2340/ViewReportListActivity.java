@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 /**
  * Created by Austin on 2/23/2017.
  * View all water availability reports as a list and show details
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 @SuppressWarnings("ChainedMethodCall")
 public class ViewReportListActivity extends AppCompatActivity {
     private final String TAG = "ReportList";
+    private ArrayList<WaterReport> waterReports;
 
     /**
      * Firebase Hooks
@@ -74,6 +77,7 @@ public class ViewReportListActivity extends AppCompatActivity {
                                 }
                             });
                             mainView.addView(t);
+                            waterReports.add(wr);
                         }
                     }
                     @Override
@@ -105,5 +109,51 @@ public class ViewReportListActivity extends AppCompatActivity {
         i.putExtra("report_id", rid);
         startActivity(i);
 //        finish();
+    }
+
+    /**
+     * Resets view and adds in reports matching the filter selected
+     * Filters- 0:all, 1:source, 2:purity
+     * @param type the int representation of the filter
+     */
+    private void filterReports(int type) {
+        mainView.removeAllViews();
+        for (final WaterReport wr : waterReports) {
+            if ((type == 0) || (type == wr.getFormat())) {
+                Button t = new Button(getApplicationContext());
+                t.setText(wr.getId());
+                t.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openReport(wr.getId());
+                    }
+                });
+                mainView.addView(t);
+            }
+        }
+    }
+
+    /**
+     * Event handler for when all reports radio button is selected
+     * @param view current view
+     */
+    public void onAllClicked(View view) {
+        filterReports(0);
+    }
+
+    /**
+     * Event handler for when source reports radio button is selected
+     * @param view current view
+     */
+    public void onSourceClicked(View view) {
+        filterReports(1);
+    }
+
+    /**
+     * Event handler for when purity reports radio button is selected
+     * @param view current view
+     */
+    public void onPurityClicked(View view) {
+        filterReports(2);
     }
 }

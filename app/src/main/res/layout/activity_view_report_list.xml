@@ -8,13 +8,48 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dropmap_cs2340.ViewReportListActivity">
+    tools:context="com.dropmap_cs2340.ViewReportListActivity" >
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/main_layout">
+        android:id="@+id/outer_shell_layout" >
 
-    </LinearLayout>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroup"
+            android:text="@string/title_filter" >
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onAllClicked"
+                android:text="@string/button_all"
+                android:id="@+id/radioAll"
+                android:checked="true" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSourceClicked"
+                android:text="@string/button_source"
+                android:id="@+id/radioSource" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onPurityClicked"
+                android:text="@string/button_purity"
+                android:id="@+id/radioPurity" />
+        </RadioGroup>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_layout"
+            android:layout_below="@id/radioGroup" >
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
