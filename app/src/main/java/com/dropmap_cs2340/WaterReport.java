@@ -71,7 +71,7 @@ public class WaterReport {
     }
 
     /**
-     * Creates simple water report
+     * Creates simple water report, i.e. no PPM data
      * @param _id           unique id of report
      * @param _reportName   name of report
      * @param lat           latitude location
