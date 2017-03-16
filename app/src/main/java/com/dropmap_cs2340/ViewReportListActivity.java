@@ -122,7 +122,7 @@ public class ViewReportListActivity extends AppCompatActivity {
     private void filterReports(int type) {
         mainView.removeAllViews();
         for (final WaterReport wr : waterReports) {
-            if ((type == 0) || (type == wr.format())) {
+            if ((type == 0) || (type == (wr.formatPurity() ? 2 : 1))) {
                 Button t = new Button(getApplicationContext());
                 t.setText(wr.getId());
                 t.setOnClickListener(new View.OnClickListener() {

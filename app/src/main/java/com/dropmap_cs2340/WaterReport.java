@@ -182,4 +182,8 @@ public class WaterReport {
     public void setContaminantPPM(double _contaminantPPM) {
         contaminantPPM = _contaminantPPM;
     }
+
+    public boolean formatPurity() {
+        return !((-1 == getContaminantPPM()) && (-1 == getVirusPPM()));
+    }
 }
