@@ -166,8 +166,9 @@ public class UpdateWaterReport extends AppCompatActivity {
             ref = reports.push();
         } else {
             ref = reports.child(rid);
-            ref.child("virusPPM").setValue(Integer.parseInt(virusValue.getText().toString()));
-            ref.child("contaminantPPM").setValue(Integer.parseInt(contaminantValue.getText().toString()));
+            ref.child("virusPPM").setValue(Double.parseDouble(virusValue.getText().toString()));
+            ref.child("contaminantPPM").setValue(Double.parseDouble(contaminantValue.getText()
+                    .toString()));
         }
         finish();
     }

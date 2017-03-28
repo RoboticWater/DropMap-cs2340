@@ -128,6 +128,12 @@ public class ViewWaterReport extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        databaseStuff();
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         return super.onPrepareOptionsMenu(menu);
@@ -160,13 +166,13 @@ public class ViewWaterReport extends AppCompatActivity {
                         typeText.setText(wr.getType());
                         conditionText.setText(wr.getCondition());
                         sourceText.setText(wr.getX() + ", " + wr.getY());
-                        if (wr.getVirusPPM() != -1) {
+                        if (wr.getVirusPPM() > -1) {
                             virusText.setText(String.format(Locale.getDefault(), "%f",
                                     wr.getVirusPPM()));
                         } else {
                             virusText.setVisibility(View.GONE);
                         }
-                        if (wr.getContaminantPPM() != -1) {
+                        if (wr.getContaminantPPM() > -1) {
                             contaminantText.setText(String.format(Locale.getDefault(), "%f",
                                     wr.getContaminantPPM()));
                         } else {

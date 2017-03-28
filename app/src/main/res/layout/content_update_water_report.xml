@@ -112,9 +112,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/title_virus" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -132,8 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/title_contaminant" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
 </LinearLayout>

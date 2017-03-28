@@ -106,6 +106,7 @@ public class EditWaterReport extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             WaterReport wr = dataSnapshot.getValue(WaterReport.class);
+                            nameEdit.setText(wr.getReportName());
                             xEdit.setText(String.format(Locale.getDefault(), "%f", wr.getX()));
                             yEdit.setText(String.format(Locale.getDefault(), "%f", wr.getY()));
                             typeSpinner.setSelection(WaterType.valueOf(wr.getType()).ordinal());
