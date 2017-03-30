@@ -1,8 +1,12 @@
 package com.dropmap_cs2340;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -40,6 +44,10 @@ public class EditWaterReport extends AppCompatActivity {
     private Spinner  typeSpinner;
     private Spinner  conditionSpinner;
 
+    LocationListener locationListener;
+    LocationManager locationManager;
+    Location loc;
+
     /**
      * Firebase Hooks
      * Communicates with Firebase authentication and database services
@@ -49,13 +57,35 @@ public class EditWaterReport extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseAuth.AuthStateListener authListener;
 
-
     private String rid;
 
     @SuppressWarnings("FeatureEnvy")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                loc = location;
+                Log.d("OoLocationChange", "--------"+loc.toString());
+                xEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLatitude()));
+                yEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLongitude()));
+                locationManager.removeUpdates(this);
+            }
+
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+                Log.v(TAG, "Status changed: " + s);
+            }
+
+            public void onProviderEnabled(String s) {
+                Log.e(TAG, "PROVIDER DISABLED: " + s);
+            }
+
+            public void onProviderDisabled(String s) {
+                Log.e(TAG, "PROVIDER DISABLED: " + s);
+            }
+        };
 
         auth     = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -124,6 +154,16 @@ public class EditWaterReport extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
+
+        ContextCompat.checkSelfPermission(getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
+                locationListener);
+        loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Log.d(TAG, loc.toString());
+        xEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLatitude()));
+        yEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLongitude()));
+
     }
 
     @Override

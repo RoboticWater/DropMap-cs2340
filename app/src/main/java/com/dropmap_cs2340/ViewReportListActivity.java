@@ -1,9 +1,11 @@
 package com.dropmap_cs2340;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -72,7 +74,7 @@ public class ViewReportListActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             final WaterReport wr = snapshot.getValue(WaterReport.class);
                             Button t = new Button(getApplicationContext());
-                            t.setText(wr.getId());
+                            t.setText(wr.getReportName());
                             t.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -124,7 +126,7 @@ public class ViewReportListActivity extends AppCompatActivity {
         for (final WaterReport wr : waterReports) {
             if ((type == 0) || (type == (wr.formatPurity() ? 2 : 1))) {
                 Button t = new Button(getApplicationContext());
-                t.setText(wr.getId());
+                t.setText(wr.getReportName());
                 t.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
