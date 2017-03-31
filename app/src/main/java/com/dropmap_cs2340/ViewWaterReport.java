@@ -25,7 +25,6 @@ import java.util.Locale;
 /**
  * Water report viewing screen
  */
-@SuppressWarnings("ChainedMethodCall")
 public class ViewWaterReport extends AppCompatActivity {
 
     private final String TAG = "ViewWaterReport";
@@ -34,7 +33,6 @@ public class ViewWaterReport extends AppCompatActivity {
      * Firebase Hooks
      */
     private FirebaseAuth     auth;
-    private FirebaseUser     user;
     private FirebaseDatabase database;
     private FirebaseAuth.AuthStateListener authListener;
 
@@ -47,6 +45,8 @@ public class ViewWaterReport extends AppCompatActivity {
     private TextView conditionText;
     private TextView virusText;
     private TextView contaminantText;
+    private TextView virusTitle;
+    private TextView contaminantTitle;
 
     private String rid;
     private String authLevel;
@@ -58,6 +58,7 @@ public class ViewWaterReport extends AppCompatActivity {
 
         rid = getIntent().getStringExtra("report_id");
 
+        FirebaseUser user;
         auth     = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -80,7 +81,9 @@ public class ViewWaterReport extends AppCompatActivity {
         conditionText = (TextView) findViewById(R.id.condition_text);
         virusText = (TextView) findViewById(R.id.virus_text);
         contaminantText = (TextView) findViewById(R.id.contaminant_text);
-        databaseStuff();
+        virusTitle = (TextView) findViewById(R.id.title_virus);
+        contaminantTitle = (TextView) findViewById(R.id.title_contaminant);
+        queryDatabase();
 
         user = auth.getCurrentUser();
         DatabaseReference ref = database.getReference("users").child(user.getUid());
@@ -93,12 +96,13 @@ public class ViewWaterReport extends AppCompatActivity {
                 updateReport.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (authLevel.equals("Worker") || authLevel.equals("Manager")) {
+                        if ("Worker".equals(authLevel) || "Manager".equals(authLevel)) {
                             Intent i = new Intent(getApplicationContext(), UpdateWaterReport.class);
                             i.putExtra("report_id", rid);
                             startActivity(i);
                         } else {
-                            Toast.makeText(ViewWaterReport.this, "You are not authorized to edit this report.",
+                            Toast.makeText(ViewWaterReport.this,
+                                    "You are not authorized to edit this report.",
                                     Toast.LENGTH_SHORT).show();
 
                         }
@@ -130,7 +134,7 @@ public class ViewWaterReport extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        databaseStuff();
+        queryDatabase();
     }
 
     @Override
@@ -152,9 +156,7 @@ public class ViewWaterReport extends AppCompatActivity {
         }
     }
 
-
-    @SuppressWarnings("FeatureEnvy")
-    private void databaseStuff() {
+    private void queryDatabase() {
         Log.d("ReportView", rid);
         database.getReference().child("waterReports").child(rid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -166,22 +168,23 @@ public class ViewWaterReport extends AppCompatActivity {
                         typeText.setText(wr.getType());
                         conditionText.setText(wr.getCondition());
                         sourceText.setText(wr.getX() + ", " + wr.getY());
-                        if (wr.getVirusPPM() > -1) {
+                        if (wr.getVirusPPM() >= 0) {
                             virusText.setText(String.format(Locale.getDefault(), "%f",
                                     wr.getVirusPPM()));
                         } else {
                             virusText.setVisibility(View.GONE);
+                            virusTitle.setVisibility(View.GONE);
                         }
-                        if (wr.getContaminantPPM() > -1) {
+                        if (wr.getContaminantPPM() >= 0) {
                             contaminantText.setText(String.format(Locale.getDefault(), "%f",
                                     wr.getContaminantPPM()));
                         } else {
-                            virusText.setVisibility(View.GONE);
+                            contaminantText.setVisibility(View.GONE);
+                            contaminantTitle.setVisibility(View.GONE);
                         }
                     }
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
+                    public void onCancelled(DatabaseError databaseError) {}
                 });
     }
 }

@@ -9,8 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
  * Class containing water data
  */
 
-@SuppressWarnings("ConstructorWithTooManyParameters")
-public class WaterReport {
+class WaterReport {
     private String reportName;
     private String user;
     private String id;
@@ -26,63 +25,9 @@ public class WaterReport {
     /**
      * Creates empty water report for Firebase
      */
-    public WaterReport() {}
-
-    /**
-     * Creates water report
-     * @param _id             unique id of report
-     * @param _reportName     name of report
-     * @param lat             latitude location
-     * @param lon             longitude location
-     * @param _type           kind of water source this is
-     * @param _condition      condition of water
-     * @param _virusPPM       parts per millions of virus
-     * @param _contaminantPPM parts per millions of contaminant
-     */
-    WaterReport(String _id, String _reportName, String _user, double lat, double lon,
-                @Nullable WaterType _type, @Nullable WaterCondition _condition,
-                double _virusPPM, double _contaminantPPM) {
-        id = _id;
-        reportName = _reportName;
-        user = _user;
-        x = lat;
-        y = lon;
-        type = _type;
-        condition = _condition;
-        virusPPM = _virusPPM;
-        contaminantPPM = _contaminantPPM;
-    }
-
-    /**
-     * Creates water report
-     * @param _id           unique id of report
-     * @param _reportName   name of report
-     * @param lat           latitude location
-     * @param lon           longitude location
-     * @param _type         kind of water source this is in string form
-     * @param _condition    condition of water in string form
-     * @param _virusPPM       parts per millions of virus
-     * @param _contaminantPPM parts per millions of contaminant
-     */
-    WaterReport(String _id, String _reportName, String _user, double lat, double lon, String _type,
-                       String _condition, double _virusPPM, double _contaminantPPM) {
-        this(_id, _reportName, _user, lat, lon, WaterType.valueOf(_type),
-                WaterCondition.valueOf(_condition), _virusPPM, _contaminantPPM);
-    }
-
-    /**
-     * Creates simple water report, i.e. no PPM data
-     * @param _id           unique id of report
-     * @param _reportName   name of report
-     * @param lat           latitude location
-     * @param lon           longitude location
-     * @param _type         kind of water source this is in string form
-     * @param _condition    condition of water in string form
-     */
-    WaterReport(String _id, String _reportName, String _user, double lat, double lon, String _type,
-                String _condition) {
-        this(_id, _reportName, _user, lat, lon, WaterType.valueOf(_type),
-                WaterCondition.valueOf(_condition),-1, -1);
+    WaterReport() {
+        virusPPM = -1;
+        contaminantPPM = -1;
     }
 
     @Override
@@ -119,7 +64,8 @@ public class WaterReport {
         return x;
     }
 
-    void setX(Double x) {
+
+    void setX(double x) {
         this.x = x;
     }
 
@@ -127,7 +73,7 @@ public class WaterReport {
         return y;
     }
 
-    void setY(Double y) {
+    void setY(double y) {
         this.y = y;
     }
 
@@ -171,19 +117,19 @@ public class WaterReport {
         return virusPPM;
     }
 
-    public void setVirusPPM(double _virusPPM) {
-        virusPPM = _virusPPM;
+    public void setVirusPPM(double virusPPM) {
+        this.virusPPM = virusPPM;
     }
 
     public double getContaminantPPM() {
         return contaminantPPM;
     }
 
-    public void setContaminantPPM(double _contaminantPPM) {
-        contaminantPPM = _contaminantPPM;
+    public void setContaminantPPM(double contaminantPPM) {
+        this.contaminantPPM = contaminantPPM;
     }
 
     public boolean formatPurity() {
-        return !((-1 == getContaminantPPM()) && (-1 == getVirusPPM()));
+        return !((-1 == contaminantPPM) && (-1 == virusPPM));
     }
 }

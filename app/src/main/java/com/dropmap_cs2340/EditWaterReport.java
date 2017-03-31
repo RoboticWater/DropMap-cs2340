@@ -31,7 +31,6 @@ import java.util.Locale;
 /**
  * Screen for creating and editing water report forms
  */
-@SuppressWarnings("ChainedMethodCall")
 public class EditWaterReport extends AppCompatActivity {
     private static final String TAG = "EditWaterReport";
 
@@ -44,9 +43,9 @@ public class EditWaterReport extends AppCompatActivity {
     private Spinner  typeSpinner;
     private Spinner  conditionSpinner;
 
-    LocationListener locationListener;
-    LocationManager locationManager;
-    Location loc;
+    private LocationListener locationListener;
+    private LocationManager locationManager;
+    private Location loc;
 
     /**
      * Firebase Hooks
@@ -59,29 +58,32 @@ public class EditWaterReport extends AppCompatActivity {
 
     private String rid;
 
-    @SuppressWarnings("FeatureEnvy")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        locationManager = (LocationManager) getApplicationContext()
+                .getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
+            @Override
             public void onLocationChanged(Location location) {
                 loc = location;
-                Log.d("OoLocationChange", "--------"+loc.toString());
+                Log.d("OoLocationChange", loc.toString());
                 xEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLatitude()));
                 yEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLongitude()));
-                locationManager.removeUpdates(this);
             }
 
+            @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
                 Log.v(TAG, "Status changed: " + s);
             }
 
+            @Override
             public void onProviderEnabled(String s) {
                 Log.e(TAG, "PROVIDER DISABLED: " + s);
             }
 
+            @Override
             public void onProviderDisabled(String s) {
                 Log.e(TAG, "PROVIDER DISABLED: " + s);
             }
@@ -207,13 +209,16 @@ public class EditWaterReport extends AppCompatActivity {
         DatabaseReference reports = database.getReference("waterReports");
         if (rid == null) {
             ref = reports.push();
-            WaterReport wr = new WaterReport(ref.getKey(),
-                    nameEdit.getText().toString(),
-                    user.getUid(),
-                    Double.parseDouble(xEdit.getText().toString()),
-                    Double.parseDouble(yEdit.getText().toString()),
-                    (String) typeSpinner.getSelectedItem(),
-                    (String) conditionSpinner.getSelectedItem());
+            WaterReport wr = new WaterReport();
+
+            wr.setId(ref.getKey());
+            wr.setReportName(nameEdit.getText().toString());
+            wr.setUser(user.getUid());
+            wr.setX(Double.parseDouble(xEdit.getText().toString()));
+            wr.setY(Double.parseDouble(yEdit.getText().toString()));
+            wr.setType((String) typeSpinner.getSelectedItem());
+            wr.setCondition((String) conditionSpinner.getSelectedItem());
+
             ref.setValue(wr);
         } else {
             ref = reports.child(rid);

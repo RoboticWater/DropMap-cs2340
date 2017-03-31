@@ -36,12 +36,13 @@
     <string name="text_pass">Enter Password</string>
 
     <!--Log in-->
-    <string name="button_sign_in">Sign In</string>
+    <string name="button_sign_in">Login</string>
     <string name="prompt_password">Password</string>
     <string name="title_user">Username</string>
     <string name="title_email">Email</string>
     <string name="title_auth_level">Authorization Level</string>
     <string name="title_current_password">Current Password</string>
+    <string name="button_sign_up">Not a user? Sign Up</string>
 
     <!--Update Report-->
     <string name="title_virus">Virus PPM</string>

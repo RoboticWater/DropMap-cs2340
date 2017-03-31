@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * A login screen that offers login via email/password.
  */
-@SuppressWarnings("ChainedMethodCall")
 public class Login extends AppCompatActivity {
 
     private static final String TAG = "Login";
@@ -92,7 +91,6 @@ public class Login extends AppCompatActivity {
      */
     public void onRegisterClicked(View view) {
         startActivity(new Intent(Login.this, Registration.class));
-        finish();
     }
 
     /**

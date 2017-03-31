@@ -26,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * Registration screen
  */
-@SuppressWarnings("ChainedMethodCall")
 public class Registration extends AppCompatActivity {
 
     private static final String TAG = "Registration";
@@ -80,7 +79,6 @@ public class Registration extends AppCompatActivity {
     /**
      * Creates User object with data from the input fields
      */
-    @SuppressWarnings("FeatureEnvy")
     private void setUpUser() {
         localUser = new User();
         localUser.setName(userEdit.getText().toString());
@@ -131,7 +129,6 @@ public class Registration extends AppCompatActivity {
      * they've been created, then plops them onto the main screen
      * @param mUser The localUser that was just created
      */
-    @SuppressWarnings("FeatureEnvy")
     private void onAuthenticationSuccess(final FirebaseUser mUser) {
         saveNewUser(mUser.getUid(), localUser.getName(), localUser.getEmail(),
                 localUser.getPassword(), AuthLevel.valueOf((String) authSpinner.getSelectedItem()));

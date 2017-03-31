@@ -1,11 +1,9 @@
 package com.dropmap_cs2340;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +24,6 @@ import java.util.List;
  * View all water availability reports as a list and show details
  */
 
-@SuppressWarnings("ChainedMethodCall")
 public class ViewReportListActivity extends AppCompatActivity {
     private final String TAG = "ReportList";
     private List<WaterReport> waterReports;
