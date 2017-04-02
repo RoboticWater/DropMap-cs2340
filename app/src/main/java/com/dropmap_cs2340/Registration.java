@@ -60,20 +60,10 @@ public class Registration extends AppCompatActivity {
         passEdit    = (EditText) findViewById(R.id.input_password);
         authSpinner = (Spinner)  findViewById(R.id.auth_spinner);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.spinner_item,
                 AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         authSpinner.setAdapter(adapter);
-
-
-        Button cancelButton = (Button) findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Registration.this, Login.class));
-                finish();
-            }
-        });
     }
 
     /**

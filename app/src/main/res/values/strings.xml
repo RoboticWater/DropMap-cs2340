@@ -1,6 +1,6 @@
 <resources>
     <!--General-->
-    <string name="app_name">DropMap</string>
+    <string name="app_name">DorpMorp</string>
 
     <!--Prompts-->
     <string name="prompt_user">Username</string>
@@ -42,7 +42,7 @@
     <string name="title_email">Email</string>
     <string name="title_auth_level">Authorization Level</string>
     <string name="title_current_password">Current Password</string>
-    <string name="button_sign_up">Not a user? Sign Up</string>
+    <string name="button_sign_up">Don\'t have an account? Sign Up</string>
 
     <!--Update Report-->
     <string name="title_virus">Virus PPM</string>
