@@ -1,11 +1,13 @@
 package com.dropmap_cs2340;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -157,11 +159,15 @@ public class EditWaterReport extends AppCompatActivity {
         super.onStart();
         auth.addAuthStateListener(authListener);
 
-        ContextCompat.checkSelfPermission(getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
-                locationListener);
-        loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(EditWaterReport.this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        0);
+        } else {
+            loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
         if (loc != null) {
             xEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLatitude()));
             yEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLongitude()));
@@ -195,6 +201,22 @@ public class EditWaterReport extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if ((grantResults.length > 0)
+                        && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    ContextCompat.checkSelfPermission(getApplicationContext(),
+                            android.Manifest.permission.ACCESS_FINE_LOCATION);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
+                            locationListener);
+                }
+            }
         }
     }
 
