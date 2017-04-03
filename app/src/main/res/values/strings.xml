@@ -60,7 +60,7 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="prompt_new_password">New Password</string>
-    <string name="title_activity_map">Map</string>
+    <string name="title_activity_map">Dorp Morp</string>
     <string name="title_activity_water_report">Water Report</string>
     <string name="title_activity_water_report_list">Water Reports</string>
     <string name="title_type">Type</string>
@@ -73,4 +73,6 @@
     <string name="title_source">Source</string>
     <string name="button_view_reports">View Reports</string>
     <string name="button_update_water_report">Update Water Report</string>
+    <string name="button_edit_profile">Edit Profile</string>
+    <string name="search">Search</string>
 </resources>

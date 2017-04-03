@@ -15,23 +15,13 @@
     android:orientation="vertical">
 
     <TextView
-        android:text=""
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/text_welcome"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textAlignment="center" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
-    <Button
-        android:text="@string/button_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button_profile"
-        android:onClick="onProfileClicked"/>
+        android:text=""
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        tools:text="Greetings" />
 
     <Button
         android:id="@+id/button_map"

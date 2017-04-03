@@ -112,11 +112,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    /**
-     * Set up toolbar menu
-     * @param item the MenuItem
-     * @return No idea
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -124,17 +119,12 @@ public class MainActivity extends AppCompatActivity {
                 auth.signOut();
                 startActivity(new Intent(MainActivity.this, Login.class));
                 return true;
+            case R.id.edit_profile:
+                startActivity(new Intent(getApplicationContext(), Profile.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * Switches to Profile page on press
-     * @param view the current view
-     */
-    public void onProfileClicked(View view) {
-        startActivity(new Intent(getApplicationContext(), Profile.class));
     }
 
     /**

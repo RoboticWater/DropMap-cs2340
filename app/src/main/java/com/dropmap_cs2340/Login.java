@@ -52,7 +52,7 @@ public class Login extends AppCompatActivity {
                 user = auth.getCurrentUser();
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    startActivity(new Intent(getApplicationContext(), Map.class));
                     finish();
                 }
                 else {
@@ -115,7 +115,7 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(Login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), Map.class));
                             finish();
                         }
                     }

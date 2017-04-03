@@ -1,6 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.dropmap_cs2340.MainActivity">
     <item android:id="@+id/logout"
         android:title="@string/button_log_out"/>
+    <item android:id="@+id/edit_profile"
+        android:title="@string/button_edit_profile"/>
+    <!--<item-->
+        <!--android:id="@+id/search"-->
+        <!--android:icon="@drawable/ic_search_24dp"-->
+        <!--android:title="@string/search"-->
+        <!--app:showAsAction="ifRoom" />-->
 </menu>

@@ -2,9 +2,14 @@ package com.dropmap_cs2340;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * View and add water reports from a map screen
  */
-public class Map extends FragmentActivity implements OnMapReadyCallback {
+public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "Map";
 
@@ -47,6 +52,9 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -67,6 +75,21 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                 }
             }
         };
+
+        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), EditWaterReport.class));
+            }
+        });
+        FloatingActionButton fabSearch = (FloatingActionButton) findViewById(R.id.fab_search);
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ViewReportListActivity.class));
+            }
+        });
     }
 
     @Override
@@ -132,5 +155,27 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                auth.signOut();
+                startActivity(new Intent(getApplicationContext(), Login.class));
+                return true;
+            case R.id.edit_profile:
+                startActivity(new Intent(getApplicationContext(), Profile.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

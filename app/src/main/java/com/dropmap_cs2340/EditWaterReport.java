@@ -162,9 +162,10 @@ public class EditWaterReport extends AppCompatActivity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
                 locationListener);
         loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Log.d(TAG, loc.toString());
-        xEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLatitude()));
-        yEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLongitude()));
+        if (loc != null) {
+            xEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLatitude()));
+            yEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLongitude()));
+        }
 
     }
 
