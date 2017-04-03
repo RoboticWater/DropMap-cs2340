@@ -19,7 +19,6 @@
     <!--Main-->
     <string name="title_activity_main">Main</string>
     <string name="button_log_out">Log Out</string>
-    <string name="button_profile">Profile</string>
 
     <!--Profile-->
     <string name="title_activity_profile">Profile</string>
@@ -29,11 +28,7 @@
 
     <!--Registration-->
     <string name="button_register">Register</string>
-    <string name="button_cancel">Cancel</string>
     <string name="text_auth_level">Authorization Level</string>
-    <string name="text_user">Enter Username</string>
-    <string name="text_email">Enter Email</string>
-    <string name="text_pass">Enter Password</string>
 
     <!--Log in-->
     <string name="button_sign_in">Login</string>
@@ -73,6 +68,5 @@
     <string name="title_source">Source</string>
     <string name="button_view_reports">View Reports</string>
     <string name="button_update_water_report">Update Water Report</string>
-    <string name="button_edit_profile">Edit Profile</string>
-    <string name="search">Search</string>
+    <string name="button_edit_profile">Edit Profile</string>\
 </resources>

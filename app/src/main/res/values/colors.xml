@@ -7,6 +7,5 @@
     <color name="colorText">#ffffff</color>
     <color name="colorTextDark">#045575</color>
     <color name="secondary_text">#212121</color>
-    <color name="icons">#ffffff</color>
     <color name="divider">#cbcfdc</color>
 </resources>
