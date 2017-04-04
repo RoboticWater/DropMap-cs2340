@@ -163,10 +163,13 @@ public class EditWaterReport extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "Requesting permission");
                 ActivityCompat.requestPermissions(EditWaterReport.this,
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         0);
         } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
+                    locationListener);
             loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
         if (loc != null) {

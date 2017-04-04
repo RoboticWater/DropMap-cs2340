@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -128,6 +127,27 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     protected void onStop() {
         super.onStop();
         auth.removeAuthStateListener(authListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        database.getReference().child("waterReports")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            WaterReport wr = snapshot.getValue(WaterReport.class);
+                            map.addMarker(new MarkerOptions().position(wr.loc())
+                                    .title(wr.getReportName())
+                                    .snippet(wr.toString()));
+                            map.moveCamera(CameraUpdateFactory.newLatLng(wr.loc()));
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 
     /**

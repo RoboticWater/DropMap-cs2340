@@ -122,6 +122,7 @@ public class ViewWaterReport extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "RESUMING VIEWING...");
         queryDatabase();
     }
 
