@@ -40,11 +40,25 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="24dp"
-        android:layout_marginLeft="130dp"
+        android:layout_marginLeft="190dp"
         app:backgroundTint="@color/colorPrimary"
         app:elevation="5dp"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_search_24dp"
+        tools:ignore="RtlHardcoded" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_graph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="-190dp"
+        android:visibility="gone"
+        app:backgroundTint="@color/colorPrimary"
+        app:elevation="5dp"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_location_searching_24dp"
         tools:ignore="RtlHardcoded" />
 
     <include layout="@layout/content_map"

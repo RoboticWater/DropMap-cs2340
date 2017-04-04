@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -88,6 +90,31 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ViewReportListActivity.class));
             }
+        });
+        final FloatingActionButton fabGraph = (FloatingActionButton) findViewById(R.id.fab_graph);
+        fabGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), GraphActivity.class));
+            }
+        });
+
+        user = auth.getCurrentUser();
+        DatabaseReference ref = database.getReference("users").child(user.getUid());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User u = dataSnapshot.getValue(User.class);
+                String authLevel = u.getAuthLevel();
+                if ("Manager".equals(authLevel)) {
+                    fabGraph.setVisibility(View.VISIBLE);
+                } else {
+                    fabGraph.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
         });
     }
 

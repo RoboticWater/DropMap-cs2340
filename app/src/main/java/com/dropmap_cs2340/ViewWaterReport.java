@@ -93,27 +93,15 @@ public class ViewWaterReport extends AppCompatActivity {
                 User u = dataSnapshot.getValue(User.class);
                 authLevel = u.getAuthLevel();
                 Button updateReport = (Button) findViewById(R.id.update_water_report);
-                updateReport.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if ("Worker".equals(authLevel) || "Manager".equals(authLevel)) {
-                            Intent i = new Intent(getApplicationContext(), UpdateWaterReport.class);
-                            i.putExtra("report_id", rid);
-                            startActivity(i);
-                        } else {
-                            Toast.makeText(ViewWaterReport.this,
-                                    "You are not authorized to edit this report.",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
+                if ("Worker".equals(authLevel) || "Manager".equals(authLevel)) {
+                    updateReport.setVisibility(View.VISIBLE);
+                } else {
+                    updateReport.setVisibility(View.GONE);
+                }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
 
 
@@ -186,5 +174,21 @@ public class ViewWaterReport extends AppCompatActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
+    }
+
+    /**
+     * Opens update water report screen when the correct button is pressed
+     * @param view the view
+     */
+    public void onUpdateClicked(View view) {
+        if ("Worker".equals(authLevel) || "Manager".equals(authLevel)) {
+            Intent i = new Intent(getApplicationContext(), UpdateWaterReport.class);
+            i.putExtra("report_id", rid);
+            startActivity(i);
+        } else {
+            Toast.makeText(ViewWaterReport.this,
+                    "You are not authorized to edit this report.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

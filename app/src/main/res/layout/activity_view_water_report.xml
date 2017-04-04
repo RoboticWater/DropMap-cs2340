@@ -135,9 +135,11 @@
     </LinearLayout>
 
     <Button
-        android:text="@string/button_update_water_report"
+        android:id="@+id/update_water_report"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/update_water_report" />
+        android:onClick="onUpdateClicked"
+        android:text="@string/button_update_water_report"
+        android:visibility="gone" />
 
 </LinearLayout>
