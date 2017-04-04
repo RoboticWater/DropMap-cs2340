@@ -10,8 +10,7 @@ import android.icu.util.Calendar;
  * Class containing water data
  */
 
-@SuppressWarnings("ConstructorWithTooManyParameters")
-public class WaterReport {
+class WaterReport {
     private String reportName;
     private String user;
     private String id;
@@ -29,7 +28,11 @@ public class WaterReport {
     /**
      * Creates empty water report for Firebase
      */
-    public WaterReport() {}
+
+    public WaterReport() {
+        virusPPM = -1;
+        contaminantPPM = -1;
+    }
 
     /**
      * Creates water report
@@ -87,8 +90,9 @@ public class WaterReport {
     WaterReport(String _id, String _reportName, String _user, double lat, double lon, String _type,
                 String _condition) {
         this(_id, _reportName, _user, lat, lon, WaterType.valueOf(_type),
-                WaterCondition.valueOf(_condition),-1, -1);
+                WaterCondition.valueOf(_condition), -1, -1);
     }
+
 
     @Override
     public String toString() {
@@ -124,7 +128,8 @@ public class WaterReport {
         return x;
     }
 
-    void setX(Double x) {
+
+    void setX(double x) {
         this.x = x;
     }
 
@@ -132,7 +137,7 @@ public class WaterReport {
         return y;
     }
 
-    void setY(Double y) {
+    void setY(double y) {
         this.y = y;
     }
 
@@ -176,20 +181,20 @@ public class WaterReport {
         return virusPPM;
     }
 
-    public void setVirusPPM(double _virusPPM) {
-        virusPPM = _virusPPM;
+    public void setVirusPPM(double virusPPM) {
+        this.virusPPM = virusPPM;
     }
 
     public double getContaminantPPM() {
         return contaminantPPM;
     }
 
-    public void setContaminantPPM(double _contaminantPPM) {
-        contaminantPPM = _contaminantPPM;
+    public void setContaminantPPM(double contaminantPPM) {
+        this.contaminantPPM = contaminantPPM;
     }
 
     public boolean formatPurity() {
-        return !((-1 == getContaminantPPM()) && (-1 == getVirusPPM()));
+        return !((-1 == contaminantPPM) && (-1 == virusPPM));
     }
 
     public void setMonth() {month = Calendar.MONTH;}

@@ -28,7 +28,6 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * The form for editing profiles
  */
-@SuppressWarnings("ChainedMethodCall")
 public class EditProfile extends AppCompatActivity {
     /**
      * Tag for Firebase logging
@@ -55,8 +54,6 @@ public class EditProfile extends AppCompatActivity {
     private Spinner  authLevelSpinner;
     private ProgressDialog progressDialog;
 
-
-    @SuppressWarnings("FeatureEnvy")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

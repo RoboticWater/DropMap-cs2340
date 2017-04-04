@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_registration"
     android:layout_width="match_parent"
@@ -11,89 +12,89 @@
     tools:context="com.dropmap_cs2340.Registration">
 
     <ProgressBar
+        android:id="@+id/progress_bar_register"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
-        android:visibility="gone"
-        android:id="@+id/progress_bar_register" />
+        android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/email_registration_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/email_registration_form"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true">
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-        <TextView
-            android:text="@string/text_user"
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/view_username" />
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/dropmap_logo" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:ems="10"
             android:id="@+id/user_edit"
-            android:hint="@string/prompt_user" />
-
-        <TextView
-            android:text="@string/text_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/email_view" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/prompt_user"
             android:inputType="textEmailAddress"
-            android:ems="10"
-            android:id="@+id/input_email"
-            android:hint="@string/prompt_email" />
-
-        <TextView
-            android:text="@string/text_pass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/password_view" />
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorAccent"
+            android:backgroundTint="@color/colorAccent" />
 
         <EditText
+            android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:ems="10"
+            android:hint="@string/prompt_email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorAccent"
+            android:backgroundTint="@color/colorAccent" />
+
+        <EditText
             android:id="@+id/input_password"
-            android:hint="@string/prompt_password" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/prompt_password"
+            android:inputType="textPassword"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorAccent"
+            android:backgroundTint="@color/colorAccent" />
 
         <TextView
-            android:text="@string/text_auth_level"
+            android:id="@+id/auth_level_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/auth_level_label"/>
+            android:text="@string/text_auth_level"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorAccent"
+            android:backgroundTint="@color/colorAccent"/>
 
         <Spinner
+            android:id="@+id/auth_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/auth_spinner" />
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorAccent"
+            tools:layout_marginBottom="20dp" />
 
         <Button
-            android:text="@string/button_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/button_register"
-            android:onClick="onSignUpClicked" />
-
-        <Button
-            android:text="@string/button_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/cancel_button" />
+            android:onClick="onSignUpClicked"
+            android:text="@string/button_register"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorText"/>
 
     </LinearLayout>
 

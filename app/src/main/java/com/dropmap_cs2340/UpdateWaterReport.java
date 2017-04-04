@@ -10,11 +10,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import android.widget.Toast;
 import android.icu.util.Calendar;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,12 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Locale;
-
 /**
  * Water report viewing screen
  */
-@SuppressWarnings("ChainedMethodCall")
 public class UpdateWaterReport extends AppCompatActivity {
 
     private final String TAG = "UpdateWaterReport";
@@ -131,8 +129,6 @@ public class UpdateWaterReport extends AppCompatActivity {
         }
     }
 
-
-    @SuppressWarnings("FeatureEnvy")
     private void databaseStuff() {
 
         Log.d("ReportView", rid);
@@ -165,14 +161,10 @@ public class UpdateWaterReport extends AppCompatActivity {
         }
         DatabaseReference ref;
         DatabaseReference reports = database.getReference("waterReports");
-        if (rid == null) {
-            ref = reports.push();
-        } else {
-            ref = reports.child(rid);
-            ref.child("virusPPM").setValue(Double.parseDouble(virusValue.getText().toString()));
-            ref.child("contaminantPPM").setValue(Double.parseDouble(contaminantValue.getText()
-                    .toString()));
-        }
+        ref = reports.child(rid);
+        ref.child("virusPPM").setValue(Double.parseDouble(virusValue.getText().toString()));
+        ref.child("contaminantPPM").setValue(Double.parseDouble(contaminantValue.getText()
+                .toString()));
         finish();
     }
 

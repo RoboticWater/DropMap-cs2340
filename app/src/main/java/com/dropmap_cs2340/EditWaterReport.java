@@ -1,8 +1,14 @@
 package com.dropmap_cs2340;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,7 +33,6 @@ import java.util.Locale;
 /**
  * Screen for creating and editing water report forms
  */
-@SuppressWarnings("ChainedMethodCall")
 public class EditWaterReport extends AppCompatActivity {
     private static final String TAG = "EditWaterReport";
 
@@ -40,6 +45,10 @@ public class EditWaterReport extends AppCompatActivity {
     private Spinner  typeSpinner;
     private Spinner  conditionSpinner;
 
+    private LocationListener locationListener;
+    private LocationManager locationManager;
+    private Location loc;
+
     /**
      * Firebase Hooks
      * Communicates with Firebase authentication and database services
@@ -49,13 +58,38 @@ public class EditWaterReport extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseAuth.AuthStateListener authListener;
 
-
     private String rid;
 
-    @SuppressWarnings("FeatureEnvy")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        locationManager = (LocationManager) getApplicationContext()
+                .getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                loc = location;
+                Log.d("OoLocationChange", loc.toString());
+                xEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLatitude()));
+                yEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLongitude()));
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+                Log.v(TAG, "Status changed: " + s);
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+                Log.e(TAG, "PROVIDER DISABLED: " + s);
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+                Log.e(TAG, "PROVIDER DISABLED: " + s);
+            }
+        };
 
         auth     = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -125,6 +159,21 @@ public class EditWaterReport extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(EditWaterReport.this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        0);
+        } else {
+            loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+        if (loc != null) {
+            xEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLatitude()));
+            yEdit.setText(String.format(Locale.getDefault(), "%f", loc.getLongitude()));
+        }
+
     }
 
     @Override
@@ -156,6 +205,22 @@ public class EditWaterReport extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if ((grantResults.length > 0)
+                        && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    ContextCompat.checkSelfPermission(getApplicationContext(),
+                            android.Manifest.permission.ACCESS_FINE_LOCATION);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
+                            locationListener);
+                }
+            }
+        }
+    }
+
     /**
      * If the input data is valid, updates Firebase data and Auth data
      * (latitude, longitude, condition)
@@ -168,13 +233,16 @@ public class EditWaterReport extends AppCompatActivity {
         DatabaseReference reports = database.getReference("waterReports");
         if (rid == null) {
             ref = reports.push();
-            WaterReport wr = new WaterReport(ref.getKey(),
-                    nameEdit.getText().toString(),
-                    user.getUid(),
-                    Double.parseDouble(xEdit.getText().toString()),
-                    Double.parseDouble(yEdit.getText().toString()),
-                    (String) typeSpinner.getSelectedItem(),
-                    (String) conditionSpinner.getSelectedItem());
+            WaterReport wr = new WaterReport();
+
+            wr.setId(ref.getKey());
+            wr.setReportName(nameEdit.getText().toString());
+            wr.setUser(user.getUid());
+            wr.setX(Double.parseDouble(xEdit.getText().toString()));
+            wr.setY(Double.parseDouble(yEdit.getText().toString()));
+            wr.setType((String) typeSpinner.getSelectedItem());
+            wr.setCondition((String) conditionSpinner.getSelectedItem());
+
             ref.setValue(wr);
         } else {
             ref = reports.child(rid);

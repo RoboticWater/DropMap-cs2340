@@ -25,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * Central screen for app. Holds buttons to everywhere
  */
-@SuppressWarnings("ChainedMethodCall")
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Main";
@@ -113,17 +112,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    /**
-     * Set up toolbar menu
-     * @param item the MenuItem
-     * @return No idea
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
                 auth.signOut();
                 startActivity(new Intent(MainActivity.this, Login.class));
+                return true;
+            case R.id.edit_profile:
+                startActivity(new Intent(getApplicationContext(), Profile.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

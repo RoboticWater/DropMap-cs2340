@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * Registration screen
  */
-@SuppressWarnings("ChainedMethodCall")
 public class Registration extends AppCompatActivity {
 
     private static final String TAG = "Registration";
@@ -61,26 +59,15 @@ public class Registration extends AppCompatActivity {
         passEdit    = (EditText) findViewById(R.id.input_password);
         authSpinner = (Spinner)  findViewById(R.id.auth_spinner);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.spinner_item,
                 AuthLevel.names());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         authSpinner.setAdapter(adapter);
-
-
-        Button cancelButton = (Button) findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Registration.this, Login.class));
-                finish();
-            }
-        });
     }
 
     /**
      * Creates User object with data from the input fields
      */
-    @SuppressWarnings("FeatureEnvy")
     private void setUpUser() {
         localUser = new User();
         localUser.setName(userEdit.getText().toString());
@@ -131,7 +118,6 @@ public class Registration extends AppCompatActivity {
      * they've been created, then plops them onto the main screen
      * @param mUser The localUser that was just created
      */
-    @SuppressWarnings("FeatureEnvy")
     private void onAuthenticationSuccess(final FirebaseUser mUser) {
         saveNewUser(mUser.getUid(), localUser.getName(), localUser.getEmail(),
                 localUser.getPassword(), AuthLevel.valueOf((String) authSpinner.getSelectedItem()));

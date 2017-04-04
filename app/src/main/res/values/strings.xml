@@ -1,6 +1,6 @@
 <resources>
     <!--General-->
-    <string name="app_name">DropMap</string>
+    <string name="app_name">DorpMorp</string>
 
     <!--Prompts-->
     <string name="prompt_user">Username</string>
@@ -19,7 +19,6 @@
     <!--Main-->
     <string name="title_activity_main">Main</string>
     <string name="button_log_out">Log Out</string>
-    <string name="button_profile">Profile</string>
 
     <!--Profile-->
     <string name="title_activity_profile">Profile</string>
@@ -29,19 +28,16 @@
 
     <!--Registration-->
     <string name="button_register">Register</string>
-    <string name="button_cancel">Cancel</string>
     <string name="text_auth_level">Authorization Level</string>
-    <string name="text_user">Enter Username</string>
-    <string name="text_email">Enter Email</string>
-    <string name="text_pass">Enter Password</string>
 
     <!--Log in-->
-    <string name="button_sign_in">Sign In</string>
+    <string name="button_sign_in">Login</string>
     <string name="prompt_password">Password</string>
     <string name="title_user">Username</string>
     <string name="title_email">Email</string>
     <string name="title_auth_level">Authorization Level</string>
     <string name="title_current_password">Current Password</string>
+    <string name="button_sign_up">Don\'t have an account? Sign Up</string>
 
     <!--Update Report-->
     <string name="title_virus">Virus PPM</string>
@@ -59,7 +55,7 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="prompt_new_password">New Password</string>
-    <string name="title_activity_map">Map</string>
+    <string name="title_activity_map">Dorp Morp</string>
     <string name="title_activity_water_report">Water Report</string>
     <string name="title_activity_water_report_list">Water Reports</string>
     <string name="title_type">Type</string>
@@ -72,4 +68,5 @@
     <string name="title_source">Source</string>
     <string name="button_view_reports">View Reports</string>
     <string name="button_update_water_report">Update Water Report</string>
+    <string name="button_edit_profile">Edit Profile</string>\
 </resources>

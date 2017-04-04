@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,47 +9,56 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dropmap_cs2340.Login">
+    tools:context="com.dropmap_cs2340.Login"
+    android:weightSum="1">
 
-    <TextView
+    <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/email_text"
-        android:text="@string/text_email" />
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/dropmap_logo" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
         android:id="@+id/email_edit"
-        android:hint="@string/prompt_email" />
-
-    <TextView
-        android:text="@string/text_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/text_password" />
+        android:ems="10"
+        android:hint="@string/prompt_email"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"  />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
         android:id="@+id/pass_edit"
-        android:hint="@string/prompt_password" />
-
-    <Button
-        android:text="@string/button_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent" />
+
+    <Button
         android:id="@+id/button_sign_in"
-        android:onClick="onLoginClicked" />
-
-    <Button
-        android:text="@string/button_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onLoginClicked"
+        android:text="@string/button_sign_in"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorText"/>
+
+    <Button
         android:id="@+id/button_register"
-        android:onClick="onRegisterClicked" />
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_weight="0.02"
+        android:onClick="onRegisterClicked"
+        android:text="@string/button_sign_up"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/colorAccent" />
 </LinearLayout>
