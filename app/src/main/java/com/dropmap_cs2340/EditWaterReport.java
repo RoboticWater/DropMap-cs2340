@@ -80,6 +80,7 @@ public class EditWaterReport extends AppCompatActivity {
         typeSpinner      = (Spinner) findViewById(R.id.typeSpinner);
         conditionSpinner = (Spinner) findViewById(R.id.conditionSpinner);
 
+
         FloatingActionButton saveFab = (FloatingActionButton) findViewById(R.id.save_fab);
         saveFab.setOnClickListener(new View.OnClickListener() {
             @Override

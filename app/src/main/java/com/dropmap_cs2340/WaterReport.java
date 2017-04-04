@@ -3,6 +3,7 @@ package com.dropmap_cs2340;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
+import android.icu.util.Calendar;
 
 /**
  * Created by arsenelakpa on 2/23/17.
@@ -22,6 +23,8 @@ public class WaterReport {
     private WaterCondition condition;
     private double virusPPM;
     private double contaminantPPM;
+    private int month;
+    private int year;
 
     /**
      * Creates empty water report for Firebase
@@ -51,6 +54,8 @@ public class WaterReport {
         condition = _condition;
         virusPPM = _virusPPM;
         contaminantPPM = _contaminantPPM;
+        month = Calendar.MONTH;
+        year = Calendar.YEAR;
     }
 
     /**
@@ -87,8 +92,8 @@ public class WaterReport {
 
     @Override
     public String toString() {
-        return (type == null ? "" : type.toString()) + "," +
-                (condition == null ? "" : condition.toString());
+        return getX() + "," + getY() + "(" + (type == null ? "" : type.toString()) + "," +
+                (condition == null ? "" : condition.toString()) + ")";
     }
 
     String getReportName() {
@@ -186,4 +191,9 @@ public class WaterReport {
     public boolean formatPurity() {
         return !((-1 == getContaminantPPM()) && (-1 == getVirusPPM()));
     }
+
+    public void setMonth() {month = Calendar.MONTH;}
+    public int getMonth() {return month;}
+    public void setYear() {year = Calendar.YEAR;}
+    public int getYear() {return year;}
 }

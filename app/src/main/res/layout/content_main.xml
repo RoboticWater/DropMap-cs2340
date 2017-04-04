@@ -46,4 +46,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/button_view_reports"
         android:onClick="onViewReportsClick" />
+
+    <Button
+        android:id="@+id/button_graph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onQualityHistoryGraphClick"
+        android:text="View Quality History Graph" />
 </LinearLayout>

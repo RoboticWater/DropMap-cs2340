@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.icu.util.Calendar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -145,6 +146,8 @@ public class UpdateWaterReport extends AppCompatActivity {
                         typeText.setText(wr.getType());
                         conditionText.setText(wr.getCondition());
                         sourceText.setText(wr.getX() + ", " + wr.getY());
+                        wr.setMonth();
+                        wr.setYear();
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {

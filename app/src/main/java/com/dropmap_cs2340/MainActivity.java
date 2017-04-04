@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Logs out on press
+     * Switches to Map page on press
      * @param view the current view
      */
     public void onMapClicked(View view) {
@@ -147,10 +147,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Logs out on press
+     * Switches to View Reports page on press
      * @param view the current view
      */
     public void onViewReportsClick(View view) {
         startActivity(new Intent(getApplicationContext(), ViewReportListActivity.class));
     }
+
+    /**
+     * Switches to Graph page on press
+     * @param view the current view
+     */
+    public void onQualityHistoryGraphClick(View view) {
+        startActivity(new Intent(getApplicationContext(), HistoryForm.class));
+    }
+
 }
