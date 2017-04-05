@@ -8,80 +8,68 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:fitsSystemWindows="true"
-    android:weightSum="1">
-
+    android:weightSum="1"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Year"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="42dp" />
+        android:text="@string/select_year" />
+
+    <AutoCompleteTextView
+        android:id="@+id/inputYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/textReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report" />
 
     <Spinner
-        android:id="@+id/yearSpinner"
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="67dp" />
+        android:id="@+id/reportSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Location"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="161dp" />
+        android:text="@string/type" />
 
-    <Spinner
-        android:id="@+id/locSpinner"
-        android:layout_width="395dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="185dp"
-        android:layout_weight="0.11" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Type"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="256dp" />
+        <RadioButton
+            android:id="@+id/buttonVirus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="onVirusClicked"
+            android:text="@string/virus" />
 
-    <RadioButton
-        android:id="@+id/ConButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contaminant"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="329dp" />
+        <RadioButton
+            android:id="@+id/buttonContaminant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onContaminantClicked"
+            android:text="@string/contaminant" />
+    </LinearLayout>
 
-    <RadioButton
-        android:id="@+id/VirusButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="Virus"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="285dp" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/submit_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@drawable/ic_check_24dp"
-        tools:layout_editor_absoluteX="354dp"
-        tools:layout_editor_absoluteY="546dp" />
-
-    <com.github.mikephil.charting.charts.BarChart
+    <com.github.mikephil.charting.charts.ScatterChart
         android:id="@+id/graph"
-        android:layout_width="395dp"
-        android:layout_height="171dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.86" />
 </LinearLayout>

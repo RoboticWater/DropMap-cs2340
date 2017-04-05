@@ -68,5 +68,12 @@
     <string name="title_source">Source</string>
     <string name="button_view_reports">View Reports</string>
     <string name="button_update_water_report">Update Water Report</string>
-    <string name="button_edit_profile">Edit Profile</string>\
+    <string name="button_edit_profile">Edit Profile</string>
+    <string name="end_date">End Date</string>
+    <string name="start_date">Start Date</string>
+    <string name="report">Report</string>
+    <string name="type">Type</string>
+    <string name="virus">Virus</string>
+    <string name="contaminant">Contaminant</string>
+    <string name="select_year">Input Year</string>\
 </resources>
