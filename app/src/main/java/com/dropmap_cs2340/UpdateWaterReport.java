@@ -13,10 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import android.widget.Toast;
-import android.icu.util.Calendar;
-
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,7 +47,8 @@ public class UpdateWaterReport extends AppCompatActivity {
     private EditText contaminantValue;
 
     private String rid;
-    private String authLevel;
+
+    private WaterReport report;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,24 +133,21 @@ public class UpdateWaterReport extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        WaterReport wr = dataSnapshot.getValue(WaterReport.class);
-                        rid = wr.getId();
-                        idText.setText(wr.getId());
-                        typeText.setText(wr.getType());
-                        conditionText.setText(wr.getCondition());
-                        sourceText.setText(wr.getX() + ", " + wr.getY());
-                        wr.setMonth();
-                        wr.setYear();
+                        report = dataSnapshot.getValue(WaterReport.class);
+                        rid = report.getId();
+                        idText.setText(report.getId());
+                        typeText.setText(report.getType());
+                        conditionText.setText(report.getCondition());
+                        sourceText.setText(report.getX() + ", " + report.getY());
                     }
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
+                    public void onCancelled(DatabaseError databaseError) {}
                 });
     }
 
     /**
      * If the input data is valid, updates Firebase data and Auth data
-     * (latitude, longitude, condition)
+     * (condition)
      */
     private void saveChanges() {
         if (!validateForm()) {
@@ -162,9 +156,14 @@ public class UpdateWaterReport extends AppCompatActivity {
         DatabaseReference ref;
         DatabaseReference reports = database.getReference("waterReports");
         ref = reports.child(rid);
-        ref.child("virusPPM").setValue(Double.parseDouble(virusValue.getText().toString()));
-        ref.child("contaminantPPM").setValue(Double.parseDouble(contaminantValue.getText()
-                .toString()));
+        String v = virusValue.getText().toString();
+        String c = contaminantValue.getText().toString();
+        report.setVirusPPM(Double.parseDouble(v));
+        report.setContaminantPPM(Double.parseDouble(c));
+        ref.setValue(report);
+        ref = database.getReference("reportHistory").child(rid)
+                .child(Long.toString(System.currentTimeMillis()));
+        ref.setValue(new PurityHistory(Double.parseDouble(v), Double.parseDouble(c)));
         finish();
     }
 

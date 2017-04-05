@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class HistoryForm extends AppCompatActivity {
 
-    private ArrayList<String> years = new ArrayList<String>();
+    private ArrayList<String> years = new ArrayList<>();
     private int curYear = Calendar.getInstance().get(Calendar.YEAR);
     private ArrayList<String> waterReportStrings = new ArrayList<String>();
     private ArrayList<WaterReport> waterReports = new ArrayList<WaterReport>();
