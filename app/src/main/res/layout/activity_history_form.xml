@@ -75,4 +75,11 @@
         app:srcCompat="@drawable/ic_check_24dp"
         tools:layout_editor_absoluteX="354dp"
         tools:layout_editor_absoluteY="546dp" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/graph"
+        android:layout_width="395dp"
+        android:layout_height="171dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp" />
 </LinearLayout>

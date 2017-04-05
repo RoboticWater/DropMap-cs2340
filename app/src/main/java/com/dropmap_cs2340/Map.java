@@ -95,7 +95,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         fabGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), GraphActivity.class));
+                startActivity(new Intent(getApplicationContext(), HistoryForm.class));
             }
         });
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,7 +71,6 @@ public class GraphActivity extends AppCompatActivity {
 //
 //        dataset.setDrawFilled(true);
 
-       // lineChart.setData(data);
         barChart.animateY(5000);
         if (HistoryForm.getType().equals("virus")) {
             barChart.getDescription().setText("Average Virus PPM per Month");

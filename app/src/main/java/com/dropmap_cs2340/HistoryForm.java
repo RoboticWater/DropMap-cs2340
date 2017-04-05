@@ -24,9 +24,10 @@ public class HistoryForm extends AppCompatActivity {
 
     private ArrayList<String> years = new ArrayList<String>();
     private int curYear = Calendar.getInstance().get(Calendar.YEAR);
-    private ArrayList<String> waterReports = new ArrayList<String>();
+    private ArrayList<String> waterReportStrings = new ArrayList<String>();
+    private ArrayList<WaterReport> waterReports = new ArrayList<WaterReport>();
     private static String type;
-    private static String selectedReport;
+    private static WaterReport selectedReport;
 
 
     @Override
@@ -34,6 +35,8 @@ public class HistoryForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_form);
 
+
+        //Submission Form
         FloatingActionButton submitFab = (FloatingActionButton) findViewById(R.id.submit_fab);
         Spinner yearSpinner = (Spinner) findViewById(R.id.yearSpinner);
         Spinner locSpinnner = (Spinner) findViewById(R.id.locSpinner);
@@ -64,15 +67,13 @@ public class HistoryForm extends AppCompatActivity {
             }
         });
 
-        for (int i = 1900; i <= curYear; i++) {
+        for (int i = 1980; i <= curYear; i++) {
             years.add(Integer.toString(i));
         }
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, years);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(adapter1);
-
-
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -82,7 +83,8 @@ public class HistoryForm extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             final WaterReport wr = snapshot.getValue(WaterReport.class);
-                            waterReports.add(wr.toString());
+                            waterReportStrings.add(wr.toString());
+                            waterReports.add(wr);
                         }
                     }
                     @Override
@@ -90,16 +92,17 @@ public class HistoryForm extends AppCompatActivity {
                     }
                 });
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, waterReports);
+                android.R.layout.simple_spinner_item, waterReportStrings);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locSpinnner.setAdapter(adapter2);
-        selectedReport = (String) locSpinnner.getSelectedItem();
+        String report = (String) locSpinnner.getSelectedItem();
+
+        //Graph
 
 
-    }
 
-    public static String getSelectedReport() {
-        return selectedReport;
+
+
     }
 
     public static String getType() {
