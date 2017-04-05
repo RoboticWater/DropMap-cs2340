@@ -65,7 +65,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCx0ex5uadWC6wr29HoZjGaWCAkfZneU_Q" />
 
-        <activity android:name=".GraphActivity" />
         <activity android:name=".HistoryForm"/>
     </application>
 

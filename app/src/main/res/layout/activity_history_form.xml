@@ -7,7 +7,8 @@
     tools:context="com.dropmap_cs2340.HistoryForm"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:weightSum="1">
 
 
 
@@ -39,7 +40,8 @@
         android:layout_width="395dp"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="185dp" />
+        tools:layout_editor_absoluteY="185dp"
+        android:layout_weight="0.11" />
 
     <TextView
         android:id="@+id/textView6"
@@ -76,7 +78,7 @@
         tools:layout_editor_absoluteX="354dp"
         tools:layout_editor_absoluteY="546dp" />
 
-    <com.github.mikephil.charting.charts.LineChart
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/graph"
         android:layout_width="395dp"
         android:layout_height="171dp"
