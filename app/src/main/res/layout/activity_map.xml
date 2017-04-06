@@ -58,7 +58,7 @@
         app:backgroundTint="@color/colorPrimary"
         app:elevation="5dp"
         app:fabSize="mini"
-        app:srcCompat="@drawable/ic_location_searching_24dp"
+        app:srcCompat="@drawable/ic_show_chart_24dp"
         tools:ignore="RtlHardcoded" />
 
     <include layout="@layout/content_map"

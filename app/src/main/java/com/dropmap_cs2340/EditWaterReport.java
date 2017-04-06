@@ -135,6 +135,7 @@ public class EditWaterReport extends AppCompatActivity {
 
         rid = getIntent().getStringExtra("report_id");
         if (rid != null) {
+            setTitle(R.string.edit_water_report);
             saveFab.setVisibility(View.GONE);
             database.getReference().child("waterReports").child(rid)
                     .addListenerForSingleValueEvent(new ValueEventListener() {

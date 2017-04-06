@@ -75,5 +75,8 @@
     <string name="type">Type</string>
     <string name="virus">Virus</string>
     <string name="contaminant">Contaminant</string>
-    <string name="select_year">Input Year</string>\
+    <string name="select_year">Input Year</string>
+    <string name="edit_water_report">Edit Water Report</string>
+    <string name="title_activity_add_report">Add Report</string>
+    <string name="update_water_report">Update Water Report</string>\
 </resources>

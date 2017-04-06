@@ -45,14 +45,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EditWaterReport"
-            android:label="@string/title_activity_edit_profile"
+            android:label="@string/title_activity_add_report"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ViewWaterReport"
             android:label="@string/title_activity_water_report" />
         <activity
             android:name=".UpdateWaterReport"
-            android:label="UpdateWaterReport" />
+            android:label="@string/update_water_report" />
         <activity
             android:name=".Map"
             android:label="@string/title_activity_map"
