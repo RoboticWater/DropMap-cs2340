@@ -2,6 +2,8 @@ package com.dropmap_cs2340;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -94,6 +96,27 @@ public class HistoryForm extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+
+        yearInput.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                currentYear = Integer.parseInt(s.toString());
+                if ((currentYear >= THE_BEGINNING_OF_TIME) &&
+                        (reportSpinner.getSelectedItem() != null))  {
+                    onGraphReady();
+                }
+            }
+        });
     }
 
     private void makeSpinner() {
@@ -111,7 +134,8 @@ public class HistoryForm extends AppCompatActivity {
                         selectedReport = wr;
                     }
                 }
-                if ((currentYear != -1) && (reportSpinner.getSelectedItem() != null)) {
+                if ((currentYear >= THE_BEGINNING_OF_TIME) &&
+                        (reportSpinner.getSelectedItem() != null)) {
                     onGraphReady();
                 }
             }
@@ -127,10 +151,9 @@ public class HistoryForm extends AppCompatActivity {
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(true);
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+                "Nov", "Dec"};
         xAxis.setValueFormatter(new MyXAxisValueFormatter(months));
-
-        YAxis yAxis = chart.getAxisLeft();
         chart.animateY(GRAPH_ANIMATE_MILLIS);
 
         database.getReference().child("reportHistory").child(selectedReport.getId())
@@ -150,18 +173,21 @@ public class HistoryForm extends AppCompatActivity {
                             c.setTimeInMillis(date);
                             int month = c.get(Calendar.MONTH);
                             int year = c.get(Calendar.YEAR);
-                            if (year != currentYear) {
-                                continue;
-                            }
-                            if ("virus".equals(type)) {
-                                entries.add(new BarEntry(month, (float) pr.getVirusPPM()));
-                            } else {
-                                entries.add(new BarEntry(month, (float) pr.getContaminatePPM()));
+                            if (year == currentYear) {
+                                if ("virus".equals(type)) {
+                                    entries.add(new BarEntry(month, (float)pr.getVirusPPM()));
+                                } else {
+                                    entries.add(new BarEntry(month, (float)pr.getContaminatePPM()));
+                                }
                             }
                         }
-                        ScatterDataSet dataSet = new ScatterDataSet(entries, "# of PPM");
-                        ScatterData data = new ScatterData(dataSet);
-                        chart.setData(data);
+                        if (!entries.isEmpty()) {
+                            ScatterDataSet dataSet = new ScatterDataSet(entries, "# of PPM");
+                            ScatterData data = new ScatterData(dataSet);
+                            chart.setData(data);
+                        } else {
+                            chart.clear();
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -193,7 +219,7 @@ public class HistoryForm extends AppCompatActivity {
     public void onVirusClicked(View v) {
         contaminantButton.setChecked(false);
         type = "virus";
-        if ((currentYear != -1) && (reportSpinner.getSelectedItem() != null)) {
+        if ((currentYear >= THE_BEGINNING_OF_TIME) && (reportSpinner.getSelectedItem() != null)) {
             onGraphReady();
         }
     }

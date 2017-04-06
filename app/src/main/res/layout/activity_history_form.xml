@@ -25,7 +25,8 @@
         android:id="@+id/inputYear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:numeric="integer" />
 
     <TextView
         android:id="@+id/textReport"
