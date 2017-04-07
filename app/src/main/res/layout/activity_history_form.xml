@@ -26,18 +26,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:numeric="integer" />
+        android:numeric="integer"
+        android:text="2017" />
 
     <TextView
-        android:id="@+id/textReport"
+        android:id="@+id/textLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/report" />
+        android:text="@string/title_location" />
 
-    <Spinner
-        android:id="@+id/reportSpinner"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editLat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/prompt_latitude"
+            android:inputType="numberDecimal|numberSigned" />
+
+        <EditText
+            android:id="@+id/editLon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/prompt_longitude"
+            android:inputType="numberDecimal|numberSigned" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textType"
