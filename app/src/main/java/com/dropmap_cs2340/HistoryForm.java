@@ -126,7 +126,6 @@ public class HistoryForm extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start,
                                   int before, int count) {
-            Log.d("-----", s.toString() + "|" + isInteger(xEdit) + "|" + isInteger(yEdit));
             if ((currentYear >= THE_BEGINNING_OF_TIME) && !isLocationEmpty()) {
                 onGraphReady();
             }
