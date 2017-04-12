@@ -35,12 +35,12 @@ public class WaterReportTest {
     public void testGetCondition() {
         Assert.assertEquals("Initial Condition wrong", null, wrTest.getCondition());
         try {
-            wrTest.setCondition(WaterCondition Waste);
+            wrTest.setCondition("Waste");
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Should not have thrown exception here");
         }
-        Assert.assertEquals("Failed to retrieve new condition", WaterCondition Waste, wrTest.getCondition());
+        Assert.assertEquals("Failed to retrieve new condition", "Waste", wrTest.getCondition());
     }
 
     /**
@@ -51,19 +51,19 @@ public class WaterReportTest {
     public void testSetCondition() {
         Assert.assertEquals("Initial Condition wrong", null, wrTest.getCondition());
         try {
-            wrTest.setCondition(WaterCondition Waste);
+            wrTest.setCondition("Waste");
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Should not have thrown exception here");
         }
-        Assert.assertEquals("Failed to set new condition", WaterCondition Waste, wrTest.getCondition());
+        Assert.assertEquals("Failed to set new condition", "Waste", wrTest.getCondition());
         try {
-            wrTest.setCondition(WaterCondition Potable);
+            wrTest.setCondition("Potable");
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Should not have thrown exception here");
         }
-        Assert.assertEquals("Failed to alter prior condition", WaterCondition Potable, wrTest.getCondition());
+        Assert.assertEquals("Failed to alter prior condition", "Potable", wrTest.getCondition());
     }
 
     /**
@@ -74,12 +74,12 @@ public class WaterReportTest {
     public void testGetType() {
         Assert.assertEquals("Initial Type wrong", null, wrTest.getType());
         try {
-            wrTest.setType(WaterType Spring);
+            wrTest.setType("Spring");
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Should not have thrown exception here");
         }
-        Assert.assertEquals("Failed to retrieve new type", WaterType Spring, wrTest.getType());
+        Assert.assertEquals("Failed to retrieve new type", "Spring", wrTest.getType());
     }
 
     /**
@@ -90,18 +90,18 @@ public class WaterReportTest {
     public void testSetType() {
         Assert.assertEquals("Initial Condition wrong", null, wrTest.getType());
         try {
-            wrTest.setType(WaterType Spring);
+            wrTest.setType("Spring");
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Should not have thrown exception here");
         }
-        Assert.assertEquals("Failed to set new condition", WaterType Spring, wrTest.getType());
+        Assert.assertEquals("Failed to set new condition", "Spring", wrTest.getType());
         try {
-            wrTest.setType(WaterType Lake);
+            wrTest.setType("Lake");
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("Should not have thrown exception here");
         }
-        Assert.assertEquals("Failed to alter prior condition", WaterType Lake, wrTest.getType());
+        Assert.assertEquals("Failed to alter prior condition", "Lake", wrTest.getType());
     }
 }
