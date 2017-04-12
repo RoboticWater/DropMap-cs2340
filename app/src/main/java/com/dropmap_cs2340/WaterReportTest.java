@@ -38,7 +38,7 @@ public class WaterReportTest {
             wrTest.setCondition(WaterCondition Waste);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail("Should not have thrown exception here")
+            Assert.fail("Should not have thrown exception here");
         }
         Assert.assertEquals("Failed to retrieve new condition", WaterCondition Waste, wrTest.getCondition());
     }
@@ -54,14 +54,14 @@ public class WaterReportTest {
             wrTest.setCondition(WaterCondition Waste);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail("Should not have thrown exception here")
+            Assert.fail("Should not have thrown exception here");
         }
         Assert.assertEquals("Failed to set new condition", WaterCondition Waste, wrTest.getCondition());
         try {
             wrTest.setCondition(WaterCondition Potable);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail("Should not have thrown exception here")
+            Assert.fail("Should not have thrown exception here");
         }
         Assert.assertEquals("Failed to alter prior condition", WaterCondition Potable, wrTest.getCondition());
     }
@@ -77,7 +77,7 @@ public class WaterReportTest {
             wrTest.setType(WaterType Spring);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail("Should not have thrown exception here")
+            Assert.fail("Should not have thrown exception here");
         }
         Assert.assertEquals("Failed to retrieve new type", WaterType Spring, wrTest.getType());
     }
@@ -93,14 +93,14 @@ public class WaterReportTest {
             wrTest.setType(WaterType Spring);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail("Should not have thrown exception here")
+            Assert.fail("Should not have thrown exception here");
         }
         Assert.assertEquals("Failed to set new condition", WaterType Spring, wrTest.getType());
         try {
             wrTest.setType(WaterType Lake);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail("Should not have thrown exception here")
+            Assert.fail("Should not have thrown exception here");
         }
         Assert.assertEquals("Failed to alter prior condition", WaterType Lake, wrTest.getType());
     }

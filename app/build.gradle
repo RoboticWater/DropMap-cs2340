@@ -37,5 +37,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     testCompile 'junit:junit:4.12'
+    compile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

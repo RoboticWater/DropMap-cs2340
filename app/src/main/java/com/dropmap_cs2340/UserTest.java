@@ -29,7 +29,7 @@ public class UserTest {
      * Test method for {@link User#getAuthLevel()}.
      * @author Chaz Woodall
      */
-    @org.testng.annotations.Test
+    @Test
     public void testGetAuthLevel() {
         Assert.assertEquals("Initial Condition wrong", null, userTest.getAuthLevel());
         try {
@@ -64,4 +64,42 @@ public class UserTest {
         Assert.assertEquals("Failed to alter prior condition", "Worker", userTest.getAuthLevel());
     }
 
+    /**
+     * Test method for {@link User#getPassword()}.
+     * @author Arsene Lakpa
+     */
+    @Test
+    public void testGetPassword() {
+        Assert.assertEquals("Initial Condition wrong", null, userTest.getPassword());
+        try {
+            userTest.setPassword("BobbyFlayIsMyDad");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("Should not have thrown exception here");
+        }
+        Assert.assertEquals("Failed to retrieve password", "BobbyFlayIsMyDad", userTest.getPassword());
+    }
+
+    /**
+     * Test method for {@link com.dropmap_cs2340.User#setPassword(String)} .
+     * @author Arsene Lakpa
+     */
+    @Test
+    public void testSetPassword() {
+        Assert.assertEquals("Initial Condition wrong", null, userTest.getPassword());
+        try {
+            userTest.setPassword("BobbyFlayIsMyDad");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("Should not have thrown exception here");
+        }
+        Assert.assertEquals("Failed to set new password", "BobbyFlayIsMyDad", userTest.getPassword());
+        try {
+            userTest.setPassword("RachelRayIsMyMom");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("Should not have thrown exception here");
+        }
+        Assert.assertEquals("Failed to alter previous password", "RachelRayIsMyMom", userTest.getPassword());
+    }
 }

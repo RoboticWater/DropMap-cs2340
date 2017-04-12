@@ -89,11 +89,20 @@ public class User implements Parcelable {
     }
 
     String getPassword() {
-        return password;
+        if (password == null) {
+            return null;
+        } else {
+            return password;
+        }
+
     }
 
     void setPassword(String password) {
-        this.password = password;
+        if (password == null) {
+            this.password = null;
+        } else {
+            this.password = password;
+        }
     }
 
     String getAuthLevel() {
